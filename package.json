@@ -1,0 +1,51 @@
+{
+    "name": "@arpadroid/gallery",
+    "version": "1.0.0",
+    "description": "A custom elements library for building image galleries",
+    "exports": "./dist/arpadroid-gallery.js",
+    "module": "./dist/arpadroid-gallery.js",
+    "type": "module",
+    "scripts": {
+        "build": "node ./node_modules/@arpadroid/arpadroid/scripts/build-project.mjs --project=gallery --minify",
+        "prepublish": "npm run build",
+        "storybook": "npm run build -- --storybook=6015 --watch",
+        "test": "node ./node_modules/@arpadroid/arpadroid/scripts/test-project.mjs --project=gallery --storybook --jest --port=6015"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/arpadroid/gallery.git"
+    },
+    "keywords": [
+        "web-components",
+        "image-gallery",
+        "library"
+    ],
+    "author": "Andres Vaquero @arpadroid <web.andresvaquero@gmail.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/arpadroid/gallery/issues"
+    },
+    "homepage": "https://github.com/arpadroid/gallery#readme",
+    "devDependencies": {
+        "@arpadroid/stylesheet-bundler": "file:../stylesheet-bundler",
+        "@babel/core": "^7.23.9",
+        "@babel/plugin-syntax-import-assertions": "^7.23.3",
+        "@babel/preset-env": "^7.23.9",
+        "@ungap/custom-elements": "^1.3.0",
+        "babel-jest": "^29.7.0",
+        "babel-loader": "^9.1.3",
+        "dts-bundle-generator": "^9.3.1",
+        "jsdoc-to-markdown": "^8.0.1",
+        "typescript": "^5.4.2",
+        "@arpadroid/arpadroid": "file:../arpadroid"
+    },
+    "peerDependencies": {
+        "@arpadroid/application": "file:../application",
+        "@arpadroid/i18n": "file:../i18n",
+        "@arpadroid/ui": "file:../ui",
+        "@arpadroid/navigation": "file:../navigation",
+        "@arpadroid/lists": "file:../lists",
+        "@arpadroid/tools": "file:../tools",
+        "@arpadroid/forms": "file:../forms"
+    }
+}
