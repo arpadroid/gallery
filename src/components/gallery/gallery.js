@@ -15,7 +15,7 @@ class Gallery extends List {
         this.playInterval = undefined;
         return super.getDefaultConfig({
             className: 'gallery',
-            controls: ['play', 'previous', 'input', 'next', 'thumbnailControl', 'fullScreen', 'views'],
+            controls: ['play', 'previous', 'input', 'next', 'thumbnailControl', 'fullScreen', 'views', 'toggleControls'],
             defaultView: 'full',
             hasControls: true,
             autoplay: false,
@@ -28,7 +28,8 @@ class Gallery extends List {
             listSelector: 'arpa-gallery',
             playInterval: 5000,
             views: ['full'],
-            loadingMode: 'loadNext'
+            loadingMode: 'loadNext',
+            controlsHiddenClass: 'gallery--hide-controls'
         });
     }
 
@@ -102,11 +103,6 @@ class Gallery extends List {
         }
     }
 
-    toggleFullScreen() {
-        this.isFullScreen ? exitFullScreen() : goFullScreen(this);
-        this.isFullScreen = Boolean(!this.isFullScreen);
-    }
-
     pause() {
         if (this.isPlaying) {
             clearTimeout(this.playTimeout);
@@ -114,6 +110,30 @@ class Gallery extends List {
             this.isPlaying = false;
             this.signal('pause');
         }
+    }
+
+    toggleFullScreen() {
+        this.isFullScreen ? exitFullScreen() : goFullScreen(this);
+        this.isFullScreen = Boolean(!this.isFullScreen);
+    }
+
+    toggleControls() {
+        this.isControlsHidden() ? this.showControls() : this.hideControls();
+    }
+
+    isControlsHidden() {
+        const { controlsHiddenClass } = this.getConfig();
+        return this.classList.contains(controlsHiddenClass);
+    }
+
+    hideControls() {
+        const { controlsHiddenClass } = this.getConfig();
+        this.classList.add(controlsHiddenClass);
+    }
+
+    showControls() {
+        const { controlsHiddenClass } = this.getConfig();
+        this.classList.remove(controlsHiddenClass);
     }
 }
 

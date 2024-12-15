@@ -37,6 +37,7 @@ class GalleryInput extends GalleryControl {
     }
 
     _onSubmit(values) {
+        this.gallery.pause();
         this.resource.goToPage(values.page);
     }
 

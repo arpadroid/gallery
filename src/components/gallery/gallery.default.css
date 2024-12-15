@@ -13,3 +13,40 @@ arpa-gallery {
 .gallery__controls {
     padding: 0.5rem;
 }
+
+.gallery--hide-controls {
+    .gallery__controls,
+    .listItem__titleWrapper {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 54px;
+        opacity: 0;
+        transition: var(--theme-transition);
+    }
+
+    &:hover {
+        .gallery__controls,
+        .listItem__titleWrapper {
+            opacity: 1;
+        }
+    }
+
+    .gallery__controls {
+        top: auto;
+        bottom: 0;
+    }
+    .listItem__titleWrapper {
+        top: 0;
+        z-index: 1;
+        background-color: var(--overlay);
+    }
+
+    gallery-item {
+        arpa-image.listItem__image {
+            img {
+                max-height: calc(100vh);
+            }
+        }
+    }
+}
