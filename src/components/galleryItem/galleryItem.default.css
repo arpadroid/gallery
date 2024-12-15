@@ -1,0 +1,36 @@
+gallery-item {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    arpa-image.listItem__image {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1 1 auto;
+        img {
+            object-fit: contain;
+            max-height: calc(100vh - 110px);
+        }
+    }
+
+    .listItem__title {
+        padding: 1rem;
+    }
+
+    circular-preloader {
+        --preloader-size: 120px;
+    }
+}
+
+.galleryItem__main {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    width: 100%;
+}
+
+.galleryItem__contentWrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+}

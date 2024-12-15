@@ -6,4 +6,5 @@ export { default as GalleryInput } from './components/controls/galleryInput/gall
 export { default as GalleryNext } from './components/controls/galleryNext/galleryNext.js';
 export { default as GalleryPrevious } from './components/controls/galleryPrevious/galleryPrevious.js';
 export { default as GalleryThumbnailControl } from './components/controls/galleryThumbnailControl/galleryThumbnailControl.js';
+export { default as GalleryFullScreen } from './components/controls/galleryFullScreen/galleryFullScreen.js';
 export { default as GalleryPlay } from './components/controls/galleryPlay/galleryPlay.js';

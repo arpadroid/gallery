@@ -1,12 +1,18 @@
+import { mergeObjects } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl';
 
 class GalleryNext extends GalleryControl {
     getDefaultConfig() {
-        return {
+        return mergeObjects(super.getDefaultConfig(), {
             className: 'galleryNext',
-            icon: 'arrow_forward_ios',
+            icon: 'skip_next',
             label: 'Next'
-        };
+        });
+    }
+
+    _onClick() {
+        this.gallery.pause();
+        this.resource.nextPage();
     }
 }
 

@@ -1,0 +1,15 @@
+arpa-gallery {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.gallery__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+}
+
+.gallery__controls {
+    padding: 0.5rem;
+}

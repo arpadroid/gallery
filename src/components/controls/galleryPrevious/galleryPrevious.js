@@ -1,12 +1,18 @@
+import { mergeObjects } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl';
 
 class GalleryPrevious extends GalleryControl {
     getDefaultConfig() {
-        return {
+        return mergeObjects(super.getDefaultConfig(), {
             className: 'galleryPrevious',
-            icon: 'arrow_back_ios',
+            icon: 'skip_previous',
             label: 'Previous'
-        };
+        });
+    }
+
+    _onClick() {
+        this.gallery.pause();
+        this.resource.previousPage();
     }
 }
 

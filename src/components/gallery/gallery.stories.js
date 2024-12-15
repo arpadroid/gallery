@@ -11,20 +11,15 @@ const GalleryStory = {
     title: 'Gallery',
     tags: [],
     args: {
-        id: 'gallery',
-        title: 'Gallery',
-        hasItemsTransition: true,
-        hasControls: true,
+        id: 'gallery'
+    },
+    parameters: {
+        layout: 'fullscreen'
     },
     getArgTypes: (category = 'gallery Props') => {
         return {
-            // id: { control: { type: 'text' }, table: { category } },
-            // title: { control: { type: 'text' }, table: { category } },
-            // hasMultiSelect: { control: { type: 'boolean' }, table: { category, subcategory: 'Controls' } },
-            // hasItemsTransition: { control: { type: 'boolean' }, table: { category, subcategory: 'Controls' } },
-            // url: { control: { type: 'text' }, table: { category, subcategory: 'Resource' } },
-            // itemsPerPage: { control: { type: 'number' }, table: { category, subcategory: 'Resource' } },
-            // paramNamespace: { control: { type: 'text' }, table: { category, subcategory: 'Resource' } }
+            id: { control: { type: 'text' }, table: { category } },
+            title: { control: { type: 'text' }, table: { category } },
         };
     }
 };
@@ -32,25 +27,26 @@ const GalleryStory = {
 export const Default = {
     name: 'Render',
     argTypes: GalleryStory.getArgTypes(),
+    parameters: {
+        layout: 'fullscreen'
+    },
     args: {
         ...GalleryStory.args,
-        id: 'gallery-list',
-        title: 'Gallery',
-        hasResource: true
+        id: 'gallery-list'
     },
     initializeList: async (id, payload = artists) => {
         const list = document.getElementById(id);
         /** @type {ListResource} */
         const resource = list.listResource;
-        console.log('resource', resource);
+
         resource?.mapItem(item => {
-            // const dob = formatDate(item.dateOfBirth, 'YYYY');
-            // const dod = formatDate(item.dateOfDeath, 'YYYY');
-            // const lived = `${dob} - ${dod}` || dob;
+            const dob = formatDate(item.dateOfBirth, 'YYYY');
+            const dod = formatDate(item.dateOfDeath, 'YYYY');
+            const lived = `${dob} - ${dod}` || dob;
             return {
                 ...item,
-                title: `${item.firstName} ${item.lastName}`,
-                // date: lived
+                title: `${item.firstName} ${item.lastName} (${lived})`,
+                image: item.portraitURL
             };
         });
         resource?.setItems(payload);
@@ -69,12 +65,20 @@ export const Default = {
         await Default.playSetup(canvasElement);
     },
     renderItemTemplate: () => {
-        return html`<template template-id="list-item-template" image="{portraitURL}" truncate-content="50">
-            I'm a gallery item
+        return html`<template template-id="list-item-template" truncate-content="50">
         </template>`;
     },
     render: args => {
-        return html`<arpa-gallery ${attrString(args)}> ${Default.renderItemTemplate()} </arpa-gallery> `;
+        return html`
+            <style>
+                #storybook-root {
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                }
+            </style>
+            <arpa-gallery ${attrString(args)}> ${Default.renderItemTemplate()} </arpa-gallery>
+        `;
     }
 };
 

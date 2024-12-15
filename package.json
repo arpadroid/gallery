@@ -46,6 +46,7 @@
         "@arpadroid/navigation": "file:../navigation",
         "@arpadroid/lists": "file:../lists",
         "@arpadroid/tools": "file:../tools",
-        "@arpadroid/forms": "file:../forms"
+        "@arpadroid/forms": "file:../forms",
+        "@arpadroid/resources": "file:../resources"
     }
 }
