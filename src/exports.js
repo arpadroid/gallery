@@ -9,3 +9,6 @@ export { default as GalleryThumbnailControl } from './components/controls/galler
 export { default as GalleryToggleControls } from './components/controls/galleryToggleControls/galleryToggleControls.js';
 export { default as GalleryFullScreen } from './components/controls/galleryFullScreen/galleryFullScreen.js';
 export { default as GalleryPlay } from './components/controls/galleryPlay/galleryPlay.js';
+export { default as GalleryThumbnails } from './components/galleryThumbnails/galleryThumbnails.js';
+export { default as GalleryThumbnail } from './components/galleryThumbnail/galleryThumbnail.js';
+export { default as GalleryDarkMode } from './components/controls/galleryDarkMode/galleryDarkMode.js';

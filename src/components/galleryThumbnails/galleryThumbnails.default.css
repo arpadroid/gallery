@@ -1,0 +1,66 @@
+:root {
+    --gallery-thumbnails-height: 110px;
+}
+
+.galleryThumbnails {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    position: relative;
+    max-width: 100%;
+    width: 100%;
+    position: relative;
+    height: var(--gallery-thumbnails-height);
+    align-items: center;
+    overflow: hidden;
+    max-height: var(--gallery-thumbnails-height);
+}
+
+.galleryThumbnails__mask {
+    max-height: 100%;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: row;
+    overflow-x: auto;
+    max-width: 100%;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+button.galleryThumbnails__arrow.galleryThumbnails__arrow {
+    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
+    border-radius: 4px;
+    background-color: var(--grey-0);
+    border: none;
+}
+
+.galleryThumbnails--left,
+.galleryThumbnails--right {
+    position: absolute;
+    max-height: none;
+    width: var(--gallery-thumbnails-height);
+    height: calc(100% - var(--gallery-controls-height));
+    left: 0;
+    top: calc(var(--gallery-controls-height) / 2);
+    bottom: calc(var(--gallery-controls-height) / 2);
+    .galleryThumbnails__mask {
+        flex-direction: column;
+    }
+    img {
+        object-fit: contain;
+        max-height: none;
+        max-width: 100%;
+        height: auto;
+        min-height: auto;
+    }
+}
+
+.galleryThumbnails--right {
+    left: auto;
+    right: 0;
+}

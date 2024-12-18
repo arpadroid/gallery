@@ -9,7 +9,7 @@ gallery-item {
         flex: 1 1 auto;
         img {
             object-fit: contain;
-            max-height: calc(100vh - 110px);
+            max-height: calc(100vh - var(--gallery-controls-height));
         }
     }
 
@@ -33,4 +33,12 @@ gallery-item {
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
+}
+
+.gallery--thumbnails:has(.galleryThumbnails--bottom) {
+    gallery-item {
+        arpa-image.listItem__image img {
+            max-height: calc(100vh - var(--gallery-controls-height) - var(--gallery-thumbnails-height));
+        }
+    }
 }

@@ -2,22 +2,30 @@ import { List } from '@arpadroid/lists';
 import { ObserverTool, goFullScreen, exitFullScreen } from '@arpadroid/tools';
 
 import GalleryItem from '../galleryItem/galleryItem';
+
 const html = String.raw;
 class Gallery extends List {
-    _initialize() {
-        this.bind('_onItemsUpdated');
-        super._initialize();
-        ObserverTool.mixin(this);
-        this.listResource?.on('items', this._onItemsUpdated);
-    }
-
     getDefaultConfig() {
         this.playInterval = undefined;
         return super.getDefaultConfig({
             className: 'gallery',
-            controls: ['play', 'previous', 'input', 'next', 'thumbnailControl', 'fullScreen', 'views', 'toggleControls'],
+            controls: [
+                'play',
+                'previous',
+                'input',
+                'next',
+                'thumbnailControl',
+                'views',
+                'toggleControls',
+                'darkMode',
+                'fullScreen',
+                'filters'
+            ],
+            trackActivity: true,
+            activityTimeout: 3000,
             defaultView: 'full',
             hasControls: true,
+            activeClass: 'gallery--active',
             autoplay: false,
             hasItemsTransition: true,
             hasResource: true,
@@ -31,6 +39,34 @@ class Gallery extends List {
             loadingMode: 'loadNext',
             controlsHiddenClass: 'gallery--hide-controls'
         });
+    }
+
+    _initialize() {
+        this.bind('_onItemsUpdated', '_handleActivity');
+        super._initialize();
+        ObserverTool.mixin(this);
+        this.listResource?.on('items', this._onItemsUpdated);
+        this.isActive = false;
+        this.manageActiveState();
+    }
+
+    manageActiveState() {
+        this.removeEventListener('mousemove', this._handleActivity);
+        this.addEventListener('mousemove', this._handleActivity);
+    }
+
+    _handleActivity() {
+        const activeClass = this.getProperty('active-class');
+        clearTimeout(this.activeTimeout);
+        this.isActive = true;
+        const activityTimeout = this.getProperty('activity-timeout') || 3000;
+        if (!this.classList.contains(activeClass)) {
+            this.classList.add(activeClass);
+        }
+        this.activeTimeout = setTimeout(() => {
+            this.isActive = false;
+            this.classList.remove(activeClass);
+        }, activityTimeout);
     }
 
     getLazyLoadImages() {
@@ -67,8 +103,16 @@ class Gallery extends List {
                 <div class="arpaList__bodyMain">{heading}{items}{preloader}</div>
                 {aside}
             </div>
-            {controls}
+            <div class="gallery__footer">{controls}</div>
         `;
+    }
+
+    _initializeNodes() {
+        super._initializeNodes();
+        this.controls = this.querySelector('gallery-controls');
+        this.footerNode = this.querySelector('.gallery__footer');
+        this.headerNode = this.querySelector('.gallery__header');
+        this.bodyNode = this.querySelector('.gallery__body');
     }
 
     getPlayInterval() {

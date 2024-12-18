@@ -1,0 +1,102 @@
+gallery-thumbnail {
+    position: relative;
+    height: 100%;
+    width: auto;
+
+    .listItem__main {
+        margin: 0;
+        padding: 0;
+        gap: 0;
+    }
+
+    .listItem__image {
+        height: 100%;
+        width: auto;
+    }
+    picture {
+        border-radius: 0;
+    }
+
+    arpa-image {
+        transition: border 0.4s var(--easeOutQuad);
+
+        border: 0px solid var(--grey-50);
+        .tooltip {
+            display: none;
+        }
+    }
+
+    img {
+        max-height: var(--gallery-thumbnails-height);
+        transform: scale(1.1);
+        position: relative;
+        object-fit: cover;
+        width: auto;
+        border-radius: 0;
+        transition: filter, transform 2s var(--easeOutQuad);
+    }
+
+    picture::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        opacity: 0.9;
+        z-index: 1;
+        transition: opacity 1s var(--easeOutQuad);
+        opacity: 0;
+    }
+
+    button {
+        cursor: pointer;
+        transition: border 0.6s var(--easeOutQuad);
+        display: flex;
+        &::after,
+        &::before {
+            content: '';
+            position: absolute;
+            width: calc(100% - 12px);
+            width: 0;
+            background-color: var(--grey-0);
+            opacity: 0.9;
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            height: 0.25rem;
+            background-color: var(--grey-0);
+            z-index: 1;
+            display: none;
+            transition: width 3s var(--easeOutExpo) 0.3s;
+            transform: translateX(-50%);
+        }
+
+        &::before {
+            top: auto;
+            bottom: 6px;
+        }
+    }
+    &.galleryThumbnail--selected,
+    button:focus,
+    button:hover {
+        outline: none;
+        max-width: 100%;
+        img {
+            transform: scale(1.3);
+        }
+
+        picture::after {
+            background-color: rgba(1, 191, 255, 0.2);
+            opacity: 1;
+        }
+
+        &::after,
+        &::before {
+            @starting-style {
+                width: 0;
+            }
+        }
+    }
+}

@@ -5,7 +5,6 @@
 import artists from '../../../node_modules/@arpadroid/lists/src/mockData/artists.json';
 import { attrString, formatDate } from '@arpadroid/tools';
 import { within } from '@storybook/test';
-console.log('artists', artists);
 const html = String.raw;
 const GalleryStory = {
     title: 'Gallery',
@@ -16,10 +15,14 @@ const GalleryStory = {
     parameters: {
         layout: 'fullscreen'
     },
-    getArgTypes: (category = 'gallery Props') => {
+    getArgTypes: (category = 'Gallery Props') => {
         return {
             id: { control: { type: 'text' }, table: { category } },
-            title: { control: { type: 'text' }, table: { category } },
+            thumbnailsPosition: {
+                control: { type: 'select' },
+                options: ['bottom', 'left', 'top', 'right'],
+                table: { category }
+            }
         };
     }
 };
@@ -46,7 +49,8 @@ export const Default = {
             return {
                 ...item,
                 title: `${item.firstName} ${item.lastName} (${lived})`,
-                image: item.portraitURL
+                image: item.portraitURL,
+                thumbnail: item.portraitURL
             };
         });
         resource?.setItems(payload);
@@ -65,8 +69,7 @@ export const Default = {
         await Default.playSetup(canvasElement);
     },
     renderItemTemplate: () => {
-        return html`<template template-id="list-item-template" truncate-content="50">
-        </template>`;
+        return html`<template template-id="list-item-template" truncate-content="50"> </template>`;
     },
     render: args => {
         return html`

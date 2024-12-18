@@ -31,6 +31,13 @@ class GalleryItem extends ListItem {
         const titleContainer = this.renderTitleContainer();
         return html`${titleContainer}${image}${this.renderContent()}`;
     }
+
+    getImageAttributes() {
+        return {
+            ...super.getImageAttributes(),
+            preventUpscale: true,
+        };
+    }
 }
 
 customElements.define('gallery-item', GalleryItem);

@@ -6,7 +6,8 @@ class GalleryToggleControls extends GalleryControl {
             className: 'galleryToggleControls',
             icon: 'keyboard_double_arrow_down',
             openIcon: 'keyboard_double_arrow_up',
-            label: 'Toggle controls'
+            label: 'Hide controls',
+            openLabel: 'Show controls'
         };
     }
 
@@ -14,8 +15,10 @@ class GalleryToggleControls extends GalleryControl {
         this.gallery.toggleControls();
         if (this.gallery.isControlsHidden()) {
             this.button?.setIcon(this.getProperty('open-icon'));
+            this.button?.setLabel(this.getProperty('open-label'));
         } else {
             this.button?.setIcon(this.getProperty('icon'));
+            this.button?.setLabel(this.getProperty('label'));
         }
     }
 }

@@ -1,5 +1,6 @@
 import { ListControls } from '@arpadroid/lists';
 
+const html = String.raw;
 class GalleryControls extends ListControls {
     initializeProperties() {
         this.list = this.closest('.arpaList, arpa-gallery');
@@ -13,6 +14,10 @@ class GalleryControls extends ListControls {
             className: 'listControls',
             controls: this.list?.getControls()
         };
+    }
+
+    renderFilters() {
+        return html`<list-filters></list-filters>`;
     }
 }
 

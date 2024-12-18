@@ -7,6 +7,7 @@ class GalleryPlay extends GalleryControl {
             icon: 'play_arrow',
             iconPause: 'pause',
             label: 'Play',
+            labelPause: 'Pause',
             labelPosition: 'bottom',
             playInterval: this.gallery?.getProperty('play-interval') || 5000
         };
@@ -25,10 +26,14 @@ class GalleryPlay extends GalleryControl {
 
     _onPlay() {
         this.button.setIcon('pause');
+        const pauseLabel = this.getProperty('label-pause');
+        this.button.setLabel(pauseLabel);
     }
 
     _onPause() {
         this.button.setIcon('play_arrow');
+        const playLabel = this.getProperty('label');
+        this.button.setLabel(playLabel);
     }
 }
 
