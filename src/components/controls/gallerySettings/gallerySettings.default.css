@@ -1,0 +1,10 @@
+.gallerySettings__nav.gallerySettings__nav {
+    min-width: 400px;
+    width: 50%;
+    max-width: 400px;
+    position: absolute;
+    right: 0.25rem;
+    margin-right: 0;
+    top: 0;
+    transform: translateY(calc(-100% - 0.25rem));
+}

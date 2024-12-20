@@ -11,7 +11,7 @@ class GalleryThumbnailControl extends GalleryControl {
             label: 'Show thumbnails',
             labelHide: 'Hide thumbnails',
             labelPosition: 'bottom',
-            thumbnailsPosition: 'bottom'
+            thumbnailsPosition: 'left'
         };
     }
 
@@ -24,10 +24,13 @@ class GalleryThumbnailControl extends GalleryControl {
     _initializeThumbnails() {
         this.thumbnails && this.thumbnails.remove();
         this.thumbnails = renderNode(this.renderThumbnails());
+        this.gallery.append(this.thumbnails);
         this.positionThumbnails();
     }
 
-    positionThumbnails(position = this.thumbnails?.getProperty('position') || 'bottom') {
+    async positionThumbnails() {
+        await this.gallery.controls.promise;
+        const position = this.gallery?.settings.getThumbnailsPosition();
         if (position === 'bottom') {
             this.gallery.footerNode.append(this.thumbnails);
         } else if (position === 'top') {
@@ -35,6 +38,7 @@ class GalleryThumbnailControl extends GalleryControl {
         } else {
             this.gallery.append(this.thumbnails);
         }
+        this.thumbnails.setAttribute('position', position);
     }
 
     renderThumbnails() {

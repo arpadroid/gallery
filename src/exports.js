@@ -12,3 +12,4 @@ export { default as GalleryPlay } from './components/controls/galleryPlay/galler
 export { default as GalleryThumbnails } from './components/galleryThumbnails/galleryThumbnails.js';
 export { default as GalleryThumbnail } from './components/galleryThumbnail/galleryThumbnail.js';
 export { default as GalleryDarkMode } from './components/controls/galleryDarkMode/galleryDarkMode.js';
+export { default as GallerySettings } from './components/controls/gallerySettings/gallerySettings.js';

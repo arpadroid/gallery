@@ -28,11 +28,7 @@ class GalleryThumbnails extends List {
         this.resource.on('items', this._handleSelectedItem);
     }
 
-    getPosition() {
-        return this.getProperty('position') || 'bottom';
-    }
-
-    _handleSelectedItem(items) {
+    async _handleSelectedItem(items) {
         const selectedClass = this.getProperty('selected-class');
         const selected = items?.[0];
         if (!selected) return;
@@ -40,6 +36,8 @@ class GalleryThumbnails extends List {
         selectedItems.forEach(item => item.classList.remove(selectedClass));
         const thumbnail = this.querySelector(`gallery-thumbnail[item-id="${selected.id}"]`);
         thumbnail?.classList.add(selectedClass);
+        const index = Array.from(this.thumbnailMask.children).indexOf(thumbnail);
+        this.scrollToItem(index, 'left');
     }
 
     //////////////////////////////
@@ -59,23 +57,11 @@ class GalleryThumbnails extends List {
         this.thumbnailMask.innerHTML = this.renderItems();
     }
 
-    positionThumbnails(position = this.thumbnails?.getProperty('position') || 'bottom') {
-        if (position === 'bottom') {
-            this.gallery.footerNode.append(this.thumbnails);
-        } else if (position === 'top') {
-            this.gallery.headerNode.prepend(this.thumbnails);
-        } else {
-            this.gallery.append(this.thumbnails);
-        }
-    }
-
     ///////////////////////////////
     // #region Rendering
     ///////////////////////////////
 
     render() {
-        const position = this.getProperty('position');
-        position && this.classList.add(`galleryThumbnails--${position}`);
         const hasArrows = this.getProperty('has-arrows');
         const content = html`
             ${(hasArrows && this.renderArrowBack()) || ''}
@@ -188,17 +174,13 @@ class GalleryThumbnails extends List {
     scrollToItem(index, position = 'center') {
         const maskRect = this.thumbnailMask.getBoundingClientRect();
         const item = this.thumbnailMask.childNodes[index];
-        if (!item) {
-            throw new Error(`Item with index ${index} not found`);
-        }
-        const rect = item.getBoundingClientRect();
-        if (position === 'left') {
-            const left = this.adjustForwardScroll(-rect.left + maskRect.left);
-            this.thumbnailMask.style.left = `${left}px`;
-        } else if (position === 'right') {
-            const left = this.adjustBackScroll(-rect.left + maskRect.left - rect.width + this.getViewWidth());
-            this.thumbnailMask.style.left = `${left}px`;
-        }
+
+        if (!item) throw new Error(`Item with index ${index} not found.`);
+        const itemRect = item.getBoundingClientRect();
+        let left = maskRect.left - itemRect.left;
+        if (position === 'center') left += maskRect.width / 2 - itemRect.width / 2;
+        else if (position === 'right') left += maskRect.width - itemRect.width;
+        this.thumbnailMask.style.left = `${left}px`;
     }
     /////////////////////////////////
     // #endregion SCROLLING

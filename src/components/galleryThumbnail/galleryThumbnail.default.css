@@ -2,6 +2,16 @@ gallery-thumbnail {
     position: relative;
     height: 100%;
     width: auto;
+    opacity: 0;
+    display: none;
+    transition: opacity 1s var(--easeInQuad);
+    &:has(.image--loaded) {
+        @starting-style {
+            opacity: 0;
+        }
+        display: flex;
+        opacity: 1;
+    }
 
     .listItem__main {
         margin: 0;

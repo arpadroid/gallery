@@ -14,13 +14,15 @@ class Gallery extends List {
                 'previous',
                 'input',
                 'next',
+                'spacer',
                 'thumbnailControl',
                 'views',
                 'toggleControls',
                 'darkMode',
                 'fullScreen',
-                'filters'
+                'settings'
             ],
+            thumbnailsPosition: 'right',
             trackActivity: true,
             activityTimeout: 3000,
             defaultView: 'full',
@@ -34,7 +36,7 @@ class Gallery extends List {
             itemsPerPage: 1,
             itemTag: 'gallery-item',
             listSelector: 'arpa-gallery',
-            playInterval: 5000,
+            playInterval: 5,
             views: ['full'],
             loadingMode: 'loadNext',
             controlsHiddenClass: 'gallery--hide-controls'
@@ -107,28 +109,20 @@ class Gallery extends List {
         `;
     }
 
-    _initializeNodes() {
+    async _initializeNodes() {
         super._initializeNodes();
         this.controls = this.querySelector('gallery-controls');
         this.footerNode = this.querySelector('.gallery__footer');
         this.headerNode = this.querySelector('.gallery__header');
         this.bodyNode = this.querySelector('.gallery__body');
-    }
-
-    getPlayInterval() {
-        return this.getProperty('play-interval');
-    }
-
-    _onConnected() {
-        super._onConnected();
+        await this.controls.promise;
+        this.settings = this.querySelector('gallery-settings');
         this.getProperty('autoplay') && this.play();
     }
 
-    play() {
-        const playInterval = this.getPlayInterval();
-        if (this.playTimeout) {
-            clearTimeout(this.playTimeout);
-        }
+    play(playRightAway = true) {
+        const playInterval = this.settings.getPlayInterval() * 1000;
+        this.playTimeout && clearTimeout(this.playTimeout);
         if (this.listResource.getTotalItems() < 2) {
             return;
         }
@@ -142,8 +136,15 @@ class Gallery extends List {
 
         if (playInterval) {
             this.isPlaying = true;
-            nextPage();
-            this.signal('play');
+            if (playRightAway) {
+                nextPage();
+                this.signal('play');
+            } else {
+                this.playTimeout = setTimeout(() => {
+                    nextPage();
+                    this.signal('play');
+                }, playInterval);
+            }
         }
     }
 

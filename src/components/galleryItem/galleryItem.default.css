@@ -9,7 +9,7 @@ gallery-item {
         flex: 1 1 auto;
         img {
             object-fit: contain;
-            max-height: calc(100vh - var(--gallery-controls-height));
+            max-height: calc(100vh - var(--gallery-controls-height) - 0.25rem);
         }
     }
 
@@ -35,10 +35,11 @@ gallery-item {
     flex: 1 1 auto;
 }
 
-.gallery--thumbnails:has(.galleryThumbnails--bottom) {
+.gallery--thumbnails:has(.galleryThumbnails[position='bottom']),
+.gallery--thumbnails:has(.galleryThumbnails[position='top']) {
     gallery-item {
         arpa-image.listItem__image img {
-            max-height: calc(100vh - var(--gallery-controls-height) - var(--gallery-thumbnails-height));
+            max-height: calc(100vh - var(--gallery-controls-height) - var(--gallery-thumbnails-height) - 0.25rem);
         }
     }
 }
