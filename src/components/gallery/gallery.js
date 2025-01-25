@@ -1,5 +1,5 @@
 import { List } from '@arpadroid/lists';
-import { ObserverTool, goFullScreen, exitFullScreen } from '@arpadroid/tools';
+import { observerMixin, dummySignal, goFullScreen, exitFullScreen } from '@arpadroid/tools';
 
 import GalleryItem from '../galleryItem/galleryItem';
 
@@ -46,7 +46,7 @@ class Gallery extends List {
     _initialize() {
         this.bind('_onItemsUpdated', '_handleActivity');
         super._initialize();
-        ObserverTool.mixin(this);
+        observerMixin(this);
         this.listResource?.on('items', this._onItemsUpdated);
         this.isActive = false;
         this.manageActiveState();

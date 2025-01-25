@@ -4,12 +4,12 @@
  * @typedef {import('../gallery/gallery').default} Gallery
  */
 import { ArpaElement } from '@arpadroid/ui';
-import { ObserverTool } from '@arpadroid/tools';
+import { observerMixin } from '@arpadroid/tools';
 const html = String.raw;
 class GalleryControl extends ArpaElement {
     _initialize() {
         this.bind('_onClick', '_onClicked');
-        ObserverTool.mixin(this);
+        observerMixin(this);
         /** @type {Gallery} */
         this.gallery = this.closest('arpa-gallery');
         /** @type {ListResource} */
