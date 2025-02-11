@@ -16,17 +16,17 @@ class Gallery extends List {
 
     /** @type {GalleryConfigType} */ // @ts-ignore
     _config = this._config;
-
     /**
-     * Creates a new gallery.
-     * @param {GalleryConfigType} config - The configuration for the gallery.
+     * Creates a new gallery component.
+     * @param {GalleryConfigType} config
      */
     constructor(config) {
         super(config);
-        this.bind('_onItemsUpdated', '_handleActivity');
         this.signal = dummySignal;
         this.on = dummyListener;
         this.off = dummyOff;
+        observerMixin(this);
+        this.listResource?.on('items', this._onItemsUpdated);
     }
 
     /**
@@ -73,9 +73,8 @@ class Gallery extends List {
     }
 
     _initialize() {
+        this.bind('_onItemsUpdated', '_handleActivity');
         super._initialize();
-        observerMixin(this);
-        this.listResource?.on('items', this._onItemsUpdated);
         this.isActive = false;
         this.manageActiveState();
     }
