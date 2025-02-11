@@ -1,13 +1,41 @@
+/**
+ * @typedef {import('./gallery.types').GalleryConfigType} GalleryConfigType
+ * @typedef {import('../galleryControls/galleryControls.js').default} GalleryControls
+ * @typedef {import('../galleryItem/galleryItem.types').GalleryItemConfigType} GalleryItemConfigType
+ * @typedef {import('../controls/gallerySettings/gallerySettings.js').default} GallerySettings
+ */
 import { List } from '@arpadroid/lists';
-import { observerMixin, dummySignal, goFullScreen, exitFullScreen } from '@arpadroid/tools';
-
 import GalleryItem from '../galleryItem/galleryItem';
+import { observerMixin, dummySignal, goFullScreen, exitFullScreen, dummyListener, dummyOff } from '@arpadroid/tools';
 
 const html = String.raw;
 class Gallery extends List {
+    //////////////////////////////
+    // #region Initialization
+    //////////////////////////////
+
+    /** @type {GalleryConfigType} */ // @ts-ignore
+    _config = this._config;
+
+    /**
+     * Creates a new gallery.
+     * @param {GalleryConfigType} config - The configuration for the gallery.
+     */
+    constructor(config) {
+        super(config);
+        this.bind('_onItemsUpdated', '_handleActivity');
+        this.signal = dummySignal;
+        this.on = dummyListener;
+        this.off = dummyOff;
+    }
+
+    /**
+     * Returns the default configuration for the gallery.
+     * @returns {GalleryConfigType} The default configuration.
+     */
     getDefaultConfig() {
-        this.playInterval = undefined;
-        return super.getDefaultConfig({
+        /** @type {GalleryConfigType} */
+        const conf = {
             className: 'gallery',
             controls: [
                 'play',
@@ -23,7 +51,7 @@ class Gallery extends List {
                 'settings'
             ],
             thumbnailsPosition: 'right',
-            trackActivity: true,
+            // trackActivity: true,
             activityTimeout: 3000,
             defaultView: 'full',
             hasControls: true,
@@ -40,11 +68,11 @@ class Gallery extends List {
             views: ['full'],
             loadingMode: 'loadNext',
             controlsHiddenClass: 'gallery--hide-controls'
-        });
+        };
+        return super.getDefaultConfig(conf);
     }
 
     _initialize() {
-        this.bind('_onItemsUpdated', '_handleActivity');
         super._initialize();
         observerMixin(this);
         this.listResource?.on('items', this._onItemsUpdated);
@@ -71,31 +99,33 @@ class Gallery extends List {
         }, activityTimeout);
     }
 
-    getLazyLoadImages() {
-        return false;
+    // #endregion Initialization
+
+    //////////////////////////////
+    // #region Get
+    //////////////////////////////
+
+    isControlsHidden() {
+        return this.classList.contains(this.getControlsHiddenClass());
     }
 
-    _onItemsUpdated(items) {
-        const loadingMode = this.getLoadingMode();
-        if (loadingMode === 'loadNext') {
-            const next = this.listResource.getNextItem(items[0]);
-            if (next?.image) {
-                const image = new Image();
-                image.src = next.image;
-            }
-        }
+    getControlsHiddenClass() {
+        return this.getProperty('controls-hidden-class') || 'gallery--hide-controls';
     }
 
     getLoadingMode() {
         return this.getProperty('loading-mode');
     }
 
-    renderControls() {
-        return super.renderControls({
-            tagName: 'gallery-controls',
-            className: 'gallery__controls'
-        });
+    getLazyLoadImages() {
+        return false;
     }
+
+    // #endregion Get
+
+    //////////////////////////////
+    // #region Rendering
+    //////////////////////////////
 
     renderFull() {
         return html`
@@ -109,27 +139,62 @@ class Gallery extends List {
         `;
     }
 
+    renderControls() {
+        return super.renderControls({
+            tagName: 'gallery-controls',
+            className: 'gallery__controls'
+        });
+    }
+
     async _initializeNodes() {
         super._initializeNodes();
-        this.controls = this.querySelector('gallery-controls');
+        this.controls = /** @type {GalleryControls | null} */ (this.querySelector('gallery-controls'));
         this.footerNode = this.querySelector('.gallery__footer');
         this.headerNode = this.querySelector('.gallery__header');
         this.bodyNode = this.querySelector('.gallery__body');
-        await this.controls.promise;
+        this.controls?.promise && (await this.controls?.promise);
+        /** @type {GallerySettings | null} */
         this.settings = this.querySelector('gallery-settings');
         this.getProperty('autoplay') && this.play();
     }
 
+    // #endregion Rendering
+
+    //////////////////////////////
+    // #region Lifecycle
+    //////////////////////////////
+
+    /**
+     * Called when items are updated from the list resource.
+     * @param {GalleryItemConfigType[]} items - The items that were updated.
+     */
+    _onItemsUpdated(items) {
+        const loadingMode = this.getLoadingMode();
+        if (loadingMode === 'loadNext') {
+            const next = this.listResource?.getNextItem(items[0]);
+            if (next?.image) {
+                const image = new Image();
+                typeof next.image === 'string' && (image.src = next.image);
+            }
+        }
+    }
+
+    // #endregion Lifecycle
+
+    //////////////////////////////
+    // #region Gallery API
+    //////////////////////////////
+
     play(playRightAway = true) {
-        const playInterval = this.settings.getPlayInterval() * 1000;
+        const playInterval = this.settings?.getPlayInterval() * 1000;
         this.playTimeout && clearTimeout(this.playTimeout);
-        if (this.listResource.getTotalItems() < 2) {
+        if (this.listResource?.getTotalItems() < 2) {
             return;
         }
 
         const nextPage = () => {
             if (this.isPlaying) {
-                this.listResource.nextPage();
+                this.listResource?.nextPage();
                 this.playTimeout = setTimeout(nextPage, playInterval);
             }
         };
@@ -166,20 +231,15 @@ class Gallery extends List {
         this.isControlsHidden() ? this.showControls() : this.hideControls();
     }
 
-    isControlsHidden() {
-        const { controlsHiddenClass } = this.getConfig();
-        return this.classList.contains(controlsHiddenClass);
-    }
-
     hideControls() {
-        const { controlsHiddenClass } = this.getConfig();
-        this.classList.add(controlsHiddenClass);
+        this.classList.add(this.getControlsHiddenClass());
     }
 
     showControls() {
-        const { controlsHiddenClass } = this.getConfig();
-        this.classList.remove(controlsHiddenClass);
+        this.classList.remove(this.getControlsHiddenClass());
     }
+
+    // #endregion Gallery API
 }
 
 customElements.define('arpa-gallery', Gallery);

@@ -1,8 +1,9 @@
 {
-  "extends": "./node_modules/@arpadroid/arpadroid/tsconfig.json",
-  "compilerOptions": {
-    "outDir": "./dist/@types"
-  },
-  "include": ["src/index.js", "dist/types.d.ts"],
-  "exclude": ["node_modules", "dist", "**/*.test.js"]
+    "extends": "./node_modules/@arpadroid/arpadroid/src/tsconfig/esnext/tsconfig.json",
+    "compilerOptions": {
+        "rootDir": "./src",
+        "outDir": "./.tmp/.types"
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.stories.js", "**/*.test.js", "./dist/@types"]
 }

@@ -12,8 +12,8 @@ class GalleryToggleControls extends GalleryControl {
     }
 
     _onClick() {
-        this.gallery.toggleControls();
-        if (this.gallery.isControlsHidden()) {
+        this.gallery?.toggleControls();
+        if (this.gallery?.isControlsHidden()) {
             this.button?.setIcon(this.getProperty('open-icon'));
             this.button?.setLabel(this.getProperty('open-label'));
         } else {

@@ -1,7 +1,17 @@
+/**
+ * @typedef {import('./galleryItem.types').GalleryItemConfigType} GalleryItemConfigType
+ */
 import { ListItem } from '@arpadroid/lists';
 import { classNames, mergeObjects, attrString } from '@arpadroid/tools';
 const html = String.raw;
 class GalleryItem extends ListItem {
+    /** @type {GalleryItemConfigType} */ // @ts-ignore
+    _config = this._config;
+    isGrid = false;
+    /**
+     * Returns the default configuration for the list item.
+     * @returns {GalleryItemConfigType} The default configuration.
+     */
     getDefaultConfig() {
         return mergeObjects(super.getDefaultConfig(), {
             imageSize: 'adaptive'
@@ -21,12 +31,17 @@ class GalleryItem extends ListItem {
         });
         const wrapperComponent = this.link ? 'a' : this.getWrapperComponent();
         const innerContent = this.renderInnerContent(isGrid) || this.hasZone('content');
-        const hasInnerContent = innerContent && innerContent?.trim()?.length;
+        const hasInnerContent = typeof innerContent === 'string' && innerContent?.trim()?.length;
         const innerHTML = hasInnerContent ? html`<div class="galleryItem__contentWrapper">${innerContent}</div>` : '';
         return html`<${wrapperComponent} ${attrs}>${innerHTML}</${wrapperComponent}>`;
     }
 
-    renderInnerContent() {
+    /**
+     * Returns the inner content for the list item.
+     * @param {boolean} _isGrid
+     * @returns {string}
+     */
+    renderInnerContent(_isGrid = this.isGrid) {
         const image = this.renderImage();
         const titleContainer = this.renderTitleContainer();
         return html`${titleContainer}${image}${this.renderContent()}`;
@@ -35,7 +50,7 @@ class GalleryItem extends ListItem {
     getImageAttributes() {
         return {
             ...super.getImageAttributes(),
-            preventUpscale: true,
+            preventUpscale: true
         };
     }
 }

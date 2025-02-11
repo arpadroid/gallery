@@ -1,6 +1,13 @@
+/**
+ * @typedef {import('./galleryDarkMode.types').GalleryDarkModeConfigType} GalleryDarkModeConfigType
+ */
 import GalleryControl from '../../galleryControl/galleryControl.js';
 
 class GalleryDarkMode extends GalleryControl {
+    /**
+     * Returns the default configuration for the gallery control.
+     * @returns {GalleryDarkModeConfigType} The default configuration.
+     */
     getDefaultConfig() {
         return {
             className: 'galleryDarkMode',
@@ -12,15 +19,15 @@ class GalleryDarkMode extends GalleryControl {
     }
 
     _onClick() {
-        const styleNode = document.getElementById('dark-styles');
-        if (styleNode.disabled) {
+        const styleNode = /** @type {HTMLLinkElement | null} */ (document.getElementById('dark-styles'));
+        if (styleNode?.disabled) {
             styleNode.removeAttribute('disabled');
-            this.button.setIcon(this.getProperty('icon-light'));
-            this.button.setLabel(this.getProperty('label-light'));
+            this.button?.setIcon(this.getProperty('icon-light'));
+            this.button?.setLabel(this.getProperty('label-light'));
         } else {
-            styleNode.disabled = true;
-            this.button.setIcon(this.getProperty('icon'));
-            this.button.setLabel(this.getProperty('label'));
+            styleNode && (styleNode.disabled = true);
+            this.button?.setIcon(this.getProperty('icon'));
+            this.button?.setLabel(this.getProperty('label'));
         }
     }
 }

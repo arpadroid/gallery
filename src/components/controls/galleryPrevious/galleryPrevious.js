@@ -11,8 +11,8 @@ class GalleryPrevious extends GalleryControl {
     }
 
     _onClick() {
-        this.gallery.pause();
-        this.resource.previousPage();
+        this.gallery?.pause();
+        this.resource?.previousPage();
     }
 }
 

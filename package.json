@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "A custom elements library for building image galleries",
     "exports": "./dist/arpadroid-gallery.js",
-    "module": "./dist/arpadroid-gallery.js",
+    "types": "./dist/@types/types.compiled.d.ts",
     "type": "module",
     "scripts": {
         "build": "node ./node_modules/@arpadroid/arpadroid/scripts/build-project.mjs --project=gallery --minify",
@@ -46,6 +46,8 @@
         "@arpadroid/lists": "file:../lists",
         "@arpadroid/tools": "file:../tools",
         "@arpadroid/forms": "file:../forms",
-        "@arpadroid/resources": "file:../resources"
+        "@arpadroid/resources": "file:../resources",
+        "@arpadroid/services": "file:../services",
+        "@arpadroid/context": "file:../context"
     }
 }

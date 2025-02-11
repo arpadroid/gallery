@@ -11,7 +11,7 @@ class GalleryFullScreen extends GalleryControl {
     }
 
     _onClick() {
-        this.gallery.toggleFullScreen();
+        this.gallery?.toggleFullScreen();
     }
 }
 

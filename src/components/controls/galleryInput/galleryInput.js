@@ -1,3 +1,6 @@
+/** 
+ * @typedef {import('@arpadroid/forms').NumberField} NumberField
+ */
 import GalleryControl from '../../galleryControl/galleryControl';
 
 const html = String.raw;
@@ -5,8 +8,8 @@ class GalleryInput extends GalleryControl {
     _initialize() {
         this.bind('_onSubmit', '_onPageFilterChange', '_onItemsChange');
         super._initialize();
-        this.resource.pageFilter.on('value', this._onPageFilterChange);
-        this.resource.on('items', this._onItemsChange);
+        this.resource?.pageFilter?.on('value', this._onPageFilterChange);
+        this.resource?.on('items', this._onItemsChange);
     }
 
     getDefaultConfig() {
@@ -16,11 +19,11 @@ class GalleryInput extends GalleryControl {
     }
 
     getId() {
-        return this.gallery.id + '-input';
+        return this.gallery?.id + '-input';
     }
 
     getMax() {
-        return this.gallery.items.length;
+        return this.gallery?.getItemCount();
     }
 
     render() {
@@ -28,25 +31,35 @@ class GalleryInput extends GalleryControl {
             <number-field id="page" value="1" min="1" variant="compact" icon=" "></number-field>
         </form>`;
         this.innerHTML = content;
+        return true;
     }
 
     _initializeNodes() {
         this.form = this.querySelector('form');
-        this.form.onSubmit(this._onSubmit);
+        this.form?.onSubmit(this._onSubmit);
+        /** @type {NumberField | null} */
         this.inputField = this.querySelector('number-field');
     }
 
+    /**
+     * Handles the form submission.
+     * @param {{ page?: number}} values - The form values.
+     */
     _onSubmit(values) {
-        this.gallery.pause();
-        this.resource.goToPage(values.page);
+        this.gallery?.pause();
+        values.page && this.resource?.goToPage(values.page);
     }
 
+    /**
+     * Handles the page filter change.
+     * @param {number} page - The new page.
+     */
     _onPageFilterChange(page) {
-        this.inputField.setValue(page);
+        this.inputField?.setValue(page);
     }
 
     _onItemsChange() {
-        this.inputField.input.setAttribute('max', this.resource.getTotalItems());
+        this.inputField?.input?.setAttribute('max', this.resource?.getTotalItems());
     }
 }
 

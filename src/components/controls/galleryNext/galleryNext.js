@@ -11,8 +11,8 @@ class GalleryNext extends GalleryControl {
     }
 
     _onClick() {
-        this.gallery.pause();
-        this.resource.nextPage();
+        this.gallery?.pause();
+        this.resource?.nextPage();
     }
 }
 

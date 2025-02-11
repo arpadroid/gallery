@@ -1,16 +1,21 @@
+/**
+ * @typedef {import('../gallery/gallery.js').default} Gallery
+ */
 import { ListControls } from '@arpadroid/lists';
 
 const html = String.raw;
 class GalleryControls extends ListControls {
     initializeProperties() {
-        this.list = this.closest('.arpaList, arpa-gallery');
+        /** @type {Gallery | null} */
+        this.list = /** @type {Gallery | null} */ (this.closest('.arpaList, arpa-gallery'));
         this.listResource = this.list?.listResource;
-        super.initializeProperties();
+        return super.initializeProperties();
     }
 
     getDefaultConfig() {
         this.list = this.getList();
         return {
+            ...super.getDefaultConfig(),
             className: 'listControls',
             controls: this.list?.getControls()
         };

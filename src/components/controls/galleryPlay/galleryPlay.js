@@ -1,6 +1,13 @@
+/**
+ * @typedef {import('./galleryPlay.types.js').GalleryPlayConfigType} GalleryPlayConfigType
+ */
 import GalleryControl from '../../galleryControl/galleryControl.js';
 
 class GalleryPlay extends GalleryControl {
+    /**
+     * Returns the default configuration for the gallery control.
+     * @returns {GalleryPlayConfigType} The default configuration.
+     */
     getDefaultConfig() {
         return {
             className: 'galleryPlay',
@@ -25,15 +32,15 @@ class GalleryPlay extends GalleryControl {
     }
 
     _onPlay() {
-        this.button.setIcon('pause');
+        this.button?.setIcon('pause');
         const pauseLabel = this.getProperty('label-pause');
-        this.button.setLabel(pauseLabel);
+        this.button?.setLabel(pauseLabel);
     }
 
     _onPause() {
-        this.button.setIcon('play_arrow');
+        this.button?.setIcon('play_arrow');
         const playLabel = this.getProperty('label');
-        this.button.setLabel(playLabel);
+        this.button?.setLabel(playLabel);
     }
 }
 
