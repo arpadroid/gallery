@@ -18,6 +18,13 @@ arpa-gallery {
     .arpaList--itemsOut {
         bottom: 0;
     }
+
+    &:has(.galleryThumbnails[position='left']) gallery-item {
+        padding-left: var(--gallery-thumbnails-width);
+    }
+    &:has(.galleryThumbnails[position='right']) gallery-item {
+        padding-right: var(--gallery-thumbnails-width);
+    }
 }
 
 .gallery__body {
@@ -28,6 +35,10 @@ arpa-gallery {
 
 .gallery__controls {
     padding: 0.5rem;
+    z-index: 1;
+}
+
+.gallery__footer {
     z-index: 1;
 }
 
@@ -82,5 +93,15 @@ gallery-spacer {
         .listItem__titleWrapper {
             opacity: 0;
         }
+    }
+}
+
+.gallery--hide-controls.gallery--hide-controls {
+    &:has(.galleryThumbnails[position='left']) gallery-item {
+        padding-left: 0;
+    }
+
+    &:has(.galleryThumbnails[position='right']) gallery-item {
+        padding-right: 0;
     }
 }

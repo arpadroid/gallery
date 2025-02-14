@@ -60,7 +60,7 @@ class GalleryThumbnail extends ListItem {
     _onClick() {
         const itemId = this.getProperty('item-id');
         const item = this.galleryResource?.getItem(itemId);
-        const index = item ? this.galleryResource?.getItemIndex(item) || 0 + 1 : 0;
+        const index = item ? (this.galleryResource?.getItemIndex(item) || 0) + 1 : 0;
         this.galleryResource?.goToPage(index);
     }
 }

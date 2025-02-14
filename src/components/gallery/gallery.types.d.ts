@@ -1,4 +1,5 @@
 import { ListConfigType } from '@arpadroid/lists';
+import { ThumbnailsPositionType } from '../controls/galleryThumbnailControl/galleryThumbnailControl.types';
 
 export type GalleryConfigType = ListConfigType & {
     activeClass?: string;
@@ -8,5 +9,5 @@ export type GalleryConfigType = ListConfigType & {
     imageSize?: number | 'full_screen' | 'adaptive' | 'string';
     loadingMode?: 'loadNext' | 'eager';
     playInterval?: number;
-    thumbnailsPosition?: 'top' | 'bottom' | 'left' | 'right';
+    thumbnailsPosition?: ThumbnailsPositionType;
 };

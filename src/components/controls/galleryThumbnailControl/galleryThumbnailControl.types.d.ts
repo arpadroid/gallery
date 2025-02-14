@@ -2,6 +2,8 @@ import { GalleryControlConfigType } from "../../galleryControl/galleryControl.ty
 
 export type GalleryThumbnailControlConfigType = GalleryControlConfigType & {
     labelHide?: string;
-    labelPosition?: 'top' | 'bottom' | 'left' | 'right';
-    thumbnailsPosition?: 'top' | 'bottom' | 'left' | 'right';
+    labelPosition?: ThumbnailsPositionType;
+    thumbnailsPosition?: ThumbnailsPositionType;
 }
+
+export type ThumbnailsPositionType = 'top' | 'bottom' | 'left' | 'right';

@@ -50,7 +50,7 @@ class Gallery extends List {
                 'fullScreen',
                 'settings'
             ],
-            thumbnailsPosition: 'right',
+            thumbnailsPosition: 'bottom',
             // trackActivity: true,
             activityTimeout: 3000,
             defaultView: 'full',
@@ -155,6 +155,14 @@ class Gallery extends List {
         /** @type {GallerySettings | null} */
         this.settings = this.querySelector('gallery-settings');
         this.getProperty('autoplay') && this.play();
+    }
+
+    /**
+     * Returns the settings node.
+     * @returns {GallerySettings | null}
+     */
+    getSettingsNode() {
+        return this.settings || this.querySelector('gallery-settings');
     }
 
     // #endregion Rendering

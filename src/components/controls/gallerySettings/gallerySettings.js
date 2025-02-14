@@ -10,6 +10,7 @@
  * @typedef {import('../galleryThumbnailControl/galleryThumbnailControl').default} GalleryThumbnailControl
  * @typedef {import('@arpadroid/navigation').IconMenu} IconMenu
  * @typedef {import('./gallerySettings.types').GallerySettingsType} GallerySettingsType
+ * @typedef {import('../galleryThumbnailControl/galleryThumbnailControl').ThumbnailsPositionType} ThumbnailsPositionType
  */
 import { mergeObjects, attrString } from '@arpadroid/tools';
 import { ArpaElement } from '@arpadroid/ui';
@@ -43,6 +44,10 @@ class GallerySettings extends ArpaElement {
         };
     }
 
+    /**
+     * Returns the thumbnails position.
+     * @returns {ThumbnailsPositionType}
+     */
     getThumbnailsPosition() {
         return (
             localStorage.getItem('gallery:thumbnails-position') ||
@@ -53,7 +58,7 @@ class GallerySettings extends ArpaElement {
 
     /**
      * Updates the thumbnails position.
-     * @param {string} value
+     * @param {ThumbnailsPositionType} value
      */
     updateThumbnailsPosition(value) {
         localStorage.setItem('gallery:thumbnails-position', value);
@@ -76,7 +81,7 @@ class GallerySettings extends ArpaElement {
      * @param {number} value
      */
     updatePlayInterval(value) {
-        localStorage.setItem('gallery:playInterval', value.toString());
+        localStorage.setItem('gallery:playInterval', String(value));
         this.gallery?.isPlaying && this.gallery?.play(false);
     }
 
@@ -133,9 +138,9 @@ class GallerySettings extends ArpaElement {
             <select-combo
                 class="gallerySettings__thumbnailsPosition"
                 id="thumbailsPosition"
-                label="Thumbnails position"
                 value="${thumbnailsPosition}"
             >
+                <zone name="field-label">Thumbnails position</zone>
                 <select-option value="top">Top</select-option>
                 <select-option value="bottom">Bottom</select-option>
                 <select-option value="left">Left</select-option>

@@ -1,5 +1,6 @@
 :root {
     --gallery-thumbnails-height: 110px;
+    --gallery-thumbnails-width: 80px;
 }
 
 .galleryThumbnails {
@@ -45,15 +46,20 @@ button.galleryThumbnails__arrow.galleryThumbnails__arrow {
 .galleryThumbnails[position='right'] {
     position: absolute;
     max-height: none;
-    width: var(--gallery-thumbnails-height);
+    width: var(--gallery-thumbnails-width);
     height: calc(100% - 6px);
     left: 0;
     padding-top: 54px;
     padding-bottom: calc(var(--gallery-controls-height) / 2);
-
+    
     .galleryThumbnails__mask {
         flex-direction: column;
     }
+
+    arpa-image {
+        max-width: 100%;
+    }
+
     img {
         object-fit: contain;
         max-height: none;

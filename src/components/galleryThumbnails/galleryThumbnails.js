@@ -23,12 +23,12 @@ class GalleryThumbnails extends List {
             itemComponent: GalleryThumbnail,
             itemTag: 'gallery-thumbnail',
             hasArrows: false,
-            position: 'right',
             selectedClass: 'galleryThumbnail--selected'
         });
     }
 
     async _initialize() {
+        super._initialize();
         await customElements.whenDefined('arpa-gallery');
         this.bind('_initializeThumbnails', '_handleSelectedItem');
         /** @type {Gallery | null} */
@@ -96,7 +96,7 @@ class GalleryThumbnails extends List {
     _initializeNodes() {
         /** @type {HTMLElement | null} */
         this.thumbnailMask = this.querySelector('.galleryThumbnails__mask');
-        this.thumbnailMask?.append(...this._childNodes || []);
+        this.thumbnailMask?.append(...(this._childNodes || []));
         this.arrowBack = this.querySelector('.galleryThumbnails__arrowBack');
         /** @type {HTMLElement | null} */
         this.arrowForward = this.querySelector('.galleryThumbnails__arrowForward');
@@ -116,7 +116,7 @@ class GalleryThumbnails extends List {
             items,
             (/** @type {GalleryItemConfigType} */ item) =>
                 html`<gallery-thumbnail
-                    id="${item.id}"
+                    item-id="${item.itemId}"
                     render-mode="minimal"
                     title="${item.title}"
                     image="${item.image}"

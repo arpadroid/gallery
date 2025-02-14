@@ -1,5 +1,7 @@
 /**
  * @typedef {import('./galleryThumbnailControl.types').GalleryThumbnailControlConfigType} GalleryThumbnailControlConfigType
+ * @typedef {import('./galleryThumbnailControl.types').ThumbnailsPositionType} ThumbnailsPositionType
+ * @typedef {import('../../gallery/gallery').GallerySettings} GallerySettings
  */
 /* eslint-disable sonarjs/no-duplicate-string */
 import { renderNode } from '@arpadroid/tools';
@@ -35,7 +37,22 @@ class GalleryThumbnailControl extends GalleryControl {
         this.positionThumbnails();
     }
 
-    async positionThumbnails(position = this.gallery?.settings?.getThumbnailsPosition()) {
+    /**
+     * Returns the position of the thumbnails.
+     * @returns {Promise<ThumbnailsPositionType>}
+     */
+    async getThumbnailPosition() {
+        const settingsNode = this.gallery?.getSettingsNode();
+        return settingsNode?.getThumbnailsPosition() || 'bottom';
+    }
+
+    /**
+     * Positions the thumbnails.
+     * @param {ThumbnailsPositionType} [position]
+     */
+    async positionThumbnails(position) {
+        await customElements.whenDefined('gallery-settings');
+        !position && (position = await this.getThumbnailPosition());
         this.gallery?.controls?.promise && (await this.gallery.controls.promise);
         if (position === 'bottom') {
             this.gallery?.footerNode?.append(this.thumbnails);
@@ -50,7 +67,8 @@ class GalleryThumbnailControl extends GalleryControl {
     renderThumbnails() {
         this.gallery?.classList.add('gallery--thumbnails');
         const id = `${this.resource?.id}-thumbnails`;
-        const position = this.gallery?.getProperty('thumbnails-position') || this.getProperty('thumbnails-position');
+        const position =
+            this.gallery?.getProperty('thumbnails-position') || this.getProperty('thumbnails-position') || 'bottom';
         return html`<gallery-thumbnails position="${position}" id=${id}></gallery-thumbnails>`;
     }
 
