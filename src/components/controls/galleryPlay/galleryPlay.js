@@ -1,6 +1,7 @@
 /**
  * @typedef {import('./galleryPlay.types.js').GalleryPlayConfigType} GalleryPlayConfigType
  */
+import { defineCustomElement } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl.js';
 
 class GalleryPlay extends GalleryControl {
@@ -44,6 +45,6 @@ class GalleryPlay extends GalleryControl {
     }
 }
 
-customElements.define('gallery-play', GalleryPlay);
+defineCustomElement('gallery-play', GalleryPlay);
 
 export default GalleryPlay;

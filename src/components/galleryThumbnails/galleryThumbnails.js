@@ -7,7 +7,7 @@
  */
 import { List } from '@arpadroid/lists';
 import GalleryThumbnail from '../galleryThumbnail/galleryThumbnail';
-import { mergeObjects, mapHTML } from '@arpadroid/tools';
+import { mergeObjects, mapHTML, defineCustomElement } from '@arpadroid/tools';
 
 const html = String.raw;
 
@@ -229,6 +229,6 @@ class GalleryThumbnails extends List {
     ////////////////////////////////
 }
 
-customElements.define('gallery-thumbnails', GalleryThumbnails);
+defineCustomElement('gallery-thumbnails', GalleryThumbnails);
 
 export default GalleryThumbnails;

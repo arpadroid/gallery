@@ -1,6 +1,7 @@
 /**
  * @typedef {import('./galleryDarkMode.types').GalleryDarkModeConfigType} GalleryDarkModeConfigType
  */
+import { defineCustomElement } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl.js';
 
 class GalleryDarkMode extends GalleryControl {
@@ -32,6 +33,6 @@ class GalleryDarkMode extends GalleryControl {
     }
 }
 
-customElements.define('gallery-dark-mode', GalleryDarkMode);
+defineCustomElement('gallery-dark-mode', GalleryDarkMode);
 
 export default GalleryDarkMode;

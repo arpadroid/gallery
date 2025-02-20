@@ -2,7 +2,7 @@
  * @typedef {import('./galleryItem.types').GalleryItemConfigType} GalleryItemConfigType
  */
 import { ListItem } from '@arpadroid/lists';
-import { classNames, mergeObjects, attrString } from '@arpadroid/tools';
+import { classNames, mergeObjects, attrString, defineCustomElement } from '@arpadroid/tools';
 const html = String.raw;
 class GalleryItem extends ListItem {
     /** @type {GalleryItemConfigType} */ // @ts-ignore
@@ -55,6 +55,6 @@ class GalleryItem extends ListItem {
     }
 }
 
-customElements.define('gallery-item', GalleryItem);
+defineCustomElement('gallery-item', GalleryItem);
 
 export default GalleryItem;

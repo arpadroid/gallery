@@ -1,3 +1,4 @@
+import { defineCustomElement } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl.js';
 
 class GalleryToggleControls extends GalleryControl {
@@ -23,6 +24,6 @@ class GalleryToggleControls extends GalleryControl {
     }
 }
 
-customElements.define('gallery-toggle-controls', GalleryToggleControls);
+defineCustomElement('gallery-toggle-controls', GalleryToggleControls);
 
 export default GalleryToggleControls;

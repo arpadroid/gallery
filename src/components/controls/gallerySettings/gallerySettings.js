@@ -12,7 +12,7 @@
  * @typedef {import('./gallerySettings.types').GallerySettingsType} GallerySettingsType
  * @typedef {import('../galleryThumbnailControl/galleryThumbnailControl').ThumbnailsPositionType} ThumbnailsPositionType
  */
-import { mergeObjects, attrString } from '@arpadroid/tools';
+import { mergeObjects, attrString, defineCustomElement } from '@arpadroid/tools';
 import { ArpaElement } from '@arpadroid/ui';
 
 const html = String.raw;
@@ -140,7 +140,7 @@ class GallerySettings extends ArpaElement {
                 id="thumbailsPosition"
                 value="${thumbnailsPosition}"
             >
-                <zone name="field-label">Thumbnails position</zone>
+                <zone name="label">Thumbnails position</zone>
                 <select-option value="top">Top</select-option>
                 <select-option value="bottom">Bottom</select-option>
                 <select-option value="left">Left</select-option>
@@ -180,6 +180,6 @@ class GallerySettings extends ArpaElement {
     // #endregion
 }
 
-customElements.define('gallery-settings', GallerySettings);
+defineCustomElement('gallery-settings', GallerySettings);
 
 export default GallerySettings;

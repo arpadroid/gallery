@@ -1,6 +1,7 @@
-/** 
+/**
  * @typedef {import('@arpadroid/forms').NumberField} NumberField
  */
+import { defineCustomElement } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl';
 
 const html = String.raw;
@@ -63,6 +64,6 @@ class GalleryInput extends GalleryControl {
     }
 }
 
-customElements.define('gallery-input', GalleryInput);
+defineCustomElement('gallery-input', GalleryInput);
 
 export default GalleryInput;

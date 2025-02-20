@@ -4,7 +4,7 @@
  * @typedef {import('../../gallery/gallery').GallerySettings} GallerySettings
  */
 /* eslint-disable sonarjs/no-duplicate-string */
-import { renderNode } from '@arpadroid/tools';
+import { defineCustomElement, renderNode } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl';
 
 const html = String.raw;
@@ -85,6 +85,6 @@ class GalleryThumbnailControl extends GalleryControl {
     }
 }
 
-customElements.define('gallery-thumbnail-control', GalleryThumbnailControl);
+defineCustomElement('gallery-thumbnail-control', GalleryThumbnailControl);
 
 export default GalleryThumbnailControl;

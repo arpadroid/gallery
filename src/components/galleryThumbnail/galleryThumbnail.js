@@ -6,7 +6,7 @@
  */
 
 import { ListItem } from '@arpadroid/lists';
-import { mergeObjects } from '@arpadroid/tools';
+import { defineCustomElement, mergeObjects } from '@arpadroid/tools';
 
 const html = String.raw;
 class GalleryThumbnail extends ListItem {
@@ -65,6 +65,6 @@ class GalleryThumbnail extends ListItem {
     }
 }
 
-customElements.define('gallery-thumbnail', GalleryThumbnail);
+defineCustomElement('gallery-thumbnail', GalleryThumbnail);
 
 export default GalleryThumbnail;

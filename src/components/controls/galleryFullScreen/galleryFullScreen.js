@@ -1,4 +1,4 @@
-import { mergeObjects } from '@arpadroid/tools';
+import { defineCustomElement, mergeObjects } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl';
 
 class GalleryFullScreen extends GalleryControl {
@@ -15,6 +15,6 @@ class GalleryFullScreen extends GalleryControl {
     }
 }
 
-customElements.define('gallery-full-screen', GalleryFullScreen);
+defineCustomElement('gallery-full-screen', GalleryFullScreen);
 
 export default GalleryFullScreen;

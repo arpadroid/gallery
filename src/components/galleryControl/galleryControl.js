@@ -5,7 +5,7 @@
  * @typedef {import('./galleryControl.types').GalleryControlConfigType} GalleryControlConfigType
  */
 import { ArpaElement } from '@arpadroid/ui';
-import { dummyListener, dummyOff, dummySignal, observerMixin } from '@arpadroid/tools';
+import { defineCustomElement, dummyListener, dummyOff, dummySignal, observerMixin } from '@arpadroid/tools';
 const html = String.raw;
 class GalleryControl extends ArpaElement {
     /** @type {GalleryControlConfigType} */ // @ts-ignore
@@ -91,5 +91,6 @@ class GalleryControl extends ArpaElement {
     }
 }
 
-customElements.define('gallery-control', GalleryControl);
+defineCustomElement('gallery-control', GalleryControl);
+
 export default GalleryControl;

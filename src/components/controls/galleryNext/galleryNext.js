@@ -1,4 +1,4 @@
-import { mergeObjects } from '@arpadroid/tools';
+import { defineCustomElement, mergeObjects } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl';
 
 class GalleryNext extends GalleryControl {
@@ -16,6 +16,6 @@ class GalleryNext extends GalleryControl {
     }
 }
 
-customElements.define('gallery-next', GalleryNext);
+defineCustomElement('gallery-next', GalleryNext);
 
 export default GalleryNext;

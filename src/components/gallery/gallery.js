@@ -6,7 +6,8 @@
  */
 import { List } from '@arpadroid/lists';
 import GalleryItem from '../galleryItem/galleryItem';
-import { observerMixin, dummySignal, goFullScreen, exitFullScreen, dummyListener, dummyOff } from '@arpadroid/tools';
+import { observerMixin, dummySignal, goFullScreen } from '@arpadroid/tools';
+import { exitFullScreen, dummyListener, dummyOff, defineCustomElement } from '@arpadroid/tools';
 
 const html = String.raw;
 class Gallery extends List {
@@ -249,5 +250,6 @@ class Gallery extends List {
     // #endregion Gallery API
 }
 
-customElements.define('arpa-gallery', Gallery);
+defineCustomElement('arpa-gallery', Gallery);
+
 export default Gallery;

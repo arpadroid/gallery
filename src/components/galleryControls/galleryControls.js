@@ -2,6 +2,7 @@
  * @typedef {import('../gallery/gallery.js').default} Gallery
  */
 import { ListControls } from '@arpadroid/lists';
+import { defineCustomElement } from '@arpadroid/tools';
 
 const html = String.raw;
 class GalleryControls extends ListControls {
@@ -26,5 +27,6 @@ class GalleryControls extends ListControls {
     }
 }
 
-customElements.define('gallery-controls', GalleryControls);
+defineCustomElement('gallery-controls', GalleryControls);
+
 export default GalleryControls;
