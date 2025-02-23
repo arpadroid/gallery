@@ -6,10 +6,10 @@
     "types": "./dist/@types/types.compiled.d.ts",
     "type": "module",
     "scripts": {
-        "build": "node ./node_modules/@arpadroid/arpadroid/scripts/build-project.mjs --project=gallery --minify",
+        "build": "node ./node_modules/@arpadroid/module/scripts/build-project.mjs --project=gallery --minify",
         "prepublish": "npm run build",
         "storybook": "npm run build -- --storybook=6015 --watch",
-        "test": "node ./node_modules/@arpadroid/arpadroid/scripts/test-project.mjs --project=gallery --storybook --jest --port=6015"
+        "test": "node ./node_modules/@arpadroid/module/scripts/test-project.mjs --project=gallery --storybook --jest --port=6015"
     },
     "repository": {
         "type": "git",
@@ -27,7 +27,7 @@
     },
     "homepage": "https://github.com/arpadroid/gallery#readme",
     "devDependencies": {
-        "@arpadroid/arpadroid": "file:../arpadroid",
+        "@arpadroid/module": "file:../module",
         "@arpadroid/stylesheet-bundler": "file:../stylesheet-bundler",
         "@babel/core": "^7.23.9",
         "@babel/plugin-syntax-import-assertions": "^7.23.3",
