@@ -1,6 +1,10 @@
 const config = {
     deps: ['forms', 'lists', 'navigation', 'ui'],
-    buildTypes: true
+    buildTypes: true,
+    logo: `           ┓    • ┓      ┓┓      
+  ┏┓┏┓┏┓┏┓┏┫┏┓┏┓┓┏┫  ┏┓┏┓┃┃┏┓┏┓┓┏
+  ┗┻┛ ┣┛┗┻┗┻┛ ┗┛┗┗┻  ┗┫┗┻┗┗┗ ┛ ┗┫
+------┛---------------┛---------┛--`
 };
 
 export default config;
