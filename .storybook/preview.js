@@ -1,10 +1,15 @@
-// import { bootstrapDecorator } from '@arpadroid/module/src/storybook/decorators.js';
-import config from '@arpadroid/module/src/storybook/preview.ui.js';
+import { bootstrapDecorator } from '@arpadroid/module/storybook/decorators';
+import config from '@arpadroid/module/storybook/preview';
 import { setService } from '@arpadroid/context';
 import { Router, APIService } from '@arpadroid/services';
-setService('router', new Router());
-setService('apiService', APIService);
+
 export default {
     ...config,
-    decorators: [...config.decorators]
+    decorators: [
+        ...config.decorators,
+        bootstrapDecorator(() => {
+            setService('router', new Router());
+            setService('apiService', APIService);
+        })
+    ]
 };
