@@ -7,7 +7,7 @@ import { attrString, formatDate } from '@arpadroid/tools';
 import { within } from '@storybook/test';
 const html = String.raw;
 const GalleryStory = {
-    title: 'Gallery',
+    title: 'Gallery/Gallery',
     tags: [],
     args: {
         id: 'gallery'
