@@ -110,8 +110,7 @@ class GallerySettings extends ArpaElement {
         /** @type {FormComponent | null} */
         this.form = this.querySelector('.gallerySettings__form');
         await this.form?.promise;
-        // @ts-ignore
-        this.form?.onSubmit(this.onSubmit);
+        this.onSubmit && this.form?.onSubmit(this.onSubmit);
     }
 
     /**
@@ -167,10 +166,11 @@ class GallerySettings extends ArpaElement {
 
     /**
      * Handles the form submit event.
-     * @param {Record<string, any>} payload - The form payload.
+     * @type {import('@arpadroid/forms').FormSubmitType} payload - The form payload.
      */
     onSubmit(payload) {
         console.log('payload', payload);
+        return false;
     }
 
     // #endregion

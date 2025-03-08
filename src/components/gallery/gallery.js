@@ -15,7 +15,7 @@ class Gallery extends List {
     // #region Initialization
     //////////////////////////////
 
-    /** @type {GalleryConfigType} */ // @ts-ignore
+    /** @type {GalleryConfigType} */
     _config = this._config;
     /**
      * Creates a new gallery component.

@@ -5,7 +5,7 @@ import { ListItem } from '@arpadroid/lists';
 import { classNames, mergeObjects, attrString, defineCustomElement } from '@arpadroid/tools';
 const html = String.raw;
 class GalleryItem extends ListItem {
-    /** @type {GalleryItemConfigType} */ // @ts-ignore
+    /** @type {GalleryItemConfigType} */
     _config = this._config;
     isGrid = false;
     /**

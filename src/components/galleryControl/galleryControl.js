@@ -8,7 +8,7 @@ import { ArpaElement } from '@arpadroid/ui';
 import { defineCustomElement, dummyListener, dummyOff, dummySignal, observerMixin } from '@arpadroid/tools';
 const html = String.raw;
 class GalleryControl extends ArpaElement {
-    /** @type {GalleryControlConfigType} */ // @ts-ignore
+    /** @type {GalleryControlConfigType} */
     _config = this._config;
     /**
      * Creates a new gallery control.
