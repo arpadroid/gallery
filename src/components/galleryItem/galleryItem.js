@@ -14,7 +14,8 @@ class GalleryItem extends ListItem {
      */
     getDefaultConfig() {
         return mergeObjects(super.getDefaultConfig(), {
-            imageSize: 'adaptive'
+            imageSize: 'adaptive',
+            titleTag: 'h2'
         });
     }
 
@@ -33,7 +34,23 @@ class GalleryItem extends ListItem {
         const innerContent = this.renderInnerContent(isGrid) || this.hasZone('content');
         const hasInnerContent = typeof innerContent === 'string' && innerContent?.trim()?.length;
         const innerHTML = hasInnerContent ? html`<div class="galleryItem__contentWrapper">${innerContent}</div>` : '';
-        return html`<${wrapperComponent} ${attrs}>${innerHTML}</${wrapperComponent}>`;
+        return html`<${wrapperComponent} ${attrs}>${innerHTML}{caption}</${wrapperComponent}>`;
+    }
+
+    getTemplateVars() {
+        return {
+            ...super.getTemplateVars(),
+            caption: this.renderCaption()
+        };
+    }
+
+    getCaption() {
+        return this.getProperty('caption');
+    }
+
+    renderCaption() {
+        if (!this.hasContent('caption')) return '';
+        return html`<div class="galleryItem__caption" zone="caption">${this.getCaption()}</div>`;
     }
 
     /**

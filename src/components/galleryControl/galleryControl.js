@@ -5,7 +5,7 @@
  * @typedef {import('./galleryControl.types').GalleryControlConfigType} GalleryControlConfigType
  */
 import { ArpaElement } from '@arpadroid/ui';
-import { defineCustomElement, dummyListener, dummyOff, dummySignal, observerMixin } from '@arpadroid/tools';
+import { attrString, defineCustomElement, dummyListener, dummyOff, dummySignal, observerMixin } from '@arpadroid/tools';
 const html = String.raw;
 class GalleryControl extends ArpaElement {
     /** @type {GalleryControlConfigType} */
@@ -46,14 +46,17 @@ class GalleryControl extends ArpaElement {
     }
 
     render() {
-        const content = html`<button
-            is="icon-button"
-            variant="compact"
-            icon="${this.getProperty('icon')}"
-            class="galleryControl__button"
-            label="${this.getProperty('label')}"
-            tooltip-position="top"
-        ></button>`;
+        const attr = {
+            is: 'icon-button',
+            variant: 'compact',
+            icon: this.getProperty('icon'),
+            class: 'galleryControl__button',
+            'tooltip-position': 'top',
+            'aria-label': this.getProperty('label-text') || this.getProperty('label')
+        };
+        const content = html`<button ${attrString(attr)}>
+            <zone name="tooltip-content">${this.getProperty('label')}</zone>
+        </button>`;
         this.innerHTML = content;
         return true;
     }

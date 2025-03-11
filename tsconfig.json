@@ -2,8 +2,13 @@
     "extends": "./node_modules/@arpadroid/module/src/tsconfig/esnext/tsconfig.json",
     "compilerOptions": {
         "rootDir": "./src",
-        "outDir": "./.tmp/.types"
+        "outDir": "./.tmp/.types",
+        "paths": {
+            "@storybook/test": ["./node_modules/@arpadroid/module/node_modules/@storybook/test/dist/index.d.ts"],
+            "@storybook/web-components": ["./node_modules/@arpadroid/module/node_modules/@storybook/web-components"],
+            "@storybook/addon-actions": ["./node_modules/@arpadroid/module/node_modules/@storybook/addon-actions"]
+        }
     },
     "include": ["src/**/*"],
-    "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.stories.js", "**/*.test.js", "./dist/@types"]
+    "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.js", "./dist/@types"]
 }

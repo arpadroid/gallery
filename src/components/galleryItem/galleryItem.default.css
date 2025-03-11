@@ -9,7 +9,7 @@ gallery-item {
         flex: 1 1 auto;
         img {
             object-fit: contain;
-            max-height: calc(100vh - var(--gallery-controls-height) - 0.25rem);
+            max-height: calc(100vh - var(--gallery-controls-height) - 2rem);
         }
     }
 
@@ -35,11 +35,14 @@ gallery-item {
     flex: 1 1 auto;
 }
 
-.gallery--thumbnails:has(.galleryThumbnails[position='bottom']),
-.gallery--thumbnails:has(.galleryThumbnails[position='top']) {
-    gallery-item {
-        arpa-image.listItem__image img {
-            max-height: calc(100vh - var(--gallery-controls-height) - var(--gallery-thumbnails-height) - 0.25rem);
-        }
-    }
+.galleryItem__caption {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    left: 1rem;
+    padding: 1rem;
+    background-color: var(--overlay);
+    font-size: 1.1rem;
+    font-weight: normal;
+    font-weight: 500;
 }

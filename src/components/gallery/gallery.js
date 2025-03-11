@@ -44,6 +44,7 @@ class Gallery extends List {
                 'input',
                 'next',
                 'spacer',
+                'toggleCaptions',
                 'thumbnailControl',
                 'views',
                 'toggleControls',
@@ -85,8 +86,12 @@ class Gallery extends List {
         this.addEventListener('mousemove', this._handleActivity);
     }
 
+    getActiveClass() {
+        return this.getProperty('active-class');
+    }
+
     _handleActivity() {
-        const activeClass = this.getProperty('active-class');
+        const activeClass = this.getActiveClass();
         clearTimeout(this.activeTimeout);
         this.isActive = true;
         const activityTimeout = this.getProperty('activity-timeout') || 3000;
@@ -241,6 +246,9 @@ class Gallery extends List {
 
     hideControls() {
         this.classList.add(this.getControlsHiddenClass());
+        requestAnimationFrame(() => {
+            this.classList.remove(this.getActiveClass());
+        });
     }
 
     showControls() {

@@ -1,7 +1,14 @@
+/**
+ * @typedef {import('./galleryToggleControls.types').GalleryToggleControlsConfigType} GalleryToggleControlsConfigType
+ */
 import { defineCustomElement } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl.js';
 
 class GalleryToggleControls extends GalleryControl {
+    /**
+     * Returns the default configuration for the gallery toggle controls.
+     * @returns {GalleryToggleControlsConfigType}
+     */
     getDefaultConfig() {
         return {
             className: 'galleryToggleControls',
