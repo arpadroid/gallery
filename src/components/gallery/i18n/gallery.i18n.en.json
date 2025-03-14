@@ -1,0 +1,12 @@
+{
+    "controls": {
+        "play": {
+            "lblPlay": "Play",
+            "lblPause": "Pause"
+        },
+        "darkMode": {
+            "lblDarkMode": "Dark Mode",
+            "lblLightMode": "Light Mode"
+        }
+    }
+}

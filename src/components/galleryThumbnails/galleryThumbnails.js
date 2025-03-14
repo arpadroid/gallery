@@ -45,8 +45,9 @@ class GalleryThumbnails extends List {
      * @param {GalleryItem[]} items
      */
     async _handleSelectedItem(items) {
+        if (!items?.length) return;
         const selectedClass = this.getProperty('selected-class');
-        const selected = items?.[0];
+        const selected = items && items?.[0];
         if (!selected) return;
         const selectedItems = this.querySelectorAll(`.${selectedClass}`);
         selectedItems.forEach(item => item.classList.remove(selectedClass));
@@ -215,9 +216,10 @@ class GalleryThumbnails extends List {
     scrollToItem(index, position = 'center') {
         if (!this.thumbnailMask) return;
         const maskRect = this.thumbnailMask.getBoundingClientRect();
-        const item = /** @type {HTMLElement | null} */ (this.thumbnailMask.childNodes[index]);
-
-        if (!item) throw new Error(`Item with index ${index} not found.`);
+        const item = /** @type {HTMLElement | null} */ (this.thumbnailMask?.childNodes[index]);
+        if (!item) {
+            return;
+        }
         const itemRect = item.getBoundingClientRect();
         let left = maskRect.left - itemRect.left;
         if (position === 'center') left += maskRect.width / 2 - itemRect.width / 2;

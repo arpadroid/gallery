@@ -2,7 +2,7 @@
  * @typedef {import('./galleryItem.types').GalleryItemConfigType} GalleryItemConfigType
  */
 import { ListItem } from '@arpadroid/lists';
-import { classNames, mergeObjects, attrString, defineCustomElement } from '@arpadroid/tools';
+import { classNames, mergeObjects, defineCustomElement } from '@arpadroid/tools';
 const html = String.raw;
 class GalleryItem extends ListItem {
     /** @type {GalleryItemConfigType} */
@@ -13,28 +13,36 @@ class GalleryItem extends ListItem {
      * @returns {GalleryItemConfigType} The default configuration.
      */
     getDefaultConfig() {
-        return mergeObjects(super.getDefaultConfig(), {
+        /** @type {GalleryItemConfigType} */
+        const config = {
             imageSize: 'adaptive',
-            titleTag: 'h2'
-        });
+            titleTag: 'h2',
+            listSelector: 'arpa-gallery'
+        };
+        return mergeObjects(super.getDefaultConfig(), config);
     }
 
     /**
      * Returns the template for the list item.
      * @param {boolean} isGrid - Indicates whether the list item is in grid view.
-     * @param {string} link - The link for the list item.
      * @returns {string}
      */
-    getTemplate(isGrid = this.isGrid, link = this.link) {
-        const attrs = attrString({
-            href: link,
-            class: classNames('galleryItem__main', { listItem__link: link })
-        });
-        const wrapperComponent = this.link ? 'a' : this.getWrapperComponent();
-        const innerContent = this.renderInnerContent(isGrid) || this.hasZone('content');
-        const hasInnerContent = typeof innerContent === 'string' && innerContent?.trim()?.length;
-        const innerHTML = hasInnerContent ? html`<div class="galleryItem__contentWrapper">${innerContent}</div>` : '';
-        return html`<${wrapperComponent} ${attrs}>${innerHTML}{caption}</${wrapperComponent}>`;
+    getTemplate(isGrid = this.isGrid) {
+        const innerContent = this.renderInnerContent(isGrid);
+        const hasInnerContent = this.hasZone('content') || innerContent?.trim()?.length;
+        const content = hasInnerContent ? html`<div class="galleryItem__contentWrapper">${innerContent}</div>` : '';
+        return html`<{wrapperComponent} {wrapperAttributes}>${content}{caption}</{wrapperComponent}>`;
+    }
+
+    /**
+     * Returns the attributes for the list item wrapper.
+     * @returns {Record<string, any>}
+     */
+    getWrapperAttrs() {
+        return {
+            href: this.link,
+            class: classNames('galleryItem__main', { listItem__link: Boolean(this.link) })
+        };
     }
 
     getTemplateVars() {

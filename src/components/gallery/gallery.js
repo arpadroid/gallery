@@ -1,7 +1,7 @@
 /**
- * @typedef {import('./gallery.types').GalleryConfigType} GalleryConfigType
+ * @typedef {import('./gallery.types.js').GalleryConfigType} GalleryConfigType
  * @typedef {import('../galleryControls/galleryControls.js').default} GalleryControls
- * @typedef {import('../galleryItem/galleryItem.types').GalleryItemConfigType} GalleryItemConfigType
+ * @typedef {import('../galleryItem/galleryItem.types.js').GalleryItemConfigType} GalleryItemConfigType
  * @typedef {import('../controls/gallerySettings/gallerySettings.js').default} GallerySettings
  */
 import { List } from '@arpadroid/lists';
@@ -28,6 +28,10 @@ class Gallery extends List {
         this.off = dummyOff;
         observerMixin(this);
         this.listResource?.on('items', this._onItemsUpdated);
+    }
+
+    hasHeaderControls() {
+        return false;
     }
 
     /**
@@ -198,8 +202,12 @@ class Gallery extends List {
     // #region Gallery API
     //////////////////////////////
 
+    getPlayInterval() {
+        return (Number(this.settings?.getPlayInterval() || this.getProperty('play-interval')) || 5) * 1000;
+    }
+
     play(playRightAway = true) {
-        const playInterval = this.settings?.getPlayInterval() * 1000;
+        const playInterval = this.getPlayInterval();
         this.playTimeout && clearTimeout(this.playTimeout);
         if (this.listResource?.getTotalItems() < 2) {
             return;

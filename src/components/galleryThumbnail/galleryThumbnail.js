@@ -39,12 +39,11 @@ class GalleryThumbnail extends ListItem {
      * @returns {string}
      */
     getTemplate() {
-        const wrapperComponent = this.getWrapperComponent();
         return html`
-                <${wrapperComponent} ${this.getWrapperAttrs()}>
+                <{wrapperComponent} {wrapperAttributes}>
                     {image}
-                </${wrapperComponent}>
-                ${this.renderRhs()}
+                </{wrapperComponent}>
+                {rhs}
             `;
         // <arpa-tooltip class="tooltip--contained" text="${this.title}" position="right"></arpa-tooltip>
     }

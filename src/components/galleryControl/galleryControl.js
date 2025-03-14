@@ -1,7 +1,7 @@
 /**
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
  * @typedef {import('@arpadroid/ui').IconButton} IconButton
- * @typedef {import('../gallery/gallery').default} Gallery
+ * @typedef {import('../gallery/gallery.js').default} Gallery
  * @typedef {import('./galleryControl.types').GalleryControlConfigType} GalleryControlConfigType
  */
 import { ArpaElement } from '@arpadroid/ui';

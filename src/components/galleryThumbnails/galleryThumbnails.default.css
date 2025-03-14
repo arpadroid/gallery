@@ -1,10 +1,5 @@
-:root {
-    --gallery-thumbnails-height: 110px;
-    --gallery-thumbnails-width: 80px;
-}
-
 .galleryThumbnails {
-    align-items: center;
+    align-items: flex-start;
     display: flex;
     flex-wrap: nowrap;
     height: var(--gallery-thumbnails-height);
@@ -50,8 +45,8 @@ button.galleryThumbnails__arrow.galleryThumbnails__arrow {
     height: calc(100% - 6px);
     left: 0;
     padding-top: 54px;
-    padding-bottom: calc(var(--gallery-controls-height) / 2);
-    
+    padding-bottom: calc(var(--gallery-thumbnails-height) / 2);
+
     .galleryThumbnails__mask {
         flex-direction: column;
     }

@@ -7,9 +7,12 @@ gallery-item {
         align-items: center;
         justify-content: center;
         flex: 1 1 auto;
+
         img {
             object-fit: contain;
-            max-height: calc(100vh - var(--gallery-controls-height) - 2rem);
+            max-height: calc(var(--gallery-canvas-height) - 4px);   
+            padding-left: 0;
+            padding-right: 0;
         }
     }
 
@@ -43,6 +46,11 @@ gallery-item {
     padding: 1rem;
     background-color: var(--overlay);
     font-size: 1.1rem;
-    font-weight: normal;
     font-weight: 500;
+    transition: var(--theme-transition);
+    opacity: 1;
+}
+
+.gallery--captions-on .galleryItem__caption {
+    opacity: 0;
 }

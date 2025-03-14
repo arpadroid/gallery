@@ -12,14 +12,15 @@ class GalleryPlay extends GalleryControl {
      * @returns {GalleryPlayConfigType} The default configuration.
      */
     getDefaultConfig() {
+        this.i18nKey = 'gallery.controls.play';
         /** @type {GalleryPlayConfigType} */
         const config = {
             className: 'galleryPlay',
             icon: 'play_arrow',
             iconPause: 'pause',
-            label: 'Play',
-            labelText: 'Play',
-            labelPause: 'Pause',
+            label: this.i18n('lblPlay'),
+            labelText: this.i18nText('lblPlay'),
+            labelPause: this.i18n('lblPause'),
             labelPosition: 'bottom',
             playInterval: this.gallery?.getProperty('play-interval') || 5000
         };
@@ -45,7 +46,6 @@ class GalleryPlay extends GalleryControl {
 
     /**
      * Handles the pause event.
-     * @returns {void}
      */
     _onPause() {
         this.button?.setIcon('play_arrow');
