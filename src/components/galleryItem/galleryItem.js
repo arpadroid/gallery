@@ -41,7 +41,7 @@ class GalleryItem extends ListItem {
     getWrapperAttrs() {
         return {
             href: this.link,
-            class: classNames('galleryItem__main', { listItem__link: this.link})
+            class: classNames('galleryItem__main', { listItem__link: this.link })
         };
     }
 

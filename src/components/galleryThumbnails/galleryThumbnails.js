@@ -76,8 +76,12 @@ class GalleryThumbnails extends List {
         );
     }
 
+    thumbnailsInitialized = false;
+
     _initializeThumbnails() {
+        if (this.thumbnailsInitialized) return;
         this.thumbnailMask && (this.thumbnailMask.innerHTML = this.renderItems());
+        this.thumbnailsInitialized = true;
     }
 
     ///////////////////////////////
@@ -226,6 +230,7 @@ class GalleryThumbnails extends List {
         else if (position === 'right') left += maskRect.width - itemRect.width;
         this.thumbnailMask.style.left = `${left}px`;
     }
+
     /////////////////////////////////
     // #endregion SCROLLING
     ////////////////////////////////
