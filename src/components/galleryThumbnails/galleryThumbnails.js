@@ -36,7 +36,7 @@ class GalleryThumbnails extends List {
         /** @type {ListResource | null} */
         this.resource = this.gallery?.listResource;
         this.handleResize();
-        this.resource?.on('set_items', this._initializeThumbnails);
+        this.resource?.on('items', this._initializeThumbnails);
         this.resource?.on('items', this._handleSelectedItem);
     }
 
