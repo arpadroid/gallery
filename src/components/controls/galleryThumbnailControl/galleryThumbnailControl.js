@@ -14,11 +14,13 @@ class GalleryThumbnailControl extends GalleryControl {
      * @returns {GalleryThumbnailControlConfigType} The default configuration.
      */
     getDefaultConfig() {
+        this.i18nKey = 'gallery.controls.thumbnails';
         return {
             className: 'galleryThumbnailControl',
             icon: 'view_carousel',
-            label: 'Show thumbnails',
-            labelHide: 'Hide thumbnails',
+            label: this.i18n('lblShowThumbnails'),
+            labelText: this.i18n('lblToggleThumbnails'),
+            labelHide: this.i18n('lblHideThumbnails'),
             labelPosition: 'bottom',
             thumbnailsPosition: 'left'
         };

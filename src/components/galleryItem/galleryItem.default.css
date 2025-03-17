@@ -43,6 +43,7 @@ gallery-item {
     bottom: 1rem;
     right: 1rem;
     left: 1rem;
+    line-height: 1.8rem;
     padding: 1rem;
     background-color: var(--overlay);
     font-size: 1.1rem;

@@ -7,6 +7,20 @@
         "darkMode": {
             "lblDarkMode": "Dark Mode",
             "lblLightMode": "Light Mode"
+        },
+        "previous": {
+            "lblPrevious": "Previous"
+        },
+        "input": {
+            "lblCurrentSlide": "Current slide"
+        },
+        "next": {
+            "lblNext": "Next"
+        },
+        "thumbnails": {
+            "lblShowThumbnails": "Show Thumbnails",
+            "lblHideThumbnails": "Hide Thumbnails",
+            "lblToggleThumbnails": "Toggle Thumbnails"
         }
     }
 }

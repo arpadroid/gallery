@@ -8,6 +8,7 @@
 import artists from '../../../node_modules/@arpadroid/lists/src/mockData/artists.json';
 import { attrString, formatDate } from '@arpadroid/tools';
 import { within, expect } from '@storybook/test';
+const _initializeList = true;
 
 const html = String.raw;
 const GalleryStory = {
@@ -75,7 +76,7 @@ export const Default = {
      * @param {boolean} initializeList
      * @returns {Promise<{ canvas: any; galleryNode: any; galleryItem: any }>}
      */
-    playSetup: async (canvasElement, initializeList = true) => {
+    playSetup: async (canvasElement, initializeList = _initializeList) => {
         await customElements.whenDefined('arpa-gallery');
         await customElements.whenDefined('gallery-item');
         const canvas = within(canvasElement);

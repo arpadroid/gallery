@@ -14,8 +14,8 @@ export const Render = {
     ...GalleryStory,
     args: {
         ...GalleryStory.args,
-        controls: 'previous',
-        id: 'gallery-previous'
+        controls: 'next',
+        id: 'gallery-next'
     },
     play: async () => {},
     /**
@@ -28,14 +28,14 @@ export const Render = {
 
 const Default = {
     ...Render,
-    title: 'Gallery/Controls/Previous'
+    title: 'Gallery/Controls/Next'
 };
 
 export const Test = {
     ...Render,
     args: {
         ...Render.args,
-        id: 'gallery-previous-test'
+        id: 'gallery-next-test'
     },
     /**
      * Plays the gallery.
@@ -43,19 +43,19 @@ export const Test = {
      */
     play: async ({ canvasElement, step }) => {
         const { canvas } = await Render.playSetup(canvasElement, false);
-        const prevControl = canvas.getByRole('button', { name: 'Previous' });
-        await step('Renders the previous button', async () => {
+        const prevControl = canvas.getByRole('button', { name: 'Next' });
+        await step('Renders the next button', async () => {
             expect(prevControl).toBeInTheDocument();
         });
 
         await step('Focuses on the button and verifies tooltip content', async () => {
             prevControl.focus();
             await waitFor(() => {
-                expect(canvas.getByText('Previous')).toBeVisible();
+                expect(canvas.getByText('Next')).toBeVisible();
             });
         });
 
-        await step('Clicks the previous button and verifies state', async () => {
+        await step('Clicks the next button and verifies state', async () => {
             prevControl.click();
             await waitFor(() => {
                 expect(

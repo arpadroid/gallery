@@ -2,7 +2,7 @@
  * @typedef {import('./galleryItem.types').GalleryItemConfigType} GalleryItemConfigType
  */
 import { ListItem } from '@arpadroid/lists';
-import { classNames, mergeObjects, defineCustomElement } from '@arpadroid/tools';
+import { classNames, mergeObjects, defineCustomElement, attrString } from '@arpadroid/tools';
 const html = String.raw;
 class GalleryItem extends ListItem {
     /** @type {GalleryItemConfigType} */
@@ -17,7 +17,8 @@ class GalleryItem extends ListItem {
         const config = {
             imageSize: 'adaptive',
             titleTag: 'h2',
-            listSelector: 'arpa-gallery'
+            listSelector: 'arpa-gallery',
+            truncateCaption: 200
         };
         return mergeObjects(super.getDefaultConfig(), config);
     }
@@ -58,7 +59,12 @@ class GalleryItem extends ListItem {
 
     renderCaption() {
         if (!this.hasContent('caption')) return '';
-        return html`<div class="galleryItem__caption" zone="caption">${this.getCaption()}</div>`;
+        const attr = {
+            class: 'galleryItem__caption',
+            zone: 'caption',
+            maxLength: this.getProperty('truncate-caption') || 200,
+        };
+        return html`<truncate-text ${attrString(attr)} has-button>${this.getCaption()}</truncate-text>`;
     }
 
     /**

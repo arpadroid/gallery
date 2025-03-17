@@ -1,7 +1,7 @@
 /**
  * @typedef {import('@arpadroid/forms').NumberField} NumberField
  */
-import { defineCustomElement } from '@arpadroid/tools';
+import { attrString, defineCustomElement } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl';
 
 const html = String.raw;
@@ -14,8 +14,10 @@ class GalleryInput extends GalleryControl {
     }
 
     getDefaultConfig() {
+        this.i18nKey = 'gallery.controls.input';
         return {
-            className: 'galleryInput'
+            className: 'galleryInput',
+            lblCurrentSlide: this.i18nText('lblCurrentSlide')
         };
     }
 
@@ -28,8 +30,21 @@ class GalleryInput extends GalleryControl {
     }
 
     render() {
-        const content = html`<form variant="mini" id="${this.getId()}" is="arpa-form" class="galleryInput__form">
-            <number-field id="page" value="1" min="1" variant="compact" icon=" "></number-field>
+        const formId = `form_${this.getId()}`;
+        const attr = attrString({
+            value: 1,
+            max: this.resource?.getTotalPages(),
+            variant: 'compact',
+            icon: ' '
+        });
+        const content = html`<form id="${formId}" variant="mini" is="arpa-form" class="galleryInput__form">
+            <number-field id="page" variant="compact" value="1" min="1" enforce-value ${attr}>
+                <zone name="input-wrapper">
+                    <arpa-tooltip handler="#${formId}-page" position="top">
+                        ${this.i18n('lblCurrentSlide')}
+                    </arpa-tooltip>
+                </zone>
+            </number-field>
         </form>`;
         this.innerHTML = content;
         return true;
@@ -40,6 +55,10 @@ class GalleryInput extends GalleryControl {
         this.form?.onSubmit(this._onSubmit);
         /** @type {NumberField | null} */
         this.inputField = this.querySelector('number-field');
+        this.inputField?.promise.then(() => {
+            const lblCurrentSlide = this.getProperty('lbl-current-slide');
+            lblCurrentSlide && this.inputField?.input?.setAttribute('aria-label', lblCurrentSlide);
+        });
     }
 
     /**
@@ -48,6 +67,11 @@ class GalleryInput extends GalleryControl {
      */
     _onSubmit(values) {
         this.gallery?.pause();
+        const totalItems = this.resource?.getTotalItems();
+        if (Number(values?.page) > totalItems) {
+            values.page = totalItems;
+            this.inputField?.setValue(totalItems);
+        }
         values.page && this.resource?.goToPage(values.page);
     }
 
@@ -60,7 +84,8 @@ class GalleryInput extends GalleryControl {
     }
 
     _onItemsChange() {
-        this.inputField?.input?.setAttribute('max', this.resource?.getTotalItems());
+        const totalItems = this.resource?.getTotalItems();
+        this.inputField?.input?.setAttribute('max', totalItems);
     }
 }
 
