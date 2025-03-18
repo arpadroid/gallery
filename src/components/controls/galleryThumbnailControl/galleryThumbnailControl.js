@@ -18,17 +18,18 @@ class GalleryThumbnailControl extends GalleryControl {
         return {
             className: 'galleryThumbnailControl',
             icon: 'view_carousel',
-            label: this.i18n('lblShowThumbnails'),
-            labelText: this.i18n('lblToggleThumbnails'),
+            label: this.i18n('lblHideThumbnails'),
+            labelText: this.i18nText('lblToggleThumbnails'),
             labelHide: this.i18n('lblHideThumbnails'),
             labelPosition: 'bottom',
-            thumbnailsPosition: 'left'
+            thumbnailsPosition: 'left',
+            isActive: true
         };
     }
 
     _initialize() {
         super._initialize();
-        this.isActive = false;
+        this.isActive = this.getProperty('is-active');
         this._initializeThumbnails();
     }
 
@@ -43,9 +44,14 @@ class GalleryThumbnailControl extends GalleryControl {
      * Returns the position of the thumbnails.
      * @returns {Promise<ThumbnailsPositionType>}
      */
-    async getThumbnailPosition() {
+    async getThumbnailsPosition() {
         const settingsNode = this.gallery?.getSettingsNode();
-        return settingsNode?.getThumbnailsPosition() || 'bottom';
+        return (
+            (typeof settingsNode?.getThumbnailsPosition === 'function' && settingsNode?.getThumbnailsPosition()) ||
+            this.gallery?.getProperty('thumbnails-position') ||
+            this.getProperty('thumbnails-position') ||
+            'bottom'
+        );
     }
 
     /**
@@ -54,7 +60,7 @@ class GalleryThumbnailControl extends GalleryControl {
      */
     async positionThumbnails(position) {
         await customElements.whenDefined('gallery-settings');
-        !position && (position = await this.getThumbnailPosition());
+        !position && (position = await this.getThumbnailsPosition());
         this.gallery?.controls?.promise && (await this.gallery.controls.promise);
         if (position === 'bottom') {
             this.gallery?.footerNode?.append(this.thumbnails);
@@ -69,8 +75,7 @@ class GalleryThumbnailControl extends GalleryControl {
     renderThumbnails() {
         this.gallery?.classList.add('gallery--thumbnails');
         const id = `${this.resource?.id}-thumbnails`;
-        const position =
-            this.gallery?.getProperty('thumbnails-position') || this.getProperty('thumbnails-position') || 'bottom';
+        const position = this.getThumbnailsPosition();
         return html`<gallery-thumbnails position="${position}" id=${id}></gallery-thumbnails>`;
     }
 
@@ -78,10 +83,10 @@ class GalleryThumbnailControl extends GalleryControl {
         if (this.isActive) {
             this.gallery?.classList.remove('gallery--thumbnails');
             this.isActive = false;
-            this.button?.setLabel(this.getProperty('label'));
+            this.button?.setLabel(this.i18n('lblShowThumbnails'));
         } else {
             this.gallery?.classList.add('gallery--thumbnails');
-            this.button?.setLabel(this.getProperty('label-hide'));
+            this.button?.setLabel(this.i18n('lblHideThumbnails'));
             this.isActive = true;
         }
     }

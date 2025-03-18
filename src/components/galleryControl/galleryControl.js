@@ -4,8 +4,16 @@
  * @typedef {import('../gallery/gallery.js').default} Gallery
  * @typedef {import('./galleryControl.types').GalleryControlConfigType} GalleryControlConfigType
  */
-import { ArpaElement } from '@arpadroid/ui';
-import { attrString, defineCustomElement, dummyListener, dummyOff, dummySignal, observerMixin } from '@arpadroid/tools';
+import { ArpaElement, Tooltip } from '@arpadroid/ui';
+import {
+    attrString,
+    camelToDashed,
+    defineCustomElement,
+    dummyListener,
+    dummyOff,
+    dummySignal,
+    observerMixin
+} from '@arpadroid/tools';
 const html = String.raw;
 class GalleryControl extends ArpaElement {
     /** @type {GalleryControlConfigType} */
@@ -17,6 +25,7 @@ class GalleryControl extends ArpaElement {
     constructor(config) {
         super(config);
         this.bind('_onClick', '_onClicked');
+        this.classList.add('galleryControl');
         this.on = dummyListener;
         this.signal = dummySignal;
         this.off = dummyOff;
@@ -45,20 +54,37 @@ class GalleryControl extends ArpaElement {
         return super.getDefaultConfig(config);
     }
 
-    render() {
-        const attr = {
-            is: 'icon-button',
-            variant: 'compact',
-            icon: this.getProperty('icon'),
-            class: 'galleryControl__button',
-            'tooltip-position': 'top',
-            'aria-label': this.getProperty('label-text') || this.getProperty('label')
-        };
-        const content = html`<button ${attrString(attr)}>
+    _getTemplate() {
+        return html`<button
+            ${attrString({
+                is: 'icon-button',
+                variant: 'compact',
+                icon: this.getProperty('icon'),
+                class: 'galleryControl__button',
+                tooltipPosition: this.getTooltipPosition(),
+                ariaLabel: this.getProperty('label-text') || this.getProperty('label')
+            })}
+        >
             <zone name="tooltip-content">${this.getProperty('label')}</zone>
         </button>`;
-        this.innerHTML = content;
-        return true;
+    }
+
+    setTooltipPosition(position = this.getTooltipPosition()) {
+        this.tooltip?.setAttribute('position', position);
+    }
+
+    getTooltipPosition() {
+        const controls = (this.gallery?.getControls() || []).map(control => 'gallery-' + camelToDashed(control));
+        const tagName = this.tagName.toLowerCase();
+        const isFirstControl = controls?.indexOf(tagName) === 0;
+        const isLastControl = controls?.indexOf(tagName) === controls.length - 1;
+        let tooltipPosition = 'top';
+        if (isFirstControl) {
+            tooltipPosition = 'top-left';
+        } else {
+            isLastControl && (tooltipPosition = 'top-right');
+        }
+        return tooltipPosition;
     }
 
     _initializeNodes() {
@@ -66,6 +92,11 @@ class GalleryControl extends ArpaElement {
         this.button = /** @type {IconButton | null} */ (this.querySelector('button'));
         this.button?.removeEventListener('click', this._onClicked);
         this.button?.addEventListener('click', this._onClicked);
+        /** @type {Tooltip | null} */
+        this.tooltip = this.querySelector('arpa-tooltip');
+        setTimeout(() => {
+            this.setTooltipPosition();
+        }, 200);
     }
 
     /**

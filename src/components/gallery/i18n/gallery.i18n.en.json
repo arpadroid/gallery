@@ -17,10 +17,28 @@
         "next": {
             "lblNext": "Next"
         },
+        "toggleControls": {
+            "lblShowControls": "Show controls",
+            "lblHideControls": "Hide controls",
+            "lblToggleControls": "Toggle controls"
+        },
+        "fullScreen": {
+            "lblEnterFullScreen": "Enter full screen",
+            "lblExitFullScreen": "Exit full screen",
+            "lblToggleFullScreen": "Toggle full screen"
+        },
         "thumbnails": {
-            "lblShowThumbnails": "Show Thumbnails",
-            "lblHideThumbnails": "Hide Thumbnails",
-            "lblToggleThumbnails": "Toggle Thumbnails"
+            "lblShowThumbnails": "Show thumbnails",
+            "lblHideThumbnails": "Hide thumbnails",
+            "lblToggleThumbnails": "Toggle thumbnails"
+        },
+        "settings": {
+            "lblSettings": "Settings",
+            "lblThumbnailsPosition": "Thumbnails position",
+            "lblTop": "Top",
+            "lblBottom": "Bottom",
+            "lblLeft": "Left",
+            "lblRight": "Right"
         }
     }
 }

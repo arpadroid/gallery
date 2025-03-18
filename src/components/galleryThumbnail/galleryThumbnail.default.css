@@ -1,10 +1,12 @@
-gallery-thumbnail {
+gallery-thumbnail.galleryThumbnail {
     position: relative;
     height: 100%;
     width: auto;
     opacity: 0;
     display: none;
     transition: opacity 1s var(--easeInQuad);
+    flex: 0 0 auto;
+    
     &:has(.image--loaded) {
         @starting-style {
             opacity: 0;
@@ -40,7 +42,7 @@ gallery-thumbnail {
         max-height: var(--gallery-thumbnails-height);
         transform: scale(1.1);
         position: relative;
-        object-fit: cover;
+        object-fit: contain;
         width: auto;
         border-radius: 0;
         transition: filter, transform 2s var(--easeOutQuad);

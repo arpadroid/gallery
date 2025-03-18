@@ -123,17 +123,41 @@ export const Default = {
                 <gallery-item
                     id="gallery-item-1"
                     title="Guernica by Pablo Picasso (1937)"
-                    caption="Besides being Picasso most famous painting, Guernica is also one of the world’s most famous and moving antiwar statements. It was inspired by the brutal 1937 bombing of the Basque city of Guernica during the Spanish Civil War. That same year, with war still raging, the embattled Leftist government of Spain commissioned the piece as a mural for the 1937 World’s Fair in Paris. It later toured Europe and the United States, winding up on loan to the Museum of Modern Art in New York with the proviso that it be repatriated to Spain once Generalissimo Francisco Franco—leader of that coup that eventually toppled the Republican government—left power. That finally happened in 1981, six years after Franco’s death in 1975 and eight years after Picasso himself passed away in 1973. In 1974, while still at MoMA, Tony Shafrazi, an artist who later became a gallery dealer of note, defaced the piece with spray paint. MoMA declined to press charges, and was able to restore Guernica because Shafrazi had been prudent enough to use paint that could easily clean off."
                     image="/assets/artworks/guernica.jpg"
                     thumbnail="/assets/artworks/guernica.jpg"
-                ></gallery-item>
+                >
+                    <zone name="caption">
+                        Besides being Picasso most famous painting, Guernica is also one of the world’s most famous and
+                        moving antiwar statements. It was inspired by the brutal 1937 bombing of the Basque city of
+                        Guernica during the Spanish Civil War. That same year, with war still raging, the embattled
+                        Leftist government of Spain commissioned the piece as a mural for the 1937 World’s Fair in
+                        Paris. It later toured Europe and the United States, winding up on loan to the Museum of Modern
+                        Art in New York with the proviso that it be repatriated to Spain once Generalissimo Francisco
+                        Franco—leader of that coup that eventually toppled the Republican government—left power. That
+                        finally happened in 1981, six years after Franco’s death in 1975 and eight years after Picasso
+                        himself passed away in 1973. In 1974, while still at MoMA, Tony Shafrazi, an artist who later
+                        became a gallery dealer of note, defaced the piece with spray paint. MoMA declined to press
+                        charges, and was able to restore Guernica because Shafrazi had been prudent enough to use paint
+                        that could easily clean off.
+                    </zone>
+                </gallery-item>
                 <gallery-item
                     id="gallery-item-2"
                     title="Blue II by Joan Miró (1961)"
-                    caption="Blue II is a painting by Joan Miró, a Spanish painter and sculptor who was born in Barcelona. He was a key figure in the Surrealist movement. His work is known for its dream-like quality and use of symbols. Miró’s work is often characterized by bright colors and bold shapes. Blue II is a great example of Miró’s style. The painting features a large blue shape in the center of the canvas. The shape is surrounded by smaller shapes in red, yellow, and green. The painting is abstract, but it suggests a landscape or a figure. The colors and shapes in the painting create a sense of movement and energy. Blue II is a powerful and dynamic work of art that captures the spirit of Miró’s work."
                     image="/assets/artworks/blue-ii.jpg"
                     thumbnail="/assets/artworks/blue-ii.jpg"
-                ></gallery-item>
+                >
+                    <zone name="caption">
+                        Blue II is a painting by Joan Miró, a Spanish painter and sculptor who was born in Barcelona. He
+                        was a key figure in the Surrealist movement. His work is known for its dream-like quality and
+                        use of symbols. Miró’s work is often characterized by bright colors and bold shapes. Blue II is
+                        a great example of Miró’s style. The painting features a large blue shape in the center of the
+                        canvas. The shape is surrounded by smaller shapes in red, yellow, and green. The painting is
+                        abstract, but it suggests a landscape or a figure. The colors and shapes in the painting create
+                        a sense of movement and energy. Blue II is a powerful and dynamic work of art that captures the
+                        spirit of Miró’s work.
+                    </zone>
+                </gallery-item>
             </arpa-gallery>
         `;
     }

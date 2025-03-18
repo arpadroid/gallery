@@ -88,6 +88,8 @@ class Gallery extends List {
     manageActiveState() {
         this.removeEventListener('mousemove', this._handleActivity);
         this.addEventListener('mousemove', this._handleActivity);
+        this.removeEventListener('click', this._handleActivity);
+        this.addEventListener('click', this._handleActivity);
     }
 
     getActiveClass() {
@@ -246,6 +248,7 @@ class Gallery extends List {
     toggleFullScreen() {
         this.isFullScreen ? exitFullScreen() : goFullScreen(this);
         this.isFullScreen = Boolean(!this.isFullScreen);
+        return this.isFullScreen;
     }
 
     toggleControls() {

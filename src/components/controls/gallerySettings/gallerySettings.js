@@ -13,15 +13,17 @@
  * @typedef {import('../galleryThumbnailControl/galleryThumbnailControl').ThumbnailsPositionType} ThumbnailsPositionType
  */
 import { mergeObjects, attrString, defineCustomElement } from '@arpadroid/tools';
-import { ArpaElement } from '@arpadroid/ui';
+import GalleryControl from '../../galleryControl/galleryControl';
 
 const html = String.raw;
-class GallerySettings extends ArpaElement {
+class GallerySettings extends GalleryControl {
     // #region INITIALIZATION
     getDefaultConfig() {
+        this.i18nKey = 'gallery.controls.settings';
         this.bind('onSubmit', 'updatePlayInterval', 'updateThumbnailsPosition');
         return mergeObjects(super.getDefaultConfig(), {
-            icon: 'settings'
+            icon: 'settings',
+            lblSettings: this.i18nText('lblSettings')
         });
     }
 
@@ -85,18 +87,25 @@ class GallerySettings extends ArpaElement {
         this.gallery?.isPlaying && this.gallery?.play(false);
     }
 
-    async render() {
-        const props = {
-            ...this.getProperties('icon', 'label'),
-            tooltip: this.getProperty('btn-label')
-        };
-        this.innerHTML = html`<icon-menu menu-position="false" ${attrString(props)} nav-class="gallerySettings__nav">
-            <div class="gallerySettings__content">${this.renderForm()}</div>
+    _getTemplate() {
+        return html`<icon-menu
+            variant="compact"
+            menu-position="false"
+            nav-class="gallerySettings__nav"
+            ${attrString({
+                ...this.getProperties('icon', 'label'),
+                tooltip: this.getProperty('btn-label')
+            })}
+        >
+            <zone name="tooltip-content">${this.i18n('lblSettings')}</zone>
+            <div class="gallerySettings__content">{form}</div>
         </icon-menu>`;
-        /** @type {IconMenu | null} */
-        this.menuNode = this.querySelector('icon-menu');
-        this._initializeForm();
-        this._initializeIconMenu();
+    }
+
+    getTemplateVars() {
+        return {
+            form: this.renderForm()
+        };
     }
 
     async _initializeIconMenu() {
@@ -126,6 +135,7 @@ class GallerySettings extends ArpaElement {
             is="arpa-form"
             class="gallerySettings__form"
         >
+            <zone name="form-title">${this.i18n('lblSettings')}</zone>
             <number-field
                 class="gallerySettings__playInterval"
                 id="playInterval"
@@ -136,19 +146,29 @@ class GallerySettings extends ArpaElement {
             ></number-field>
             <select-combo
                 class="gallerySettings__thumbnailsPosition"
-                id="thumbailsPosition"
+                id="thumbnailsPosition"
                 value="${thumbnailsPosition}"
             >
-                <zone name="label">Thumbnails position</zone>
-                <select-option value="top">Top</select-option>
-                <select-option value="bottom">Bottom</select-option>
-                <select-option value="left">Left</select-option>
-                <select-option value="right">Right</select-option>
+                <zone name="label">${this.i18n('lblThumbnailsPosition')}</zone>
+                <select-option value="top">${this.i18n('lblTop')}</select-option>
+                <select-option value="bottom">${this.i18n('lblBottom')}</select-option>
+                <select-option value="left">${this.i18n('lblLeft')}</select-option>
+                <select-option value="right">${this.i18n('lblRight')}</select-option>
             </select-combo>
         </form>`;
     }
 
     _initializeNodes() {
+        /** @type {IconMenu | null} */
+        this.menuNode = this.querySelector('icon-menu');
+        this.menuNode?.promise.then(() => {
+            this.menuNode?.button?.setAttribute('variant', 'compact');
+            this.menuNode?.button?.setAttribute('aria-label', this.i18nText('lblSettings'));
+            this.tooltip = this.menuNode?.button?.tooltip;
+            this.setTooltipPosition('top-right');
+        });
+        this._initializeForm();
+        this._initializeIconMenu();
         /** @type {NumberField | null} */
         this.playIntervalField = this.querySelector('.gallerySettings__playInterval');
         this.playIntervalField?.on('change', this.updatePlayInterval);

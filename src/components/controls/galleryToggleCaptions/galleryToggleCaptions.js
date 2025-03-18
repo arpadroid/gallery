@@ -15,6 +15,7 @@ class GalleryToggleCaptions extends GalleryControl {
             icon: 'subtitles',
             iconOff: 'subtitles_off',
             label: this.i18n('lblShowCaptions'),
+            labelText: this.i18nText('lblShowCaptions'),
             labelOff: this.i18n('lblHideCaptions')
         };
     }

@@ -50,6 +50,8 @@ gallery-item {
     font-weight: 500;
     transition: var(--theme-transition);
     opacity: 1;
+    overflow: auto;
+    max-height: 60dvh;
 }
 
 .gallery--captions-on .galleryItem__caption {
