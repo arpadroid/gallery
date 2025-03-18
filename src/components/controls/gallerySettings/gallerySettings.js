@@ -17,7 +17,9 @@ import GalleryControl from '../../galleryControl/galleryControl';
 
 const html = String.raw;
 class GallerySettings extends GalleryControl {
-    // #region INITIALIZATION
+    /////////////////////////////
+    // #region Initialization
+    ////////////////////////////
     getDefaultConfig() {
         this.i18nKey = 'gallery.controls.settings';
         this.bind('onSubmit', 'updatePlayInterval', 'updateThumbnailsPosition');
@@ -46,6 +48,12 @@ class GallerySettings extends GalleryControl {
         };
     }
 
+    // #endregion
+
+    /////////////////////////////
+    // #region Get
+    ////////////////////////////
+
     /**
      * Returns the thumbnails position.
      * @returns {ThumbnailsPositionType}
@@ -58,6 +66,21 @@ class GallerySettings extends GalleryControl {
         );
     }
 
+    getPlayInterval() {
+        return this.getSavedPlayInterval() || this.gallery?.getProperty('play-interval') || 5;
+    }
+
+    getSavedPlayInterval() {
+        const value = localStorage.getItem('gallery:playInterval');
+        return value ? parseInt(value, 10) : null;
+    }
+
+    // #endregion
+
+    /////////////////////////////
+    // #region API
+    ////////////////////////////
+
     /**
      * Updates the thumbnails position.
      * @param {ThumbnailsPositionType} value
@@ -69,15 +92,6 @@ class GallerySettings extends GalleryControl {
         thumbControl?.positionThumbnails(value);
     }
 
-    getPlayInterval() {
-        return this.getSavedPlayInterval() || this.gallery?.getProperty('play-interval') || 5;
-    }
-
-    getSavedPlayInterval() {
-        const value = localStorage.getItem('gallery:playInterval');
-        return value ? parseInt(value, 10) : null;
-    }
-
     /**
      * Updates the play interval.
      * @param {number} value
@@ -86,6 +100,12 @@ class GallerySettings extends GalleryControl {
         localStorage.setItem('gallery:playInterval', String(value));
         this.gallery?.isPlaying && this.gallery?.play(false);
     }
+
+    // #endregion
+
+    /////////////////////////////
+    // #region Rendering
+    ////////////////////////////
 
     _getTemplate() {
         return html`<icon-menu
@@ -108,6 +128,71 @@ class GallerySettings extends GalleryControl {
         };
     }
 
+    /**
+     * Renders the form for the gallery settings.
+     * @returns {string} The form HTML.
+     */
+    renderForm() {
+        const { playInterval, thumbnailsPosition } = this.settings || {};
+        return html`<form
+            variant="compact"
+            id="${this.gallery?.getId() || 'gallery'}-filters-form"
+            has-submit="false"
+            is="arpa-form"
+            class="gallerySettings__form"
+        >
+            <group-field open id="general" icon="settings">
+                <zone name="label">${this.i18n('lblGeneral')}</zone>
+                <number-field
+                    class="gallerySettings__playInterval"
+                    id="playInterval"
+                    value="${playInterval}"
+                    min="1"
+                    max="60"
+                >
+                    <zone name="label">${this.i18n('lblPlayInterval')}</zone>
+                </number-field>
+                <select-combo
+                    class="gallerySettings__thumbnailsPosition"
+                    id="thumbnailsPosition"
+                    value="${thumbnailsPosition}"
+                >
+                    <zone name="label">${this.i18n('lblThumbnailsPosition')}</zone>
+                    <select-option value="top">${this.i18n('lblTop')}</select-option>
+                    <select-option value="bottom">${this.i18n('lblBottom')}</select-option>
+                    <select-option value="left">${this.i18n('lblLeft')}</select-option>
+                    <select-option value="right">${this.i18n('lblRight')}</select-option>
+                </select-combo>
+            </group-field>
+        </form>`;
+    }
+
+    // #endregion
+
+    /////////////////////////////
+    // #region Initialize Nodes
+    ////////////////////////////
+
+    async _initializeNodes() {
+        /** @type {IconMenu | null} */
+        this.menuNode = this.querySelector('icon-menu');
+        this.menuNode?.promise.then(() => {
+            this.menuNode?.button?.setAttribute('variant', 'compact');
+            this.menuNode?.button?.setAttribute('aria-label', this.i18nText('lblSettings'));
+            this.tooltip = this.menuNode?.button?.tooltip;
+            this.setTooltipPosition('top-right');
+        });
+        this._initializeForm();
+        this._initializeIconMenu();
+        await this.promise;
+        /** @type {NumberField | null} */
+        this.playIntervalField = this.querySelector('.gallerySettings__playInterval');
+        this.playIntervalField?.on('change', this.updatePlayInterval);
+        /** @type {SelectCombo | null} */
+        this.thumbPositionField = this.querySelector('.gallerySettings__thumbnailsPosition');
+        this.thumbPositionField?.on('change', this.updateThumbnailsPosition);
+    }
+
     async _initializeIconMenu() {
         await customElements.whenDefined('icon-menu');
         this.menuNode?.promise && (await this.menuNode.promise);
@@ -122,60 +207,11 @@ class GallerySettings extends GalleryControl {
         this.onSubmit && this.form?.onSubmit(this.onSubmit);
     }
 
-    /**
-     * Renders the form for the gallery settings.
-     * @returns {string} The form HTML.
-     */
-    renderForm() {
-        const { playInterval, thumbnailsPosition } = this.settings || {};
-        return html`<form
-            variant="compact"
-            id="${this.gallery?.getId() || 'gallery'}-filters-form"
-            has-submit="false"
-            is="arpa-form"
-            class="gallerySettings__form"
-        >
-            <zone name="form-title">${this.i18n('lblSettings')}</zone>
-            <number-field
-                class="gallerySettings__playInterval"
-                id="playInterval"
-                label="Play interval"
-                value="${playInterval}"
-                min="1"
-                max="60"
-            ></number-field>
-            <select-combo
-                class="gallerySettings__thumbnailsPosition"
-                id="thumbnailsPosition"
-                value="${thumbnailsPosition}"
-            >
-                <zone name="label">${this.i18n('lblThumbnailsPosition')}</zone>
-                <select-option value="top">${this.i18n('lblTop')}</select-option>
-                <select-option value="bottom">${this.i18n('lblBottom')}</select-option>
-                <select-option value="left">${this.i18n('lblLeft')}</select-option>
-                <select-option value="right">${this.i18n('lblRight')}</select-option>
-            </select-combo>
-        </form>`;
-    }
+    // #endregion
 
-    _initializeNodes() {
-        /** @type {IconMenu | null} */
-        this.menuNode = this.querySelector('icon-menu');
-        this.menuNode?.promise.then(() => {
-            this.menuNode?.button?.setAttribute('variant', 'compact');
-            this.menuNode?.button?.setAttribute('aria-label', this.i18nText('lblSettings'));
-            this.tooltip = this.menuNode?.button?.tooltip;
-            this.setTooltipPosition('top-right');
-        });
-        this._initializeForm();
-        this._initializeIconMenu();
-        /** @type {NumberField | null} */
-        this.playIntervalField = this.querySelector('.gallerySettings__playInterval');
-        this.playIntervalField?.on('change', this.updatePlayInterval);
-        /** @type {SelectCombo | null} */
-        this.thumbPositionField = this.querySelector('.gallerySettings__thumbnailsPosition');
-        this.thumbPositionField?.on('change', this.updateThumbnailsPosition);
-    }
+    /////////////////////////////
+    // #region Lifecycle
+    ////////////////////////////
 
     /**
      * Updates the list filters.
@@ -188,14 +224,9 @@ class GallerySettings extends GalleryControl {
      * Handles the form submit event.
      * @type {import('@arpadroid/forms').FormSubmitType} payload - The form payload.
      */
-    onSubmit(payload) {
-        console.log('payload', payload);
+    onSubmit(_payload) {
         return false;
     }
-
-    // #endregion
-
-    // #region ACCESSORS
 
     // #endregion
 }

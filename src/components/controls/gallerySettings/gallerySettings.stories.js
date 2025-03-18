@@ -7,7 +7,7 @@
  */
 // import { attrString } from '@arpadroid/tools';
 import { Default as GalleryStory } from '../../gallery/gallery.stories';
-import { expect, waitFor, fireEvent } from '@storybook/test';
+import { expect, waitFor, fireEvent, within } from '@storybook/test';
 
 // const html = String.raw;
 export const Render = {
@@ -44,9 +44,34 @@ export const Test = {
     play: async ({ canvasElement, step }) => {
         const { canvas, galleryNode } = await Render.playSetup(canvasElement, false);
         const button = await waitFor(() => canvas.getByRole('button', { name: 'Settings' }));
-        // const thumbnails = canvasElement.querySelector('gallery-thumbnails');
-        // await customElements.whenDefined('gallery-thumbnails');
-        
+
+        await step('Renders the settings button', async () => {
+            expect(button).toBeInTheDocument();
+        });
+
+        await step('Focuses the settings button and displays the tooltip', async () => {
+            button.focus();
+            await waitFor(() => {
+                expect(within(button).getByText('Settings')).toBeVisible();
+            });
+        });
+
+        await step('Renders the settings form', async () => {
+            await fireEvent.click(button);
+            expect(canvas.getByText('General')).toBeVisible();
+            expect(canvas.getByText('Play interval')).toBeVisible();
+            expect(canvas.getByText('Thumbnails position')).toBeVisible();
+        });
+
+        await step('Opens the thumbnail position dropdown', async () => {
+            const dropdown = canvas.getByLabelText('Thumbnails position');
+            await fireEvent.click(dropdown);
+            const combo = within(galleryNode?.settings?.form?.getField('thumbnailsPosition')?.optionsNode);
+            expect(combo.getByText('Top')).toBeVisible();
+            expect(combo.getByText('Bottom')).toBeVisible();
+            expect(combo.getByText('Left')).toBeVisible();
+            expect(combo.getByText('Right')).toBeVisible();
+        });
     }
 };
 

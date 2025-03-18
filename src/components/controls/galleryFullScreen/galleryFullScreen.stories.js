@@ -5,11 +5,9 @@
  * @typedef {import('@arpadroid/module').StepFunction} StepFunction
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
  */
-// import { attrString } from '@arpadroid/tools';
+
 import { Default as GalleryStory } from '../../gallery/gallery.stories';
 import { expect, waitFor } from '@storybook/test';
-
-// const html = String.raw;
 export const Render = {
     ...GalleryStory,
     args: {
@@ -54,7 +52,6 @@ export const Test = {
             await waitFor(() => {
                 expect(canvas.getByText('Enter full screen')).toBeVisible();
             });
-            document.documentElement.requestFullscreen();
         });
 
         await step('Simulates the full screen event', async () => {

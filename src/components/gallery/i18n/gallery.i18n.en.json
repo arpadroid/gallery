@@ -34,11 +34,13 @@
         },
         "settings": {
             "lblSettings": "Settings",
+            "lblGeneral": "General",
             "lblThumbnailsPosition": "Thumbnails position",
             "lblTop": "Top",
             "lblBottom": "Bottom",
             "lblLeft": "Left",
-            "lblRight": "Right"
+            "lblRight": "Right",
+            "lblPlayInterval": "Play interval"
         }
     }
 }
