@@ -49,7 +49,7 @@ export const Test = {
         const resource = galleryNode.listResource;
         const input = await waitFor(() => canvas.getByLabelText('Current slide'));
         /** @type {FormComponent} */
-        const form = input.form;
+        const form = input.closest('arpa-form');
         form.setDebounce(0);
         await step('Renders the input', async () => {
             await waitFor(() => {
@@ -60,7 +60,7 @@ export const Test = {
         await step('Sets a value higher than the total number of slides and handles edge case', async () => {
             input.value = '100000';
             input.focus();
-            fireEvent.submit(form);
+            form?.formNode && fireEvent.submit(form.formNode);
             await waitFor(() => {
                 expect(input.value).toBe('2');
                 expect(
@@ -72,7 +72,7 @@ export const Test = {
         await step('Sets a negative value and handles edge case', async () => {
             input.value = '-1';
             await fireEvent.input(input);
-            await fireEvent.submit(form);
+            form.formNode && (await fireEvent.submit(form.formNode));
             await waitFor(() => {
                 expect(input.value).toBe('1');
                 expect(

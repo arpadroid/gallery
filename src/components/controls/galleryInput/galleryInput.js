@@ -1,5 +1,6 @@
 /**
  * @typedef {import('@arpadroid/forms').NumberField} NumberField
+ * @typedef {import('@arpadroid/forms').FormComponent} FormComponent
  */
 import { attrString, defineCustomElement } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl';
@@ -37,7 +38,7 @@ class GalleryInput extends GalleryControl {
             variant: 'compact',
             icon: ' '
         });
-        const content = html`<form id="${formId}" variant="mini" is="arpa-form" class="galleryInput__form">
+        const content = html`<arpa-form id="${formId}" variant="mini" class="galleryInput__form">
             <number-field id="page" variant="compact" value="1" min="1" enforce-value ${attr}>
                 <zone name="input-wrapper">
                     <arpa-tooltip handler="#${formId}-page" position="top">
@@ -45,13 +46,14 @@ class GalleryInput extends GalleryControl {
                     </arpa-tooltip>
                 </zone>
             </number-field>
-        </form>`;
+        </arpa-form>`;
         this.innerHTML = content;
         return true;
     }
 
     _initializeNodes() {
-        this.form = this.querySelector('form');
+        /** @type {FormComponent | null} */
+        this.form = this.querySelector('arpa-form'); // @ts-ignore
         this.form?.onSubmit(this._onSubmit);
         /** @type {NumberField | null} */
         this.inputField = this.querySelector('number-field');
@@ -65,7 +67,7 @@ class GalleryInput extends GalleryControl {
      * Handles the form submission.
      * @param {{ page?: number}} values - The form values.
      */
-    _onSubmit(values) {
+    _onSubmit(values = {}) {
         this.gallery?.pause();
         const totalItems = this.resource?.getTotalItems();
         if (Number(values?.page) > totalItems) {

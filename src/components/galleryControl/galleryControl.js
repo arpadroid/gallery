@@ -1,10 +1,11 @@
 /**
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
  * @typedef {import('@arpadroid/ui').IconButton} IconButton
+ * @typedef {import('@arpadroid/ui').Tooltip} Tooltip
  * @typedef {import('../gallery/gallery.js').default} Gallery
  * @typedef {import('./galleryControl.types').GalleryControlConfigType} GalleryControlConfigType
  */
-import { ArpaElement, Tooltip } from '@arpadroid/ui';
+import { ArpaElement } from '@arpadroid/ui';
 import {
     attrString,
     camelToDashed,

@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-duplicate-string */
 /**
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
  * @typedef {import('@arpadroid/resources').ListFilter} ListFilter
@@ -134,11 +133,10 @@ class GallerySettings extends GalleryControl {
      */
     renderForm() {
         const { playInterval, thumbnailsPosition } = this.settings || {};
-        return html`<form
+        return html`<arpa-form
             variant="compact"
             id="${this.gallery?.getId() || 'gallery'}-filters-form"
             has-submit="false"
-            is="arpa-form"
             class="gallerySettings__form"
         >
             <group-field open id="general" icon="settings">
@@ -164,7 +162,7 @@ class GallerySettings extends GalleryControl {
                     <select-option value="right">${this.i18n('lblRight')}</select-option>
                 </select-combo>
             </group-field>
-        </form>`;
+        </arpa-form>`;
     }
 
     // #endregion
@@ -182,9 +180,10 @@ class GallerySettings extends GalleryControl {
             this.tooltip = this.menuNode?.button?.tooltip;
             this.setTooltipPosition('top-right');
         });
+
+        await this.promise;
         this._initializeForm();
         this._initializeIconMenu();
-        await this.promise;
         /** @type {NumberField | null} */
         this.playIntervalField = this.querySelector('.gallerySettings__playInterval');
         this.playIntervalField?.on('change', this.updatePlayInterval);
