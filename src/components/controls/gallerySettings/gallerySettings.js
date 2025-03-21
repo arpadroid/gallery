@@ -177,7 +177,7 @@ class GallerySettings extends GalleryControl {
         this.menuNode?.promise.then(() => {
             this.menuNode?.button?.setAttribute('variant', 'compact');
             this.menuNode?.button?.setAttribute('aria-label', this.i18nText('lblSettings'));
-            this.tooltip = this.menuNode?.button?.tooltip;
+            this.tooltip = this.menuNode?.buttonComponent?.tooltip;
             this.setTooltipPosition('top-right');
         });
 

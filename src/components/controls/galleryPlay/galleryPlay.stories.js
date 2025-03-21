@@ -49,20 +49,22 @@ export const Test = {
      */
     play: async ({ canvasElement, step }) => {
         const { canvas } = await GalleryStory.playSetup(canvasElement, false);
-        const playControl = canvas.getByRole('button', { name: 'Play' });
+        const playControl = await waitFor(() => canvas.getByRole('button', { name: 'Play' }));
         await step('Renders the play control', async () => {
             expect(playControl).toBeInTheDocument();
         });
         await step('Clicks the play control and verifies state', async () => {
             await new Promise(resolve => setTimeout(resolve, 200));
-            expect(canvas.getByRole('heading', { level: 2, name: 'Guernica by Pablo Picasso (1937)' })).toBeInTheDocument();
+            expect(
+                canvas.getByRole('heading', { level: 2, name: 'Guernica by Pablo Picasso (1937)' })
+            ).toBeInTheDocument();
             await fireEvent.click(playControl);
 
             await waitFor(() => expect(playControl).toHaveTextContent('Pause'));
             expect(playControl.querySelector('arpa-icon')).toHaveTextContent('pause');
             /** @todo Fix this flaky test if you can. */
             // await waitFor(() => {
-            //     expect(canvas.getByText('Blue II by Joan Miró (1961)')).toBeVisible(); 
+            //     expect(canvas.getByText('Blue II by Joan Miró (1961)')).toBeVisible();
             // });
         });
 

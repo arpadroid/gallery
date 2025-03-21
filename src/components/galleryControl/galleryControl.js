@@ -56,9 +56,8 @@ class GalleryControl extends ArpaElement {
     }
 
     _getTemplate() {
-        return html`<button
+        return html`<icon-button
             ${attrString({
-                is: 'icon-button',
                 variant: 'compact',
                 icon: this.getProperty('icon'),
                 class: 'galleryControl__button',
@@ -67,7 +66,7 @@ class GalleryControl extends ArpaElement {
             })}
         >
             <zone name="tooltip-content">${this.getProperty('label')}</zone>
-        </button>`;
+        </icon-button>`;
     }
 
     setTooltipPosition(position = this.getTooltipPosition()) {
@@ -90,9 +89,12 @@ class GalleryControl extends ArpaElement {
 
     _initializeNodes() {
         /** @type {IconButton | null} */
-        this.button = /** @type {IconButton | null} */ (this.querySelector('button'));
-        this.button?.removeEventListener('click', this._onClicked);
-        this.button?.addEventListener('click', this._onClicked);
+        this.buttonComponent = /** @type {IconButton | null} */ (this.querySelector('icon-button'));
+        this.buttonComponent?.promise.then(() => {
+            this.button = this.buttonComponent?.button;
+            this.button?.removeEventListener('click', this._onClicked);
+            this.button?.addEventListener('click', this._onClicked);
+        });
         /** @type {Tooltip | null} */
         this.tooltip = this.querySelector('arpa-tooltip');
         setTimeout(() => {

@@ -39,18 +39,18 @@ class GalleryPlay extends GalleryControl {
     }
 
     _onPlay() {
-        this.button?.setIcon('pause');
+        this.buttonComponent?.setIcon('pause');
         const pauseLabel = this.getProperty('label-pause');
-        this.button?.setLabel(pauseLabel);
+        this.buttonComponent?.setTooltip(pauseLabel);
     }
 
     /**
      * Handles the pause event.
      */
     _onPause() {
-        this.button?.setIcon('play_arrow');
+        this.buttonComponent?.setIcon('play_arrow');
         const playLabel = this.getProperty('label');
-        this.button?.setLabel(playLabel);
+        this.buttonComponent?.setTooltip(playLabel);
     }
 }
 

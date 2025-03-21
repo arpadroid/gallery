@@ -43,7 +43,7 @@ export const Test = {
      */
     play: async ({ canvasElement, step }) => {
         const { canvas } = await Render.playSetup(canvasElement, false);
-        const prevControl = canvas.getByRole('button', { name: 'Next' });
+        const prevControl = await waitFor(() => canvas.getByRole('button', { name: 'Next' }));
         await step('Renders the next button', async () => {
             expect(prevControl).toBeInTheDocument();
         });

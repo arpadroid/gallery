@@ -35,7 +35,7 @@ export const Test = {
      */
     play: async ({ canvasElement, step }) => {
         const { canvas } = await GalleryStory.playSetup(canvasElement);
-        const darkModeControl = canvas.getByRole('button', { name: 'Dark mode' });
+        const darkModeControl = await waitFor(() => canvas.getByRole('button', { name: 'Dark mode' }));
         await step('Renders the Dark Mode button', async () => {
             expect(darkModeControl).toBeInTheDocument();
         });

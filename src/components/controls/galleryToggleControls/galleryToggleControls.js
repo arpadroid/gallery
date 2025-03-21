@@ -24,11 +24,11 @@ class GalleryToggleControls extends GalleryControl {
     _onClick() {
         this.gallery?.toggleControls();
         if (this.gallery?.isControlsHidden()) {
-            this.button?.setIcon(this.getProperty('open-icon'));
-            this.button?.setLabel(this.i18n('open-label'));
+            this.buttonComponent?.setIcon(this.getProperty('open-icon'));
+            this.buttonComponent?.setTooltip(this.i18n('open-label'));
         } else {
-            this.button?.setIcon(this.getProperty('icon'));
-            this.button?.setLabel(this.i18n('lblHideControls'));
+            this.buttonComponent?.setIcon(this.getProperty('icon'));
+            this.buttonComponent?.setTooltip(this.i18n('lblHideControls'));
         }
     }
 }

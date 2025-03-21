@@ -10,7 +10,6 @@ import GalleryThumbnail from '../galleryThumbnail/galleryThumbnail';
 import { mergeObjects, mapHTML, defineCustomElement } from '@arpadroid/tools';
 
 const html = String.raw;
-
 class GalleryThumbnails extends List {
     /**
      * Returns the default configuration for the gallery thumbnails.
@@ -132,19 +131,17 @@ class GalleryThumbnails extends List {
     }
 
     renderArrowBack() {
-        return html`<button
-            is="icon-button"
+        return html`<icon-button
             icon="keyboard_arrow_left"
             class="galleryThumbnails__arrowBack galleryThumbnails__arrow"
-        ></button>`;
+        ></icon-button>`;
     }
 
     renderArrowForward() {
-        return html`<button
-            is="icon-button"
+        return html`<icon-button
             icon="keyboard_arrow_right"
             class="galleryThumbnails__arrowForward galleryThumbnails__arrow"
-        ></button>`;
+        ></icon-button>`;
     }
 
     /////////////////////////////

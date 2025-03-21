@@ -83,10 +83,10 @@ class GalleryThumbnailControl extends GalleryControl {
         if (this.isActive) {
             this.gallery?.classList.remove('gallery--thumbnails');
             this.isActive = false;
-            this.button?.setLabel(this.i18n('lblShowThumbnails'));
+            this.buttonComponent?.setTooltip(this.i18n('lblShowThumbnails'));
         } else {
             this.gallery?.classList.add('gallery--thumbnails');
-            this.button?.setLabel(this.i18n('lblHideThumbnails'));
+            this.buttonComponent?.setTooltip(this.i18n('lblHideThumbnails'));
             this.isActive = true;
         }
     }
