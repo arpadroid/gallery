@@ -180,7 +180,7 @@ class GallerySettings extends GalleryControl {
             this.tooltip = this.menuNode?.buttonComponent?.tooltip;
             this.setTooltipPosition('top-right');
         });
-        this._initializeForm();
+        await this._initializeForm();
         this._initializeIconMenu();
         /** @type {NumberField | null} */
         this.playIntervalField = this.querySelector('.gallerySettings__playInterval');
@@ -203,6 +203,7 @@ class GallerySettings extends GalleryControl {
         this.form = this.querySelector('.gallerySettings__form');
         await this.form?.promise;
         this.onSubmit && this.form?.onSubmit(this.onSubmit);
+        return true;
     }
 
     // #endregion
