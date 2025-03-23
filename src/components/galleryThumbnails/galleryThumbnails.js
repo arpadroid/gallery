@@ -97,7 +97,7 @@ class GalleryThumbnails extends List {
         this.innerHTML = content;
     }
 
-    _initializeNodes() {
+    async _initializeNodes() {
         /** @type {HTMLElement | null} */
         this.thumbnailMask = this.querySelector('.galleryThumbnails__mask');
         this.thumbnailMask?.append(...(this._childNodes || []));
@@ -106,6 +106,7 @@ class GalleryThumbnails extends List {
         this.arrowForward = this.querySelector('.galleryThumbnails__arrowForward');
         this.arrowBack?.addEventListener('click', this.scrollBack);
         this.arrowForward?.addEventListener('click', this.scrollForward);
+        return true;
     }
 
     /**

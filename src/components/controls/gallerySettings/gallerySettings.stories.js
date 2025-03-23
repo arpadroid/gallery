@@ -4,6 +4,7 @@
  * @typedef {import('../../galleryItem/galleryItem.js').default} GalleryItem
  * @typedef {import('@arpadroid/module').StepFunction} StepFunction
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
+ * @typedef {import('@arpadroid/forms').FormComponent} FormComponent
  */
 // import { attrString } from '@arpadroid/tools';
 import { Default as GalleryStory } from '../../gallery/gallery.stories';
@@ -44,6 +45,11 @@ export const Test = {
     play: async ({ canvasElement, step }) => {
         const { canvas, galleryNode } = await Render.playSetup(canvasElement, false);
         const button = await waitFor(() => canvas.getByRole('button', { name: 'Settings' }));
+        
+        const settingsForm = /** @type {FormComponent | null} */ (document.getElementById('gallery-settings-test-filters-form'));
+        await settingsForm?.promise;
+        const playIntervalField = settingsForm?.getField('playInterval');
+        await playIntervalField?.promise;
 
         await step('Renders the settings button', async () => {
             expect(button).toBeInTheDocument();

@@ -87,7 +87,7 @@ class GalleryControl extends ArpaElement {
         return tooltipPosition;
     }
 
-    _initializeNodes() {
+    async _initializeNodes() {
         /** @type {IconButton | null} */
         this.buttonComponent = /** @type {IconButton | null} */ (this.querySelector('icon-button'));
         this.buttonComponent?.promise.then(() => {
@@ -100,6 +100,7 @@ class GalleryControl extends ArpaElement {
         setTimeout(() => {
             this.setTooltipPosition();
         }, 200);
+        return true;
     }
 
     /**

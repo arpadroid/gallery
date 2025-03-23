@@ -167,6 +167,7 @@ class Gallery extends List {
         /** @type {GallerySettings | null} */
         this.settings = this.querySelector('gallery-settings');
         this.getProperty('autoplay') && this.play();
+        return true;
     }
 
     /**

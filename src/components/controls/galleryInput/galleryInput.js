@@ -51,7 +51,7 @@ class GalleryInput extends GalleryControl {
         return true;
     }
 
-    _initializeNodes() {
+    async _initializeNodes() {
         /** @type {FormComponent | null} */
         this.form = this.querySelector('arpa-form'); // @ts-ignore
         this.form?.onSubmit(this._onSubmit);
@@ -61,6 +61,7 @@ class GalleryInput extends GalleryControl {
             const lblCurrentSlide = this.getProperty('lbl-current-slide');
             lblCurrentSlide && this.inputField?.input?.setAttribute('aria-label', lblCurrentSlide);
         });
+        return true;
     }
 
     /**

@@ -180,8 +180,6 @@ class GallerySettings extends GalleryControl {
             this.tooltip = this.menuNode?.buttonComponent?.tooltip;
             this.setTooltipPosition('top-right');
         });
-
-        await this.promise;
         this._initializeForm();
         this._initializeIconMenu();
         /** @type {NumberField | null} */
@@ -190,6 +188,7 @@ class GallerySettings extends GalleryControl {
         /** @type {SelectCombo | null} */
         this.thumbPositionField = this.querySelector('.gallerySettings__thumbnailsPosition');
         this.thumbPositionField?.on('change', this.updateThumbnailsPosition);
+        return true;
     }
 
     async _initializeIconMenu() {
