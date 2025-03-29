@@ -10,4 +10,5 @@ export type GalleryConfigType = ListConfigType & {
     loadingMode?: 'loadNext' | 'eager';
     playInterval?: number;
     thumbnailsPosition?: ThumbnailsPositionType;
+    swipeThreshold?: number;
 };

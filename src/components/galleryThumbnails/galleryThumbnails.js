@@ -38,7 +38,6 @@ class GalleryThumbnails extends List {
         this.resource?.on('items', this._initializeThumbnails);
         this.resource?.on('items', this._handleSelectedItem);
     }
-
     /**
      * Handles the selected item.
      * @param {GalleryItem[]} items
@@ -50,10 +49,10 @@ class GalleryThumbnails extends List {
         if (!selected) return;
         const selectedItems = this.querySelectorAll(`.${selectedClass}`);
         selectedItems.forEach(item => item.classList.remove(selectedClass));
+        /** @type {GalleryThumbnail | null} */
         const thumbnail = this.querySelector(`gallery-thumbnail[item-id="${selected.id}"]`);
         thumbnail?.classList.add(selectedClass);
-        const index = thumbnail ? Array.from(this.thumbnailMask?.children || []).indexOf(thumbnail) : 0;
-        this.scrollToItem(index, 'left');
+        this.scrollToItem(thumbnail);
     }
 
     //////////////////////////////
@@ -210,23 +209,13 @@ class GalleryThumbnails extends List {
     }
 
     /**
-     * Scrolls to an item index.
-     * @param {number} index
-     * @param {'center' | 'left' | 'right'} position
-     * @throws {Error} If item with index not found.
+     * Scrolls to an thumbnail.
+     * @param {HTMLElement | null} [thumbnail]
      */
-    scrollToItem(index, position = 'center') {
-        if (!this.thumbnailMask) return;
-        const maskRect = this.thumbnailMask.getBoundingClientRect();
-        const item = /** @type {HTMLElement | null} */ (this.thumbnailMask?.childNodes[index]);
-        if (!item) {
-            return;
-        }
-        const itemRect = item.getBoundingClientRect();
-        let left = maskRect.left - itemRect.left;
-        if (position === 'center') left += maskRect.width / 2 - itemRect.width / 2;
-        else if (position === 'right') left += maskRect.width - itemRect.width;
-        this.thumbnailMask.style.left = `${left}px`;
+    scrollToItem(thumbnail) {
+        requestAnimationFrame(() => {
+            thumbnail?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
     }
 
     /////////////////////////////////

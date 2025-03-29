@@ -44,6 +44,7 @@ class Gallery extends List {
             className: 'gallery',
             controls: [
                 'play',
+                'drag',
                 'previous',
                 'input',
                 'next',
@@ -69,6 +70,7 @@ class Gallery extends List {
             itemComponent: GalleryItem,
             itemsPerPage: 1,
             itemTag: 'gallery-item',
+            tagName: 'arpa-gallery',
             listSelector: 'arpa-gallery',
             playInterval: 5,
             views: ['full'],
@@ -79,35 +81,8 @@ class Gallery extends List {
     }
 
     _initialize() {
-        this.bind('_onItemsUpdated', '_handleActivity');
+        this.bind('_onItemsUpdated');
         super._initialize();
-        this.isActive = false;
-        this.manageActiveState();
-    }
-
-    manageActiveState() {
-        this.removeEventListener('mousemove', this._handleActivity);
-        this.addEventListener('mousemove', this._handleActivity);
-        this.removeEventListener('click', this._handleActivity);
-        this.addEventListener('click', this._handleActivity);
-    }
-
-    getActiveClass() {
-        return this.getProperty('active-class');
-    }
-
-    _handleActivity() {
-        const activeClass = this.getActiveClass();
-        clearTimeout(this.activeTimeout);
-        this.isActive = true;
-        const activityTimeout = this.getProperty('activity-timeout') || 3000;
-        if (!this.classList.contains(activeClass)) {
-            this.classList.add(activeClass);
-        }
-        this.activeTimeout = setTimeout(() => {
-            this.isActive = false;
-            this.classList.remove(activeClass);
-        }, activityTimeout);
     }
 
     // #endregion Initialization
@@ -116,20 +91,16 @@ class Gallery extends List {
     // #region Get
     //////////////////////////////
 
-    isControlsHidden() {
-        return this.classList.contains(this.getControlsHiddenClass());
-    }
-
-    getControlsHiddenClass() {
-        return this.getProperty('controls-hidden-class') || 'gallery--hide-controls';
-    }
-
     getLoadingMode() {
         return this.getProperty('loading-mode');
     }
 
     getLazyLoadImages() {
         return false;
+    }
+
+    getCurrentItem() {
+        return this.querySelector('gallery-item');
     }
 
     // #endregion Get
@@ -143,7 +114,7 @@ class Gallery extends List {
             <div class="gallery__header">{title}</div>
             {info}
             <div class="gallery__body">
-                <div class="arpaList__bodyMain">{heading}{items}{preloader}</div>
+                <div class="gallery__view">{heading}{items}{preloader}</div>
                 {aside}
             </div>
             <div class="gallery__footer">{controls}</div>
@@ -163,6 +134,8 @@ class Gallery extends List {
         this.footerNode = this.querySelector('.gallery__footer');
         this.headerNode = this.querySelector('.gallery__header');
         this.bodyNode = this.querySelector('.gallery__body');
+        /** @type {HTMLElement | null} */
+        this.viewNode = this.querySelector('.gallery__view');
         this.controls?.promise && (await this.controls?.promise);
         /** @type {GallerySettings | null} */
         this.settings = this.querySelector('gallery-settings');
@@ -210,29 +183,25 @@ class Gallery extends List {
     }
 
     play(playRightAway = true) {
+        if (this.listResource?.getTotalItems() < 2) return;
+
         const playInterval = this.getPlayInterval();
         this.playTimeout && clearTimeout(this.playTimeout);
-        if (this.listResource?.getTotalItems() < 2) {
-            return;
-        }
 
-        const nextPage = () => {
+        const gotToNextItem = () => {
+            this.signal('play');
             if (this.isPlaying) {
                 this.listResource?.nextPage();
-                this.playTimeout = setTimeout(nextPage, playInterval);
+                this.playTimeout = setTimeout(gotToNextItem, playInterval);
             }
         };
 
         if (playInterval) {
             this.isPlaying = true;
             if (playRightAway) {
-                nextPage();
-                this.signal('play');
+                gotToNextItem();
             } else {
-                this.playTimeout = setTimeout(() => {
-                    nextPage();
-                    this.signal('play');
-                }, playInterval);
+                this.playTimeout = setTimeout(() => gotToNextItem(), playInterval);
             }
         }
     }
@@ -250,21 +219,6 @@ class Gallery extends List {
         this.isFullScreen ? exitFullScreen() : goFullScreen(this);
         this.isFullScreen = Boolean(!this.isFullScreen);
         return this.isFullScreen;
-    }
-
-    toggleControls() {
-        this.isControlsHidden() ? this.showControls() : this.hideControls();
-    }
-
-    hideControls() {
-        this.classList.add(this.getControlsHiddenClass());
-        requestAnimationFrame(() => {
-            this.classList.remove(this.getActiveClass());
-        });
-    }
-
-    showControls() {
-        this.classList.remove(this.getControlsHiddenClass());
     }
 
     // #endregion Gallery API

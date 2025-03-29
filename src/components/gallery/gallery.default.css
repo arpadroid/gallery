@@ -32,12 +32,23 @@ arpa-gallery {
     flex: 1 1 auto;
 }
 
+.gallery__view {
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    touch-action: none;
+}
+
 .gallery__controls {
     padding: 0.5rem 0;
     z-index: 1;
 }
 
 .gallery__footer {
+    overflow: visible;
     z-index: 1;
 }
 

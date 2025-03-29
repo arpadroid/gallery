@@ -57,12 +57,12 @@ class GalleryItem extends ListItem {
         return this.getProperty('caption');
     }
 
-    renderCaption() {
-        if (!this.hasContent('caption')) return '';
+    renderCaption(hasContent = this.hasContent('caption')) {
+        if (!hasContent) return '';
         const attr = {
             class: 'galleryItem__caption',
             zone: 'caption',
-            maxLength: this.getProperty('truncate-caption') || 200,
+            maxLength: this.getProperty('truncate-caption') || 200
         };
         return html`<truncate-text ${attrString(attr)} has-button>${this.getCaption() || ''}</truncate-text>`;
     }
@@ -81,7 +81,8 @@ class GalleryItem extends ListItem {
     getImageAttributes() {
         return {
             ...super.getImageAttributes(),
-            preventUpscale: true
+            preventUpscale: true,
+            isDraggable: 'false'
         };
     }
 }

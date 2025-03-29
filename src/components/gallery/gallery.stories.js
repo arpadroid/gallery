@@ -117,9 +117,9 @@ export const Default = {
      * @param {import('./gallery.types').GalleryConfigType} args
      * @returns {string}
      */
-    renderStatic: args => {
+    renderStatic: (args, tag = 'arpa-gallery') => {
         return html`
-            <arpa-gallery ${attrString(args)}>
+            <${tag} ${attrString(args)}>
                 <gallery-item
                     id="gallery-item-1"
                     title="Guernica by Pablo Picasso (1937)"
@@ -158,7 +158,7 @@ export const Default = {
                         spirit of Miró’s work.
                     </zone>
                 </gallery-item>
-            </arpa-gallery>
+            </${tag}>
         `;
     }
 };

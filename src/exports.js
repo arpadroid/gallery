@@ -14,3 +14,5 @@ export { default as GalleryThumbnails } from './components/galleryThumbnails/gal
 export { default as GalleryThumbnail } from './components/galleryThumbnail/galleryThumbnail.js';
 export { default as GalleryDarkMode } from './components/controls/galleryDarkMode/galleryDarkMode.js';
 export { default as GallerySettings } from './components/controls/gallerySettings/gallerySettings.js';
+export { default as GalleryDragControl } from './components/controls/galleryDragControl/galleryDragControl.js';
+export { default as ImagePreview } from './components/imagePreview/imagePreview.js';

@@ -74,6 +74,7 @@ class GalleryThumbnail extends ListItem {
     }
 
     _onClick() {
+        this.gallery?.pause();
         const index = this.resourceItem ? (this.galleryResource?.getItemIndex(this.resourceItem) || 0) + 1 : 0;
         this.galleryResource?.goToPage(index);
     }
