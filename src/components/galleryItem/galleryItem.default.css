@@ -44,14 +44,16 @@ gallery-item {
     right: 1rem;
     left: 1rem;
     line-height: 1.8rem;
-    padding: 1rem;
-    background-color: var(--overlay);
+    padding: 1rem 1.5rem;
+    background-color: var(--overlay-95);
     font-size: 1.1rem;
     font-weight: 500;
     transition: var(--theme-transition);
     opacity: 1;
     overflow: auto;
     max-height: 60dvh;
+    border-radius: 8px;
+    box-shadow: var(--comboBox-shadow);
 }
 
 .gallery--captions-on .galleryItem__caption {

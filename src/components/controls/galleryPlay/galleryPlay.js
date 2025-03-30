@@ -52,6 +52,12 @@ class GalleryPlay extends GalleryControl {
         const playLabel = this.getProperty('label');
         this.buttonComponent?.setTooltip(playLabel);
     }
+
+    async _onComplete() {
+        super._onComplete();
+        const itemCount = this.gallery?.getItemCount() || 0;
+        itemCount < 2 && this.remove();
+    }
 }
 
 defineCustomElement('gallery-play', GalleryPlay);

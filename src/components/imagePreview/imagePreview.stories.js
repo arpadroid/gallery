@@ -54,11 +54,11 @@ const Default = {
     title: 'Gallery/Image Preview'
 };
 
-export const Test = {
+export const TestSingle = {
     ...Render,
     args: {
         ...Render.args,
-        id: 'gallery-play-test'
+        id: 'image-preview-test'
     },
 
     /**
@@ -68,17 +68,16 @@ export const Test = {
     play: async ({ canvasElement, step }) => {
         const { canvas } = await GalleryStory.playSetup(canvasElement, false);
         const button = await waitFor(() => canvas.getByRole('button'));
+        const dialog = /** @type {import('./imagePreview').Dialog} */ (document.querySelector('arpa-dialog'));
+        dialog && (await dialog?.promise);
         await customElements.whenDefined('arpa-dialogs');
         await step('Renders the image preview button', async () => {
             expect(button).toBeInTheDocument();
         });
-
         await step('Clicks on the button and opens the preview modal', async () => {
             await fireEvent.click(button);
-            
             await waitFor(() => {
-                const dialog = /** @type {HTMLElement} */ (document.querySelector('arpa-dialog'));
-                expect(within(dialog).getByText('Guernica by Pablo Picasso (1937)')).toBeInTheDocument();
+                expect(within(dialog).getByText('Guernica by Pablo Picasso (1937)')).toBeVisible();
             });
         });
 
@@ -86,6 +85,69 @@ export const Test = {
         //     const captionsButton = within(dialog).getByRole('button', { name: 'Show caption' });
         //     console.log('captionsButton', captionsButton);
         // });
+    }
+};
+
+export const TestMultiple = {
+    ...Render,
+    args: {
+        ...Render.args,
+        id: 'image-preview-test-multiple',
+        image: undefined,
+        title: 'Preview gallery'
+    },
+    /**
+     * Renders the gallery.
+     * @param {Record<string, any>} args
+     * @returns {string}
+     */
+    render: args => {
+        return html`
+            <arpa-button icon="image">
+                View image
+                <image-preview ${attrString(args)}>
+                    <!--<zone name="title" owner="gallery-item">My preview gallery</zone> -->
+                    <zone name="gallery">
+                        <gallery-item image="/assets/artists/phidias.jpg">
+                            <zone name="title">Phidias</zone>
+                        </gallery-item>
+                        <gallery-item image="/assets/artworks/guernica.jpg">
+                            <zone name="title">Guernica by Pablo Picasso (1937)</zone>
+                            <zone name="caption">${captionText}</zone>
+                        </gallery-item>
+                    </zone>
+                </image-preview>
+            </arpa-button>
+        `;
+    },
+
+    /**
+     * Plays the gallery.
+     * @param {{ canvasElement: HTMLElement, step: StepFunction }} args
+     */
+    play: async ({ canvasElement, step }) => {
+        const { canvas } = await GalleryStory.playSetup(canvasElement, false);
+        const button = await waitFor(() => canvas.getByRole('button'));
+        const dialog = /** @type {import('./imagePreview').Dialog} */ (document.querySelector('arpa-dialog'));
+        dialog && (await dialog?.promise);
+        await step('Renders the image preview button', async () => {
+            expect(button).toBeInTheDocument();
+        });
+
+        await step('Clicks on the button and opens the preview modal', async () => {
+            await fireEvent.click(button);
+            await waitFor(() => {
+                expect(within(dialog).getByText('Phidias')).toBeVisible();
+            });
+        });
+
+        await step('Clicks next and shows next image', async () => {
+            const nextButton = within(dialog).getByRole('button', { name: 'Next' });
+            await fireEvent.click(nextButton);
+            await waitFor(() => {
+                expect(within(dialog).getByText('Guernica by Pablo Picasso (1937)')).toBeVisible();
+            });
+        });
     }
 };
 

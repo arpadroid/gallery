@@ -5,11 +5,16 @@
  * @typedef {import('@arpadroid/ui').Dialog} Dialog
  * @typedef {import('@arpadroid/tools').ZoneToolPlaceZoneType} ZoneToolPlaceZoneType
  */
-import { addZone, attrString, defineCustomElement } from '@arpadroid/tools';
+import { insertZone, attrString, defineCustomElement } from '@arpadroid/tools';
 import { ArpaElement } from '@arpadroid/ui';
 
 const html = String.raw;
 class ImagePreview extends ArpaElement {
+    /** @type {Dialog | undefined} */ // @ts-ignore
+    dialog = this.dialog;
+    _initializeContent() {
+        super._initializeContent();
+    }
     /**
      * Returns the default configuration for the image preview.
      * @returns {ImagePreviewConfigType}
@@ -21,8 +26,7 @@ class ImagePreview extends ArpaElement {
             id: 'imagePreview',
             className: 'imagePreview',
             handler: undefined,
-            controls: 'spacer,darkMode,fullScreen,toggleCaptions',
-            zoneSelector: ':scope > zone'
+            controls: 'previous,input,next,spacer,darkMode,fullScreen,toggleCaptions,drag'
         };
         return super.getDefaultConfig(config);
     }
@@ -44,41 +48,38 @@ class ImagePreview extends ArpaElement {
         return this.item || this.dialog?.querySelector('gallery-item');
     }
 
-    async _initializeNodes() {
-        /** @type {Dialog | null} */
-        this.dialog = this.querySelector('arpa-dialog');
-        return true;
-    }
-
     /**
      * Manual allocation of zones.
      * @param {ZoneToolPlaceZoneType} payload
      * @returns {boolean | ((payload: ZoneToolPlaceZoneType) => any)}
      */
-    _onLostZone(payload) {
-        const { zoneName } = payload;
-        if (zoneName && ['title', 'caption'].includes(zoneName)) {
-            return this._onZonesLoaded;
-        }
-        return false;
+    _onLostZone({ zoneName }) {
+        return zoneName && ['title', 'caption', 'gallery'].includes(zoneName) ? this._onZonesLoaded : false;
     }
 
     /**
      * Callback for when zones are loaded.
      * @param {ZoneToolPlaceZoneType} payload
-     * @returns {Promise<boolean>}
      */
-    async _onZonesLoaded({ zone }) {
+    _onZonesLoaded({ zone, zoneName }) {
         this.item = this.getItem();
-        console.log('this.item', this.item);
-        zone && addZone(zone, this.item, this.item?._zones);
-        return true;
+        /** @type {Gallery | null} */
+        this.gallery = this.dialog?.querySelector('arpa-gallery');
+        const itemCount = Number(this.gallery?.getItemCount());
+        if (zoneName === 'title' && itemCount < 2) {
+            zone && insertZone(zone, this.dialog);
+        } else if (zoneName === 'caption') {
+            zone && insertZone(zone, this.item);
+        } else if (zoneName === 'gallery') {
+            const children = /** @type {HTMLElement []} */ (Array.from(zone?.childNodes || []));
+            this.gallery?.addChildNodes(children);
+        }
     }
 
     _getTemplate() {
         return html`<arpa-dialog id="{id}-dialog" variant="compact" size="full-screen">
             <zone name="content">
-                <arpa-gallery id="{id}-gallery" controls="{controls}">{item}</arpa-gallery>
+                <arpa-gallery id="{id}-gallery" controls="{controls}" zone="gallery">{item}</arpa-gallery>
             </zone>
         </arpa-dialog>`;
     }

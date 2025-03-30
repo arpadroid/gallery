@@ -90,6 +90,12 @@ class GalleryInput extends GalleryControl {
         const totalItems = this.resource?.getTotalItems();
         this.inputField?.input?.setAttribute('max', totalItems);
     }
+
+    async _onComplete() {
+        super._onComplete();
+        const itemCount = this.gallery?.getItemCount() || 0;
+        itemCount < 2 && this.remove();
+    }
 }
 
 defineCustomElement('gallery-input', GalleryInput);
