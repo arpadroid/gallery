@@ -77,7 +77,7 @@ class ImagePreview extends ArpaElement {
     }
 
     _getTemplate() {
-        return html`<arpa-dialog id="{id}-dialog" variant="compact" size="full-screen">
+        return html`<arpa-dialog class="imagePreview__dialog" id="{id}-dialog" variant="compact" size="full-screen">
             <zone name="content">
                 <arpa-gallery id="{id}-gallery" controls="{controls}" zone="gallery">{item}</arpa-gallery>
             </zone>
@@ -86,7 +86,7 @@ class ImagePreview extends ArpaElement {
 
     renderGalleryItem() {
         const image = this.getProperty('image');
-        const title = this.getProperty('title');
+        const title = this.getProperty('title') || '';
         const caption = this.getProperty('caption');
         if (!image) return '';
         return html`<gallery-item ${attrString({ title, caption, image })} zone="item"></gallery-item>`;

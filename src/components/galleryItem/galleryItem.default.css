@@ -7,10 +7,11 @@ gallery-item {
         align-items: center;
         justify-content: center;
         flex: 1 1 auto;
-
+        max-height: 100%;
         img {
+            position: absolute;
+            inset: 0;
             object-fit: contain;
-            max-height: calc(var(--gallery-canvas-height) - 4px);   
             padding-left: 0;
             padding-right: 0;
         }

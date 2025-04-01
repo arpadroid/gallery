@@ -51,7 +51,7 @@ export const Render = {
 
 const Default = {
     ...Render,
-    title: 'Gallery/Image Preview'
+    title: 'Gallery/Components/Image Preview'
 };
 
 export const TestSingle = {
@@ -69,11 +69,13 @@ export const TestSingle = {
         const { canvas } = await GalleryStory.playSetup(canvasElement, false);
         const button = await waitFor(() => canvas.getByRole('button'));
         const dialog = /** @type {import('./imagePreview').Dialog} */ (document.querySelector('arpa-dialog'));
-        dialog && (await dialog?.promise);
-        await customElements.whenDefined('arpa-dialogs');
+        
+        await waitFor(() => expect(dialog.querySelector('arpa-gallery')).toBeInTheDocument());
+
         await step('Renders the image preview button', async () => {
             expect(button).toBeInTheDocument();
         });
+
         await step('Clicks on the button and opens the preview modal', async () => {
             await fireEvent.click(button);
             await waitFor(() => {
@@ -85,6 +87,14 @@ export const TestSingle = {
         //     const captionsButton = within(dialog).getByRole('button', { name: 'Show caption' });
         //     console.log('captionsButton', captionsButton);
         // });
+
+        await step('Closes the dialog', async () => {
+            const button = within(dialog).getByRole('button', { name: 'close' });
+            expect(button).toBeInTheDocument();
+            button.click();
+            await waitFor(() => expect(dialog).not.toHaveAttribute('open'));
+            expect(dialog).not.toBeVisible();
+        });
     }
 };
 
@@ -104,7 +114,7 @@ export const TestMultiple = {
     render: args => {
         return html`
             <arpa-button icon="image">
-                View image
+                Open Gallery
                 <image-preview ${attrString(args)}>
                     <!--<zone name="title" owner="gallery-item">My preview gallery</zone> -->
                     <zone name="gallery">
@@ -129,7 +139,8 @@ export const TestMultiple = {
         const { canvas } = await GalleryStory.playSetup(canvasElement, false);
         const button = await waitFor(() => canvas.getByRole('button'));
         const dialog = /** @type {import('./imagePreview').Dialog} */ (document.querySelector('arpa-dialog'));
-        dialog && (await dialog?.promise);
+        await waitFor(() => expect(dialog.querySelector('arpa-gallery')).toBeInTheDocument());
+
         await step('Renders the image preview button', async () => {
             expect(button).toBeInTheDocument();
         });
@@ -147,6 +158,14 @@ export const TestMultiple = {
             await waitFor(() => {
                 expect(within(dialog).getByText('Guernica by Pablo Picasso (1937)')).toBeVisible();
             });
+        });
+
+        await step('Closes the dialog', async () => {
+            const button = within(dialog).getByRole('button', { name: 'close' });
+            expect(button).toBeInTheDocument();
+            button.click();
+            await waitFor(() => expect(dialog).not.toHaveAttribute('open'));
+            expect(dialog).not.toBeVisible();
         });
     }
 };

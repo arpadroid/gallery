@@ -1,14 +1,11 @@
 :root {
+    --gallery-height: 100dvh;
     --gallery-thumbnails-height: 6.875rem;
     --gallery-thumbnails-width: 5rem;
-    --gallery-controls-height: 3.5rem;
+    --gallery-controls-height: 3.3rem;
     --gallery-vertical-clearance: calc(var(--gallery-thumbnails-height) + var(--gallery-controls-height));
     --gallery-header-height: 3.3rem;
     --gallery-padding: 1rem;
-    --gallery-canvas-height: calc(
-        100vh - var(--gallery-header-height) - var(--gallery-controls-height) - (var(--gallery-padding) * 2)
-    );
-    --gallery-canvas-height-with-thumbnails: calc(var(--gallery-canvas-height) - var(--gallery-thumbnails-height));
 }
 
 arpa-gallery {
@@ -88,10 +85,6 @@ gallery-spacer {
             }
         }
     }
-    &:has(.galleryThumbnails[position='bottom']),
-    &:has(.galleryThumbnails[position='top']) {
-        --gallery-canvas-height: var(--gallery-canvas-height-with-thumbnails);
-    }
 }
 
 /**
@@ -129,7 +122,7 @@ gallery-spacer {
     }
 
     gallery-item arpa-image.listItem__image img {
-        max-height: calc(100vh - 2rem);
+        max-height: calc(var(--gallery-height) - 2rem);
     }
 
     .galleryItem__caption {
@@ -158,11 +151,6 @@ gallery-spacer {
     .galleryThumbnails[position='top'] {
         top: var(--gallery-header-height);
         bottom: auto;
-    }
-
-    &.gallery--thumbnails:has(.galleryThumbnails[position='bottom']),
-    &.gallery--thumbnails:has(.galleryThumbnails[position='top']) {
-        --gallery-canvas-height: calc(100vh - 2rem);
     }
 
     &:has(.galleryThumbnails[position='left']) gallery-item arpa-image {

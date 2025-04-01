@@ -28,7 +28,7 @@ class GalleryItem extends ListItem {
      * @param {boolean} isGrid - Indicates whether the list item is in grid view.
      * @returns {string}
      */
-    getTemplate(isGrid = this.isGrid) {
+    _getTemplate(isGrid = this.isGrid) {
         const innerContent = this.renderInnerContent(isGrid);
         const hasInnerContent = this.hasZone('content') || innerContent?.trim()?.length;
         const content = hasInnerContent ? html`<div class="galleryItem__contentWrapper">${innerContent}</div>` : '';

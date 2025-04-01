@@ -50,7 +50,7 @@ class GalleryThumbnail extends ListItem {
      * Returns the template for the list item.
      * @returns {string}
      */
-    getTemplate() {
+    _getTemplate() {
         return html`
                 <{wrapperComponent} {wrapperAttributes}>
                     {image}
