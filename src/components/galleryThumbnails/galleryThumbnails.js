@@ -4,10 +4,12 @@
  * @typedef {import('../galleryItem/galleryItem.js').default} GalleryItem
  * @typedef {import('../galleryItem/galleryItem.types').GalleryItemConfigType} GalleryItemConfigType
  * @typedef {import('./galleryThumbnails.types').GalleryThumbnailsConfigType} GalleryThumbnailsConfigType
+ * @typedef {import('../controls/gallerySettings/gallerySettings').GalleryThumbnailControl} GalleryThumbnailControl
  */
 import { List } from '@arpadroid/lists';
 import GalleryThumbnail from '../galleryThumbnail/galleryThumbnail';
 import { mergeObjects, mapHTML, defineCustomElement } from '@arpadroid/tools';
+import { Tooltip } from '@arpadroid/ui';
 
 const html = String.raw;
 class GalleryThumbnails extends List {
@@ -96,7 +98,14 @@ class GalleryThumbnails extends List {
         this.innerHTML = content;
     }
 
+    getTemplateVars() {
+        return {
+            ...super.getTemplateVars()
+        };
+    }
+
     async _initializeNodes() {
+        await super._initializeNodes();
         /** @type {HTMLElement | null} */
         this.thumbnailMask = this.querySelector('.galleryThumbnails__mask');
         this.thumbnailMask?.append(...(this._childNodes || []));
@@ -105,7 +114,44 @@ class GalleryThumbnails extends List {
         this.arrowForward = this.querySelector('.galleryThumbnails__arrowForward');
         this.arrowBack?.addEventListener('click', this.scrollBack);
         this.arrowForward?.addEventListener('click', this.scrollForward);
+        this._initializeTooltip();
         return true;
+    }
+
+    async _initializeTooltip() {
+        const cursorTooltipPosition = this.getCursorTooltipPosition();
+        const tooltip = new Tooltip({
+            text: 'Thumbnails tooltip',
+            className: 'galleryThumbnails__tooltip',
+            handler: /** @type {HTMLElement} */ (this.thumbnailMask),
+            position: 'cursor',
+            cursorPositionAxis: this.getCursorAxis(),
+            cursorTooltipPosition
+        });
+        await this.gallery?.promise;
+        const thumbnailControl = /** @type {GalleryThumbnailControl | null | undefined} */ (
+            this.gallery?.getControl('thumbnailControl')
+        );
+        thumbnailControl?.on('positionChange', () => {
+            tooltip.setCursorPosition(this.getCursorAxis(), this.getCursorTooltipPosition());
+        });
+        this.gallery?.appendChild(tooltip);
+    }
+
+    getCursorTooltipPosition() {
+        const position = this.getProperty('position');
+        if (position === 'top') return 'bottom';
+        if (position === 'bottom') return 'top';
+        if (position === 'left') return 'right';
+        if (position === 'right') return 'left';
+        return 'top';
+    }
+
+    getCursorAxis() {
+        const position = this.getProperty('position');
+        if (['top', 'bottom'].includes(position)) return 'x';
+        if (['left', 'right'].includes(position)) return 'y';
+        return 'x';
     }
 
     /**

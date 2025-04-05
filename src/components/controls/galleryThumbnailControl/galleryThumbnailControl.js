@@ -70,6 +70,7 @@ class GalleryThumbnailControl extends GalleryControl {
             this.gallery?.append(this.thumbnails);
         }
         this.thumbnails.setAttribute('position', position);
+        this.signal('positionChange', position);
     }
 
     renderThumbnails() {

@@ -6,7 +6,7 @@ gallery-thumbnail.galleryThumbnail {
     display: none;
     transition: opacity 1s var(--easeInQuad);
     flex: 0 0 auto;
-    
+
     &:has(.image--loaded) {
         @starting-style {
             opacity: 0;
@@ -55,7 +55,6 @@ gallery-thumbnail.galleryThumbnail {
         left: 0;
         width: 100%;
         height: 100%;
-
         opacity: 0.9;
         z-index: 1;
         transition: opacity 1s var(--easeOutQuad);
@@ -110,5 +109,11 @@ gallery-thumbnail.galleryThumbnail {
                 width: 0;
             }
         }
+    }
+}
+
+.galleryThumbnails__tooltip {
+    .tooltip__content {
+        display: block;
     }
 }
