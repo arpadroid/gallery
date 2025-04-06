@@ -71,7 +71,7 @@ class GalleryThumbnails extends List {
                 id: `gallery-thumbnail-${(item?.id || index).toString()}`,
                 itemId: item.id,
                 image: item.thumbnail,
-                title: item.title
+                title: item.title || ''
             }))
         );
     }
@@ -126,7 +126,17 @@ class GalleryThumbnails extends List {
             handler: /** @type {HTMLElement} */ (this.thumbnailMask),
             position: 'cursor',
             cursorPositionAxis: this.getCursorAxis(),
-            cursorTooltipPosition
+            cursorTooltipPosition,
+            onMouseTargetUpdate: (/** @type {HTMLElement} */ target) => {
+                /** @type {GalleryThumbnail | null} */
+                const item = target.closest('gallery-thumbnail');
+                const payload = item?.getPayload();
+                const content = payload?.title;
+                tooltip.contentNode && (tooltip.contentNode.style.display = content ? 'block' : 'none');
+                if (typeof content === 'string') {
+                    tooltip.setContent(content);
+                }
+            }
         });
         await this.gallery?.promise;
         const thumbnailControl = /** @type {GalleryThumbnailControl | null | undefined} */ (

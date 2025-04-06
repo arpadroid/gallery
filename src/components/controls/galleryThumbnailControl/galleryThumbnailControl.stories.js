@@ -58,6 +58,7 @@ export const Test = {
                 item = canvasElement.querySelectorAll('.galleryThumbnail')[1];
                 expect(item).toBeInTheDocument();
             });
+            await new Promise(resolve => setTimeout(resolve, 200));
             const button = item?.querySelector('button');
             button && fireEvent.click(button);
             await waitFor(() => {

@@ -45,7 +45,9 @@ export const Test = {
         await step('Renders the captions button and checks captions are not visible', async () => {
             expect(button).toBeInTheDocument();
             const captions = canvasElement.querySelectorAll('.galleryItem__caption');
-            captions.forEach(caption => expect(caption).not.toBeVisible());
+            await waitFor(() => {
+                captions.forEach(caption => expect(caption).not.toBeVisible());
+            });
         });
 
         await step('Focuses the captions button and checks the tooltip is visible', async () => {

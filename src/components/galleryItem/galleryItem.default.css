@@ -57,6 +57,9 @@ gallery-item {
     box-shadow: var(--comboBox-shadow);
     max-width: 800px;
     margin: 0 auto;
+    &:empty {
+        display: none;
+    }
 }
 
 .gallery--captions-on .galleryItem__caption {

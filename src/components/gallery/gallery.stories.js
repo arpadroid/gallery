@@ -110,7 +110,7 @@ export const Default = {
      * @returns {string}
      */
     render: args => {
-        return html` <arpa-gallery ${attrString(args)}> ${Default.renderItemTemplate()} </arpa-gallery> `;
+        return html` <arpa-gallery ${attrString(args)}>${Default.renderItemTemplate()}</arpa-gallery> `;
     },
     /**
      * Renders the gallery.
@@ -120,6 +120,7 @@ export const Default = {
     renderStatic: (args, tag = 'arpa-gallery') => {
         return html`
             <${tag} ${attrString(args)}>
+                ${Default.renderItemTemplate()}
                 <gallery-item
                     id="gallery-item-1"
                     title="Guernica by Pablo Picasso (1937)"

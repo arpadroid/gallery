@@ -64,7 +64,7 @@ class GalleryItem extends ListItem {
             zone: 'caption',
             maxLength: this.getProperty('truncate-caption') || 200
         };
-        return html`<truncate-text ${attrString(attr)} has-button>${this.getCaption() || ''}</truncate-text>`;
+        return html`<truncate-text ${attrString(attr)}>${this.getCaption() || ''}</truncate-text>`;
     }
 
     /**
