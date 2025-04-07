@@ -16,6 +16,7 @@ class GalleryItem extends ListItem {
         /** @type {GalleryItemConfigType} */
         const config = {
             imageSize: 'adaptive',
+            classNames: ['galleryItem'],
             titleTag: 'h2',
             listSelector: 'arpa-gallery',
             truncateCaption: 200
@@ -57,6 +58,18 @@ class GalleryItem extends ListItem {
         return this.getProperty('caption');
     }
 
+    /**
+     * Handles a lost zone.
+     * @param {import('@arpadroid/tools').ZoneToolPlaceZoneType} event - The event object.
+     * @returns {boolean | undefined} Whether the zone was handled.
+     */
+    _onLostZone({ zone, zoneName }) {
+        if (zoneName === 'caption') {
+            this.promise.then(() => zone && this.captionNode?.append(...zone.childNodes));
+            return true;
+        }
+    }
+
     renderCaption(hasContent = this.hasContent('caption')) {
         if (!hasContent) return '';
         const attr = {
@@ -76,6 +89,12 @@ class GalleryItem extends ListItem {
         const image = this.renderImage();
         const titleContainer = this.renderTitleContainer();
         return html`${titleContainer}${image}${this.renderContent()}`;
+    }
+
+    async _initializeNodes() {
+        await super._initializeNodes();
+        this.captionNode = this.querySelector('.galleryItem__caption');
+        return true;
     }
 
     getImageAttributes() {

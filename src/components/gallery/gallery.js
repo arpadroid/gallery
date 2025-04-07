@@ -100,7 +100,8 @@ class Gallery extends List {
     }
 
     getCurrentItem() {
-        return this.querySelector('gallery-item');
+        const itemTag = this.getProperty('item-tag') || 'gallery-item';
+        return this.querySelector(itemTag);
     }
 
     // #endregion Get

@@ -14,7 +14,7 @@ class GalleryThumbnail extends ListItem {
     _preInitialize() {
         super._preInitialize();
         /** @type {Gallery | null} */
-        this.gallery = this.closest('arpa-gallery, .gallery');
+        this.gallery = this.closest('.gallery');
         /** @type {ListResource} */
         this.galleryResource = this.gallery?.listResource;
         this.resourceItem = this.getGalleryItem();
