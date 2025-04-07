@@ -16,3 +16,5 @@ export { default as GalleryDarkMode } from './components/controls/galleryDarkMod
 export { default as GallerySettings } from './components/controls/gallerySettings/gallerySettings.js';
 export { default as GalleryDragControl } from './components/controls/galleryDragControl/galleryDragControl.js';
 export { default as ImagePreview } from './components/imagePreview/imagePreview.js';
+export { default as ImageSlider } from './components/imageSlider/imageSlider.js';
+export { default as SliderItem } from './components/sliderItem/sliderItem.js';

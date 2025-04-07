@@ -16,8 +16,9 @@ class GalleryItem extends ListItem {
         /** @type {GalleryItemConfigType} */
         const config = {
             imageSize: 'adaptive',
+            classNames: ['galleryItem'],
             titleTag: 'h2',
-            listSelector: 'arpa-gallery',
+            listSelector: '.gallery',
             truncateCaption: 200
         };
         return mergeObjects(super.getDefaultConfig(), config);

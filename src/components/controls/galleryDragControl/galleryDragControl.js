@@ -19,7 +19,7 @@ class GalleryDragControl extends ArpaElement {
      */ // @ts-ignore
     getDefaultConfig() {
         /** @type {Gallery | null} */
-        this.gallery = this.closest('arpa-gallery');
+        this.gallery = this.closest('.gallery');
         /** @type {ListResource} */
         this.resource = this.gallery?.listResource;
         return {

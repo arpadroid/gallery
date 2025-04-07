@@ -35,7 +35,7 @@ class GalleryControl extends ArpaElement {
 
     _initialize() {
         /** @type {Gallery | null} */
-        this.gallery = this.closest('arpa-gallery');
+        this.gallery = this.closest('.gallery');
         /** @type {ListResource} */
         this.resource = this.gallery?.listResource;
     }
