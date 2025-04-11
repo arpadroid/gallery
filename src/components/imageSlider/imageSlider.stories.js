@@ -34,15 +34,13 @@ export const Render = {
                     id="gallery-item-1"
                     title="Atenas"
                     image="/api/image/convert?source=%2Fcmsx%2Fassets%2Fhqrvutmy_museovaquero_assets%2Fgallery%2Fimages%2F693.jpg&width=[width]&height=[height]&quality=[quality]"
-                    thumbnail="/assets/artworks/guernica.jpg"
                 >
                     <zone name="caption"> </zone>
                 </slider-item>
                 <slider-item
                     id="gallery-item-2"
-                    title="Blue II by Joan Miró (1961)"
-                    image="/assets/artworks/blue-ii.jpg"
-                    thumbnail="/assets/artworks/blue-ii.jpg"
+                    title="Venecia. Vista de la laguna con la isla del cementerio, 1954"
+                    image="/api/image/convert?source=%2Fcmsx%2Fassets%2Fhqrvutmy_museovaquero_assets%2Fgallery%2Fimages%2F689.jpg&width=[width]&height=[height]&quality=[quality]"
                 >
                     <zone name="caption"> </zone>
                 </slider-item>
