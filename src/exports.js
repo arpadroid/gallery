@@ -18,3 +18,6 @@ export { default as GalleryDragControl } from './components/controls/galleryDrag
 export { default as ImagePreview } from './components/imagePreview/imagePreview.js';
 export { default as ImageSlider } from './components/imageSlider/imageSlider.js';
 export { default as SliderItem } from './components/sliderItem/sliderItem.js';
+export { default as GalleryDots } from './components/controls/galleryDots/galleryDots.js';
+export { default as GalleryDot } from './components/controls/galleryDots/galleryDot.js';
+

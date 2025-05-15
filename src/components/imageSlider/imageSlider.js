@@ -21,9 +21,19 @@ class ImageSlider extends Gallery {
             itemTag: 'slider-item',
             tagName: 'image-slider',
             itemComponent: SliderItem,
-            controls: ['play', 'dots', 'spacer', 'fullScreen', 'drag']
+            contentPosition: 'left',
+            contentOverlay: true,
+            controls: ['play', 'dots', 'spacer', 'drag'],
+            maxPagerNodes: 13
         };
         return mergeObjects(super.getDefaultConfig(), config);
+    }
+
+    _preRender() {
+        super._preRender();
+        this.setAttribute('content-position', this.getProperty('content-position'));
+        const contentOverlay = this.getProperty('content-overlay');
+        contentOverlay && this.setAttribute('content-overlay', contentOverlay);
     }
 }
 

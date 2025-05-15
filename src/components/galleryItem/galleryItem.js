@@ -26,14 +26,13 @@ class GalleryItem extends ListItem {
 
     /**
      * Returns the template for the list item.
-     * @param {boolean} isGrid - Indicates whether the list item is in grid view.
      * @returns {string}
      */
-    _getTemplate(isGrid = this.isGrid) {
-        const innerContent = this.renderInnerContent(isGrid);
-        const hasInnerContent = this.hasZone('content') || innerContent?.trim()?.length;
-        const content = hasInnerContent ? html`<div class="galleryItem__contentWrapper">${innerContent}</div>` : '';
-        return html`<{wrapperComponent} {wrapperAttributes}>${content}{caption}</{wrapperComponent}>`;
+    _getTemplate() {
+        return html`<{wrapperComponent} {wrapperAttributes}>
+            <div class="galleryItem__contentWrapper">{titleContainer}{children}{image}</div>
+            {caption} 
+        </{wrapperComponent}>`;
     }
 
     /**
@@ -75,20 +74,9 @@ class GalleryItem extends ListItem {
         const attr = {
             class: 'galleryItem__caption',
             zone: 'caption',
-            maxLength: this.getProperty('truncate-caption') || 200
+            maxLength: this.getProperty('truncate-caption') ?? 200
         };
         return html`<truncate-text ${attrString(attr)}>${this.getCaption() || ''}</truncate-text>`;
-    }
-
-    /**
-     * Returns the inner content for the list item.
-     * @param {boolean} _isGrid
-     * @returns {string}
-     */
-    renderInnerContent(_isGrid = this.isGrid) {
-        const image = this.renderImage();
-        const titleContainer = this.renderTitleContainer();
-        return html`${titleContainer}${image}${this.renderContent()}`;
     }
 
     async _initializeNodes() {

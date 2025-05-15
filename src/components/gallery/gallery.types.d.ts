@@ -3,6 +3,7 @@ import { ThumbnailsPositionType } from '../controls/galleryThumbnailControl/gall
 
 export type GalleryConfigType = ListConfigType & {
     activeClass?: string;
+    trackActivity?: boolean;
     activityTimeout?: number;
     autoplay?: boolean;
     controlsHiddenClass?: string;

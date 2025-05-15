@@ -6,7 +6,7 @@
  */
 import { List } from '@arpadroid/lists';
 import GalleryItem from '../galleryItem/galleryItem';
-import { observerMixin, dummySignal, goFullScreen } from '@arpadroid/tools';
+import { observerMixin, dummySignal, goFullScreen, listen } from '@arpadroid/tools';
 import { exitFullScreen, dummyListener, dummyOff, defineCustomElement } from '@arpadroid/tools';
 
 const html = String.raw;
@@ -23,6 +23,7 @@ class Gallery extends List {
      */
     constructor(config) {
         super(config);
+        this.bind('_handleActivity');
         this.signal = dummySignal;
         this.on = dummyListener;
         this.off = dummyOff;
@@ -41,6 +42,10 @@ class Gallery extends List {
     getDefaultConfig() {
         /** @type {GalleryConfigType} */
         const conf = {
+            activeClass: 'gallery--active',
+            activityTimeout: 3000,
+            autoplay: false,
+            controlsHiddenClass: 'gallery--hide-controls',
             className: 'gallery',
             controls: [
                 'play',
@@ -57,25 +62,21 @@ class Gallery extends List {
                 'fullScreen',
                 'settings'
             ],
-            thumbnailsPosition: 'bottom',
-            // trackActivity: true,
-            activityTimeout: 3000,
             defaultView: 'full',
+            trackActivity: true,
             hasControls: true,
-            activeClass: 'gallery--active',
-            autoplay: false,
             hasItemsTransition: true,
             hasResource: true,
             imageSize: 'full_screen',
             itemComponent: GalleryItem,
             itemsPerPage: 1,
             itemTag: 'gallery-item',
-            tagName: 'arpa-gallery',
             listSelector: 'arpa-gallery',
-            playInterval: 5,
-            views: ['full'],
             loadingMode: 'loadNext',
-            controlsHiddenClass: 'gallery--hide-controls'
+            playInterval: 5,
+            tagName: 'arpa-gallery',
+            thumbnailsPosition: 'bottom',
+            views: ['full']
         };
         return super.getDefaultConfig(conf);
     }
@@ -85,7 +86,60 @@ class Gallery extends List {
         super._initialize();
     }
 
+    getActiveClass() {
+        return this?.getProperty('active-class');
+    }
+
     // #endregion Initialization
+
+    //////////////////////////////
+    // #region Controls
+    //////////////////////////////
+
+    isControlsHidden() {
+        const _class = this.getControlsHiddenClass();
+        return this?.classList.contains(_class);
+    }
+
+    getControlsHiddenClass() {
+        return this?.getProperty('controls-hidden-class') || 'gallery--hide-controls';
+    }
+
+    toggleControls() {
+        this.isControlsHidden() ? this.showControls() : this.hideControls();
+    }
+
+    showControls() {
+        this.classList.remove(this.getControlsHiddenClass());
+    }
+
+    hideControls() {
+        this.classList.add(this.getControlsHiddenClass());
+        requestAnimationFrame(() => {
+            this?.classList.remove(this.getActiveClass());
+        });
+    }
+
+    // #endregion Controls
+
+    //////////////////////////////
+    // #region Activity
+    //////////////////////////////
+
+    _handleActivity() {
+        const activeClass = this.getActiveClass();
+        clearTimeout(this.activeTimeout);
+        this.isActive = true;
+        const activityTimeout = this.getProperty('activity-timeout') || 3000;
+        !this.classList.contains(activeClass) && this.classList.add(activeClass);
+        this.activeTimeout = setTimeout(() => {
+            this.isActive = false;
+            this.classList.remove(activeClass);
+            this.activeTimeout = undefined;
+        }, activityTimeout);
+    }
+
+    // #endregion Activity
 
     //////////////////////////////
     // #region Get
@@ -171,6 +225,16 @@ class Gallery extends List {
                 typeof next.image === 'string' && (image.src = next.image);
             }
         }
+    }
+
+    async _onComplete() {
+        await super._onComplete();
+        await this.promise;
+        this.trackActivity();
+    }
+
+    trackActivity() {
+        listen(this, ['mouseleave', 'click', 'mouseenter', 'mousemove'], this._handleActivity);
     }
 
     // #endregion Lifecycle

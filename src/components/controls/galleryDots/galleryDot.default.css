@@ -1,0 +1,29 @@
+:root {
+    --gallery-dot-size: 1rem;
+}
+
+.galleryDot[page] {
+    background-color: var(--grey-175);
+    border-radius: 50%;
+    width: var(--gallery-dot-size);
+    height: var(--gallery-dot-size);
+}
+
+.galleryDot[is-active] {
+    background-color: var(--color-primary);
+    outline: 2px solid var(--color-primary);
+    border: 2px solid white;
+}
+
+.galleryDot.pager__spacer {
+    width: var(--gallery-dot-size);
+    align-items: center;
+    display: flex;
+    line-height: 0;
+    height: 0;
+    top: -10px;
+    position: relative;
+    font-size: 2rem;
+    color: var(--grey-300);
+}
+

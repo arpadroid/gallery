@@ -1,3 +1,93 @@
 slider-item {
-    
+}
+
+.sliderItem {
+    width: 100%;
+    min-width: 100%;
+    min-height: 100%;
+    height: 100%;
+    arpa-image.listItem__image {
+        --image-bg-color: var(--color-background);
+        img {
+            object-fit: cover;
+        }
+    }
+}
+
+.sliderItem__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 720px;
+
+    .galleryItem__caption {
+        position: relative;
+        box-shadow: none;
+        /* padding: 1rem 0; */
+        padding: 0.5rem 1rem;
+        left: 0;
+        right: 0;
+        font-size: 1.1rem;
+        line-height: 2rem;
+        font-weight: 400;
+        background-color: transparent;
+        max-width: 100%;
+    }
+
+    .listItem__title {
+        font-size: 1.2rem;
+        font-weight: 800;
+        overflow: auto;
+        text-overflow: inherit;
+        white-space: normal;
+        line-height: 1.8rem;
+    }
+
+    .galleryItem__caption {
+        padding: 0.75rem 1em;
+    }
+
+    .listItem__title.listItem__title {
+        padding: 0.5rem 1em;
+    }
+}
+
+.imageSlider[content-overlay] .sliderItem,
+.sliderItem[content-overlay] {
+    .sliderItem__content {
+        margin: 1rem 1rem 0 1rem;
+        position: absolute;
+        width: calc(100% - 2rem);
+        /* height: 100%; */
+        /* background-color: var(--overlay-95); */
+    }
+    .galleryItem__caption.galleryItem__caption,
+    .listItem__title {
+        background: var(--overlay);
+        border-radius: 0.25rem;
+    }
+}
+
+.imageSlider[content-position='bottom'][content-overlay] .sliderItem__content,
+.imageSlider[content-position='bottom'] .sliderItem[content-overlay] .sliderItem__content,
+.sliderItem[content-overlay][content-position='bottom'] .sliderItem__content {
+    top: auto;
+    bottom: 0;
+}
+
+.imageSlider[content-position='left'][content-overlay] .sliderItem__content,
+.imageSlider[content-position='left'] .sliderItem[content-overlay] .sliderItem__content,
+.sliderItem[content-overlay][content-position='left'] .sliderItem__content {
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50%;
+}
+
+.imageSlider[content-position='right'][content-overlay] .sliderItem__content,
+.imageSlider[content-position='right'] .sliderItem[content-overlay] .sliderItem__content,
+.sliderItem[content-overlay][content-position='right'] .sliderItem__content {
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    width: 50%;
 }

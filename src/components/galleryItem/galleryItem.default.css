@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
-    arpa-image.listItem__image {
+    .listItem__image {
         display: flex;
         align-items: center;
         justify-content: center;

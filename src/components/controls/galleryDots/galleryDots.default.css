@@ -1,0 +1,9 @@
+.galleryDots {
+    display: flex;
+    flex: 1 1 auto;
+    gap: 0.5rem;
+
+    .pager__numbers {
+        gap: 1rem;
+    }
+}
