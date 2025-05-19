@@ -19,9 +19,10 @@ class SliderItem extends GalleryItem {
             listSelector: 'image-slider',
             classNames: ['galleryItem', 'listItem', 'sliderItem', 'listItem--full'],
             defaultImageSize: 'full_screen',
-            imageSize: 'full_screen'
-            // contentOverlay: true,
-            // contentPosition: 'right'
+            imageSize: 'full_screen',
+            contentOverlay: true,
+            defaultContentPosition: 'bottom',
+            defaultContentOverlay: false
         };
         return mergeObjects(super.getDefaultConfig(), config);
     }
@@ -31,18 +32,33 @@ class SliderItem extends GalleryItem {
      * @returns {string}
      */
     _getTemplate() {
-        if (this.getProperty('content-overlay') && !this.hasAttribute('content-overlay')) {
-            this.setAttribute('content-overlay', '');
-        }
-        if (this.getProperty('content-position') && !this.hasAttribute('content-position')) {
-            this.setAttribute('content-position', this.getProperty('content-position'));
-        }
+        this.getContentOverlay() && this.setAttribute('content-overlay', '');
+        const contentPosition = this.getContentPosition();
+        contentPosition && this.setAttribute('content-position', contentPosition);
         return html`<{wrapperComponent} {wrapperAttributes}>
             {image}
             <div class="sliderItem__content">
                 {titleContainer}{children}{caption} 
             </div>
         </{wrapperComponent}>`;
+    }
+
+    getContentOverlay() {
+        return (
+            this.payload?.contentOverlay ||
+            this.getProperty('content-overlay') ||
+            this.list?.getProperty('content-overlay') ||
+            this.getProperty('default-content-overlay')
+        );
+    }
+
+    getContentPosition() {
+        return (
+            this.payload?.contentPosition ||
+            this.getProperty('content-position') ||
+            this.list?.getProperty('content-position') ||
+            this.getProperty('default-content-position')
+        );
     }
 }
 

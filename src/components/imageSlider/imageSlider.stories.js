@@ -24,7 +24,6 @@ export const Render = {
      * @returns {Promise<{ resource: ListResource | undefined, slider: ImageSlider | null }>}
      */
     initializeSlider: async (id, payload = artworks) => {
-        console.log('artworks', artworks);
         const slider = /** @type {ImageSlider | null} */ (document.getElementById(id));
         /** @type {ListResource | undefined} */
         const resource = slider?.listResource;
@@ -122,7 +121,7 @@ export const Test = {
      */
     play: async ({ canvasElement, step, args }) => {
         const { slider } = await Default.initializeSlider(args.id || '');
-        console.log('slider', slider, canvasElement, args);
+        
         await step('Renders the image preview button', async () => {});
     }
 };

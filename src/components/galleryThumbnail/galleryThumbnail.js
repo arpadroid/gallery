@@ -30,20 +30,23 @@ class GalleryThumbnail extends ListItem {
      */
     getDefaultConfig() {
         this.bind('_onClick');
-
-        return /** @type {GalleryThumbnailConfigType} */ (
-            mergeObjects(super.getDefaultConfig(), {
-                className: 'galleryThumbnail',
-                lazyLoadImage: true,
-                hasNativeLazy: false,
-                image: this.itemThumbnail,
-                action: this._onClick
-            })
-        );
+        /** @type {GalleryThumbnailConfigType} */
+        const config = {
+            className: 'galleryThumbnail',
+            lazyLoadImage: true,
+            hasTitle: false,
+            image: this.itemThumbnail,
+            action: this._onClick
+        };
+        return mergeObjects(super.getDefaultConfig(), config);
     }
 
     getItemThumbnail() {
         return this.itemNode?.getProperty('thumbnail') || this.itemNode?.getProperty('image');
+    }
+
+    hasTitle() {
+        return this.hasProperty('has-title');
     }
 
     /**
@@ -53,6 +56,7 @@ class GalleryThumbnail extends ListItem {
     _getTemplate() {
         return html`<{wrapperComponent} {wrapperAttributes}>
                 {image}
+                ${this.hasTitle() ? '{title}' : ''}
             </{wrapperComponent}>
         {rhs}`;
         // <arpa-tooltip class="tooltip--contained" text="${this.title}" position="right"></arpa-tooltip>

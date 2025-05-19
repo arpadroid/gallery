@@ -125,6 +125,7 @@ class GalleryThumbnails extends List {
             className: 'galleryThumbnails__tooltip',
             handler: /** @type {HTMLElement} */ (this.thumbnailMask),
             position: 'cursor',
+            hasCursorPosition: true,
             cursorPositionAxis: this.getCursorAxis(),
             cursorTooltipPosition,
             onMouseTargetUpdate: (/** @type {HTMLElement} */ target) => {
@@ -181,7 +182,6 @@ class GalleryThumbnails extends List {
                     title="${item.title}"
                     image="${item.image}"
                     image-size="${imageSize}"
-                    item-id="${item.id}"
                 ></gallery-thumbnail>`
         );
     }

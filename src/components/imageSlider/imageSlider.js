@@ -21,8 +21,7 @@ class ImageSlider extends Gallery {
             itemTag: 'slider-item',
             tagName: 'image-slider',
             itemComponent: SliderItem,
-            contentPosition: 'left',
-            contentOverlay: true,
+            contentPosition: 'top',
             controls: ['play', 'dots', 'spacer', 'drag'],
             maxPagerNodes: 13
         };

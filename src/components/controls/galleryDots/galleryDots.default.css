@@ -1,3 +1,7 @@
+:root {
+    --galleryDot-thumbnail-width: 140px;
+}
+
 .galleryDots {
     display: flex;
     flex: 1 1 auto;
@@ -5,5 +9,46 @@
 
     .pager__numbers {
         gap: 1rem;
+    }
+}
+
+.galleryDots__tooltip.galleryDots__tooltip {
+    .galleryThumbnail {
+        width: var(--galleryDot-thumbnail-width);
+        .listItem__main {
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .listItem__title {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 8px 8px 8px;
+            max-width: 100%;
+            display: block;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            width: 100%;
+        }
+    }
+
+    .tooltip__content {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        border-color: var(--grey-100);
+        border-width: 1px;
+    }
+
+    arpa-image {
+        border-radius: 4px 4px 0 0;
+        overflow: hidden;
+    }
+
+    img {
+        object-fit: cover;
+        aspect-ratio: 16/9;
+        width: var(--galleryDot-thumbnail-width);
     }
 }
