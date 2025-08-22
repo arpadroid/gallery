@@ -30,8 +30,8 @@ gallery-thumbnail.galleryThumbnail {
     }
 
     arpa-image {
-        transition: border 0.4s var(--easeOutQuad);
-
+        transition: border 0.4s var(--easeOutQuad), opacity 0.2s var(--easeOutQuad);
+        opacity: 1;
         border: 0px solid var(--grey-50);
         .tooltip {
             display: none;
