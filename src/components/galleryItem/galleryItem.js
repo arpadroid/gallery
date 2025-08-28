@@ -59,7 +59,7 @@ class GalleryItem extends ListItem {
 
     /**
      * Handles a lost zone.
-     * @param {import('@arpadroid/tools').ZoneToolPlaceZoneType} event - The event object.
+     * @param {import('@arpadroid/ui').ZoneToolPlaceZoneType} event - The event object.
      * @returns {boolean | undefined} Whether the zone was handled.
      */
     _onLostZone({ zone, zoneName }) {

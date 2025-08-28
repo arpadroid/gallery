@@ -3,7 +3,7 @@
  * @typedef {import('../galleryItem/galleryItem').default} GalleryItem
  * @typedef {import('../gallery/gallery.js').default} Gallery
  * @typedef {import('@arpadroid/ui').Dialog} Dialog
- * @typedef {import('@arpadroid/tools').ZoneToolPlaceZoneType} ZoneToolPlaceZoneType
+ * @typedef {import('@arpadroid/ui').ZoneToolPlaceZoneType} ZoneToolPlaceZoneType
  */
 import { attrString, defineCustomElement } from '@arpadroid/tools';
 import { insertZone, ArpaElement } from '@arpadroid/ui';

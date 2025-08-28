@@ -1,7 +1,7 @@
 /**
  * @typedef {import('./imageSlider.types.js').ImageSliderConfigType} ImageSliderConfigType
  * @typedef {import('../galleryItem/galleryItem').default} GalleryItem
- * @typedef {import('@arpadroid/tools').ZoneToolPlaceZoneType} ZoneToolPlaceZoneType
+ * @typedef {import('@arpadroid/ui').ZoneToolPlaceZoneType} ZoneToolPlaceZoneType
  */
 import { defineCustomElement, mergeObjects } from '@arpadroid/tools';
 import Gallery from '../gallery/gallery.js';
