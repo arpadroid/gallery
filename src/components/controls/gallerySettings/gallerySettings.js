@@ -10,6 +10,7 @@
  * @typedef {import('@arpadroid/navigation').IconMenu} IconMenu
  * @typedef {import('./gallerySettings.types').GallerySettingsType} GallerySettingsType
  * @typedef {import('../galleryThumbnailControl/galleryThumbnailControl').ThumbnailsPositionType} ThumbnailsPositionType
+ * @typedef {import('@arpadroid/ui').Tooltip} Tooltip
  */
 import { mergeObjects, attrString, defineCustomElement } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl';
@@ -111,12 +112,12 @@ class GallerySettings extends GalleryControl {
             variant="compact"
             menu-position="false"
             nav-class="gallerySettings__nav"
+            tooltip="${this.i18nText('lblSettings')}"
             ${attrString({
                 ...this.getProperties('icon', 'label'),
                 tooltip: this.getProperty('btn-label')
             })}
         >
-            <zone name="tooltip-content">${this.i18n('lblSettings')}</zone>
             <div class="gallerySettings__content">{form}</div>
         </icon-menu>`;
     }
@@ -177,6 +178,7 @@ class GallerySettings extends GalleryControl {
         this.menuNode?.promise.then(() => {
             this.menuNode?.button?.setAttribute('variant', 'compact');
             this.menuNode?.button?.setAttribute('aria-label', this.i18nText('lblSettings'));
+            /** @type {Tooltip | null} */
             this.tooltip = this.menuNode?.buttonComponent?.tooltip;
             this.setTooltipPosition('top-right');
         });
