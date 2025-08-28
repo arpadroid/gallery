@@ -69,7 +69,7 @@ class ImagePreview extends ArpaElement {
         if (zoneName === 'title' && itemCount < 2) {
             zone && insertZone(zone, this.dialog);
         } else if (zoneName === 'caption') {
-            zone && insertZone(zone, this.item);
+            this.item && zone && insertZone(zone, this.item);
         } else if (zoneName === 'gallery') {
             const children = /** @type {HTMLElement []} */ (Array.from(zone?.childNodes || []));
             this.gallery?.addChildNodes(children);
