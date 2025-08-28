@@ -1,11 +1,12 @@
 /**
  * @typedef {import('@arpadroid/ui').Pager} Pager
+ * @typedef {import('@arpadroid/ui').Image} Image
  * @typedef {import('../../galleryThumbnail/galleryThumbnail').default} GalleryThumbnail
  * @typedef {import('@arpadroid/resources').ListResourceItemType} ListResourceItemType
  */
 import { attrString, defineCustomElement } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl';
-import { Image, Tooltip } from '@arpadroid/ui';
+import { Tooltip } from '@arpadroid/ui';
 
 const html = String.raw;
 class GalleryDots extends GalleryControl {

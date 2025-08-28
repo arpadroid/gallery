@@ -3,7 +3,6 @@
  * @typedef {import('./galleryThumbnailControl.types').ThumbnailsPositionType} ThumbnailsPositionType
  * @typedef {import('../../gallery/gallery').GallerySettings} GallerySettings
  */
-/* eslint-disable sonarjs/no-duplicate-string */
 import { defineCustomElement, renderNode } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl';
 
@@ -36,7 +35,7 @@ class GalleryThumbnailControl extends GalleryControl {
     _initializeThumbnails() {
         this.thumbnails && this.thumbnails.remove();
         this.thumbnails = renderNode(this.renderThumbnails());
-        this.gallery?.append(this.thumbnails);
+        this.thumbnails && this.gallery?.append(this.thumbnails);
         this.positionThumbnails();
     }
 
@@ -62,14 +61,17 @@ class GalleryThumbnailControl extends GalleryControl {
         await customElements.whenDefined('gallery-settings');
         !position && (position = await this.getThumbnailsPosition());
         this.gallery?.controls?.promise && (await this.gallery.controls.promise);
-        if (position === 'bottom') {
-            this.gallery?.footerNode?.append(this.thumbnails);
-        } else if (position === 'top') {
-            this.gallery?.headerNode?.prepend(this.thumbnails);
-        } else {
-            this.gallery?.append(this.thumbnails);
+        if (this.thumbnails) {
+            if (position === 'bottom') {
+                this.gallery?.footerNode?.append(this.thumbnails);
+            } else if (position === 'top') {
+                this.gallery?.headerNode?.prepend(this.thumbnails);
+            } else {
+                this.gallery?.append(this.thumbnails);
+            }
+            this.thumbnails.setAttribute('position', position);
         }
-        this.thumbnails.setAttribute('position', position);
+
         this.signal('positionChange', position);
     }
 

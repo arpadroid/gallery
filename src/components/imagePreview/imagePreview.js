@@ -5,8 +5,8 @@
  * @typedef {import('@arpadroid/ui').Dialog} Dialog
  * @typedef {import('@arpadroid/tools').ZoneToolPlaceZoneType} ZoneToolPlaceZoneType
  */
-import { insertZone, attrString, defineCustomElement } from '@arpadroid/tools';
-import { ArpaElement } from '@arpadroid/ui';
+import { attrString, defineCustomElement } from '@arpadroid/tools';
+import { insertZone, ArpaElement } from '@arpadroid/ui';
 
 const html = String.raw;
 class ImagePreview extends ArpaElement {
