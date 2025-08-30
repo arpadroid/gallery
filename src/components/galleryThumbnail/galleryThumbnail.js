@@ -18,8 +18,8 @@ class GalleryThumbnail extends ListItem {
         /** @type {ListResource} */
         this.galleryResource = this.gallery?.listResource;
         this.resourceItem = this.getGalleryItem();
-        /** @type {GalleryItem} */
-        this.itemNode = this.resourceItem?.node;
+        /** @type {GalleryItem | undefined} */
+        this.itemNode = /** @type {GalleryItem | undefined} */ (this.resourceItem?.node);
         this.itemThumbnail = this.getItemThumbnail();
         this.itemThumbnail && this.setAttribute('image', this.itemThumbnail);
     }

@@ -179,7 +179,7 @@ class GallerySettings extends GalleryControl {
             this.menuNode?.button?.setAttribute('variant', 'compact');
             this.menuNode?.button?.setAttribute('aria-label', this.i18nText('lblSettings'));
             /** @type {Tooltip | null} */
-            this.tooltip = this.menuNode?.buttonComponent?.tooltip;
+            this.tooltip = this.menuNode?.tooltip;
             this.setTooltipPosition('top-right');
         });
         await this._initializeForm();

@@ -66,9 +66,11 @@ export const Test = {
 
         await step('Renders the settings form', async () => {
             await fireEvent.click(button);
-            expect(canvas.getByText('General')).toBeVisible();
-            expect(canvas.getByText('Play interval')).toBeVisible();
-            expect(canvas.getByText('Thumbnails position')).toBeVisible();
+            await waitFor(() => {
+                expect(canvas.getByText('General')).toBeVisible();
+                expect(canvas.getByText('Play interval')).toBeVisible();
+                expect(canvas.getByText('Thumbnails position')).toBeVisible();
+            });
         });
 
         await step('Opens the thumbnail position dropdown', async () => {
