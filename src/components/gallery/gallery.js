@@ -62,6 +62,7 @@ class Gallery extends List {
                 'fullScreen',
                 'settings'
             ],
+            hasPreloader: false,
             defaultView: 'full',
             trackActivity: true,
             hasControls: true,
@@ -76,9 +77,14 @@ class Gallery extends List {
             playInterval: 5,
             tagName: 'arpa-gallery',
             thumbnailsPosition: 'bottom',
-            views: ['full']
+            views: ['full'],
+            templateChildren: {
+                controls: {
+                    tag: 'gallery-controls'
+                }
+            }
         };
-        return super.getDefaultConfig(conf);
+        return /** @type {GalleryConfigType} */ (super.getDefaultConfig(conf));
     }
 
     _initialize() {
@@ -174,13 +180,6 @@ class Gallery extends List {
             </div>
             <div class="gallery__footer">{controls}</div>
         `;
-    }
-
-    renderControls() {
-        return super.renderControls({
-            tagName: 'gallery-controls',
-            className: 'gallery__controls'
-        });
     }
 
     async _initializeNodes() {
