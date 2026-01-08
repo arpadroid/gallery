@@ -37,7 +37,7 @@
     },
     "peerDependencies": {
         "@arpadroid/module": "file:../module",
-        "@arpadroid/stylesheet-bundler": "file:../stylesheet-bundler",
+        "@arpadroid/style-bun": "file:../style-bun",
         "@arpadroid/context": "file:../context",
         "@arpadroid/forms": "file:../forms",
         "@arpadroid/i18n": "file:../i18n",
