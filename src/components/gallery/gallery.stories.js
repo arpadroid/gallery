@@ -124,8 +124,8 @@ export const Default = {
                 <gallery-item
                     id="gallery-item-1"
                     title="Guernica by Pablo Picasso (1937)"
-                    image="/assets/artworks/guernica.jpg"
-                    thumbnail="/assets/artworks/guernica.jpg"
+                    image="/test-assets/artworks/guernica.jpg"
+                    thumbnail="/test-assets/artworks/guernica.jpg"
                 >
                     <zone name="caption">
                         Besides being Picasso most famous painting, Guernica is also one of the world’s most famous and
@@ -145,8 +145,8 @@ export const Default = {
                 <gallery-item
                     id="gallery-item-2"
                     title="Blue II by Joan Miró (1961)"
-                    image="/assets/artworks/blue-ii.jpg"
-                    thumbnail="/assets/artworks/blue-ii.jpg"
+                    image="/test-assets/artworks/blue-ii.jpg"
+                    thumbnail="/test-assets/artworks/blue-ii.jpg"
                 >
                     <zone name="caption">
                         Blue II is a painting by Joan Miró, a Spanish painter and sculptor who was born in Barcelona. He
