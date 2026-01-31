@@ -184,11 +184,15 @@ class GallerySettings extends GalleryControl {
         });
         await this._initializeForm();
         this._initializeIconMenu();
-        /** @type {NumberField | null} */
-        this.playIntervalField = this.querySelector('.gallerySettings__playInterval');
+
+        this.playIntervalField = /** @type {NumberField | null} */ (
+            this.querySelector('.gallerySettings__playInterval')
+        );
         this.playIntervalField?.on('change', this.updatePlayInterval);
         /** @type {SelectCombo | null} */
-        this.thumbPositionField = this.querySelector('.gallerySettings__thumbnailsPosition');
+        this.thumbPositionField = /** @type {SelectCombo | null} */ (
+            this.querySelector('.gallerySettings__thumbnailsPosition')
+        );
         this.thumbPositionField?.on('change', this.updateThumbnailsPosition);
         return true;
     }
