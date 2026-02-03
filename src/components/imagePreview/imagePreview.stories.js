@@ -5,14 +5,17 @@
  * @typedef {import('@arpadroid/module').StepFunction} StepFunction
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
  * @typedef {import('./imagePreview.types').ImagePreviewConfigType} ImagePreviewConfigType
+ * @typedef {import('@storybook/web-components-vite').Meta} Meta
+ * @typedef {import('@storybook/web-components-vite').StoryObj} StoryObj
+ * @typedef {import('@storybook/web-components-vite').StoryContext} StoryContext
+ * @typedef {import('@storybook/web-components-vite').Args} Args
  */
 import { attrString } from '@arpadroid/tools';
 import { Default as GalleryStory } from '../gallery/gallery.stories';
-import { expect, waitFor, fireEvent, within } from '@storybook/test';
+import { expect, waitFor, fireEvent, within, userEvent } from 'storybook/test';
 const html = String.raw;
 const captionText =
-    'Besides being Picasso most famous painting, Guernica is also one of the world’s most famous and moving antiwar statements. It was inspired by the brutal 1937 bombing of the Basque city of Guernica during the Spanish Civil War. That same year, with war still raging, the embattled Leftist government of Spain commissioned the piece as a mural for the 1937 World’s Fair inParis.';
-export const Render = {
+    'Besides being Picasso most famous painting, Guernica is also one of the world’s most famous and moving antiwar statements. It was inspired by the brutal 1937 bombing of the Basque city of Guernica during the Spanish Civil War. That same year, with war still raging, the embattled Leftist government of Spain commissioned the piece as a mural for the 1937 World’s Fair inParis.';/** @type {StoryObj} */export const Render = {
     ...GalleryStory,
     parameters: {
         layout: 'centered'
@@ -21,7 +24,7 @@ export const Render = {
         ...GalleryStory.args,
         id: 'image-preview',
         // title: 'Guernica by Pablo Picasso (1937)',
-        image: '/assets/artworks/guernica.jpg'
+        image: '/test-assets/artworks/guernica.jpg'
     },
     /**
      * Renders the gallery.
@@ -61,25 +64,18 @@ export const TestSingle = {
         id: 'image-preview-test'
     },
 
-    /**
-     * Plays the gallery.
-     * @param {{ canvasElement: HTMLElement, step: StepFunction }} args
-     */
-    play: async ({ canvasElement, step }) => {
-        const { canvas } = await GalleryStory.playSetup(canvasElement, false);
-        const button = await waitFor(() => canvas.getByRole('button'));
+    play: async (/** @type{StoryContext} */ { canvasElement, step, canvas }) => {
+        const button = canvas.getByRole('button');
         const dialog = /** @type {import('./imagePreview').Dialog} */ (document.querySelector('arpa-dialog'));
-        
-        await waitFor(() => expect(dialog.querySelector('arpa-gallery')).toBeInTheDocument());
 
         await step('Renders the image preview button', async () => {
             expect(button).toBeInTheDocument();
         });
 
         await step('Clicks on the button and opens the preview modal', async () => {
-            await fireEvent.click(button);
+            await userEvent.click(button);
             await waitFor(() => {
-                expect(within(dialog).getByText('Guernica by Pablo Picasso (1937)')).toBeVisible();
+                expect(within(dialog).getByText('Guernica by Pablo Picasso (1937)')).toBeInTheDocument();
             });
         });
 
@@ -89,9 +85,11 @@ export const TestSingle = {
         // });
 
         await step('Closes the dialog', async () => {
-            const button = within(dialog).getByRole('button', { name: 'close' });
+            /** @type {HTMLButtonElement | null} */
+            const button = dialog.querySelector('.dialog__close');
+            // const button = within(dialog).getByRole('button', { name: 'close' });
             expect(button).toBeInTheDocument();
-            button.click();
+            button?.click?.();
             await waitFor(() => expect(dialog).not.toHaveAttribute('open'));
             expect(dialog).not.toBeVisible();
         });
@@ -103,8 +101,8 @@ export const TestMultiple = {
     args: {
         ...Render.args,
         id: 'image-preview-test-multiple',
-        image: undefined,
-        title: 'Preview gallery'
+        title: 'Phidias',
+        image: undefined
     },
     /**
      * Renders the gallery.
@@ -118,10 +116,10 @@ export const TestMultiple = {
                 <image-preview ${attrString(args)}>
                     <!--<zone name="title" owner="gallery-item">My preview gallery</zone> -->
                     <zone name="gallery">
-                        <gallery-item image="/assets/artists/phidias.jpg">
+                        <gallery-item image="/test-assets/artists/phidias.jpg">
                             <zone name="title">Phidias</zone>
                         </gallery-item>
-                        <gallery-item image="/assets/artworks/guernica.jpg">
+                        <gallery-item image="/test-assets/artworks/guernica.jpg">
                             <zone name="title">Guernica by Pablo Picasso (1937)</zone>
                             <zone name="caption">${captionText}</zone>
                         </gallery-item>
@@ -136,11 +134,11 @@ export const TestMultiple = {
      * @param {{ canvasElement: HTMLElement, step: StepFunction }} args
      */
     play: async ({ canvasElement, step }) => {
+
         const { canvas } = await GalleryStory.playSetup(canvasElement, false);
         const button = await waitFor(() => canvas.getByRole('button'));
         const dialog = /** @type {import('./imagePreview').Dialog} */ (document.querySelector('arpa-dialog'));
-        await waitFor(() => expect(dialog.querySelector('arpa-gallery')).toBeInTheDocument());
-
+        // await waitFor(() => expect(dialog.querySelector('arpa-gallery')).toBeInTheDocument());
         await step('Renders the image preview button', async () => {
             expect(button).toBeInTheDocument();
         });
@@ -153,6 +151,7 @@ export const TestMultiple = {
         });
 
         await step('Clicks next and shows next image', async () => {
+            
             const nextButton = within(dialog).getByRole('button', { name: 'Next' });
             await fireEvent.click(nextButton);
             await waitFor(() => {

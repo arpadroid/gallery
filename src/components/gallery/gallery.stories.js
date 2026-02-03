@@ -4,13 +4,18 @@
  * @typedef {import('../galleryItem/galleryItem.js').default} GalleryItem
  * @typedef {import('@arpadroid/module').StepFunction} StepFunction
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
+ * @typedef {import('@storybook/web-components-vite').Meta} Meta
+ * @typedef {import('@storybook/web-components-vite').StoryObj} StoryObj
+ * @typedef {import('@storybook/web-components-vite').StoryContext} StoryContext
+ * @typedef {import('@storybook/web-components-vite').Args} Args
  */
 import artists from '../../../node_modules/@arpadroid/lists/src/mockData/artists.json';
 import { attrString, formatDate } from '@arpadroid/tools';
-import { within, expect } from '@storybook/test';
+import { within, expect } from 'storybook/test';
 const _initializeList = true;
 
 const html = String.raw;
+/** @type {Meta} */
 const GalleryStory = {
     title: 'Gallery/Gallery',
     tags: [],

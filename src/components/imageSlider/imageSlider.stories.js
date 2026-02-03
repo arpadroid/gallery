@@ -1,20 +1,25 @@
 /**
  * @typedef {import('@arpadroid/lists').List} List
  * @typedef {import('../gallery/gallery.js').default} Gallery
-
  * @typedef {import('@arpadroid/module').StepFunction} StepFunction
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
  * @typedef {import('./imageSlider.types').ImageSliderConfigType} ImageSliderConfigType
- * @typedef {import('../sliderItem/sliderItem.js').default} SliderItem  
+ * @typedef {import('../sliderItem/sliderItem.js').default} SliderItem
  * @typedef {import('../imageSlider/imageSlider.js').default} ImageSlider
- * 
+ * @typedef {import('@storybook/web-components-vite').Meta} Meta
+ * @typedef {import('@storybook/web-components-vite').StoryObj} StoryObj
+ * @typedef {import('@storybook/web-components-vite').StoryContext} StoryContext
+ * @typedef {import('@storybook/web-components-vite').Args} Args
+ *
  */
 
 import artworks from '../../../node_modules/@arpadroid/lists/src/mockData/artworks.json';
 import { attrString } from '@arpadroid/tools';
 import { Default as GalleryStory } from '../gallery/gallery.stories';
-import { expect, within } from '@storybook/test';
+import { expect, within } from 'storybook/test';
 const html = String.raw;
+
+/** @type {StoryObj} */
 export const Render = {
     ...GalleryStory,
     /**
@@ -49,11 +54,8 @@ export const Render = {
         // title: 'Guernica by Pablo Picasso (1937)',
         //image: '/assets/artworks/guernica.jpg'
     },
-    /**
-     * Plays the gallery.
-     * @param {{ canvasElement: HTMLElement, step: StepFunction, args: ImageSliderConfigType}} args
-     */
-    play: async ({ canvasElement, step, args }) => {
+
+    play: async (/** @type {StoryContext} */ { canvasElement, step, args }) => {
         const { resource, slider } = await Render.initializeSlider(args.id || '');
         const canvas = within(canvasElement);
         step('Renders the image slider', async () => {
@@ -121,7 +123,7 @@ export const Test = {
      */
     play: async ({ canvasElement, step, args }) => {
         const { slider } = await Default.initializeSlider(args.id || '');
-        
+
         await step('Renders the image preview button', async () => {});
     }
 };

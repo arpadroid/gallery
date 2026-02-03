@@ -6,12 +6,17 @@
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
  * @typedef {import('@arpadroid/forms').FormComponent} FormComponent
  * @typedef {import('@arpadroid/forms').FieldInput} FieldInput
+ * @typedef {import('@storybook/web-components-vite').Meta} Meta
+ * @typedef {import('@storybook/web-components-vite').StoryObj} StoryObj
+ * @typedef {import('@storybook/web-components-vite').StoryContext} StoryContext
+ * @typedef {import('@storybook/web-components-vite').Args} Args
  */
 // import { attrString } from '@arpadroid/tools';
 import { Default as GalleryStory } from '../../gallery/gallery.stories';
-import { expect, waitFor, fireEvent } from '@storybook/test';
+import { expect, waitFor, fireEvent } from 'storybook/test';
 
 // const html = String.raw;
+/** @type {StoryObj} */
 export const Render = {
     ...GalleryStory,
     args: {
@@ -39,13 +44,10 @@ export const Test = {
         ...Render.args,
         id: 'gallery-input-test'
     },
-    /**
-     * Plays the gallery.
-     * @param {{ canvasElement: HTMLElement, step: StepFunction }} args
-     */
-    play: async ({ canvasElement, step }) => {
+
+    play: async (/** @type {StoryContext} */ { canvasElement, step }) => {
         const { canvas, galleryNode } = await Render.playSetup(canvasElement, false);
-        /** @type {import('@arpadroid/resources').ListResource} */
+        /** @type {ListResource} */
         const resource = galleryNode.listResource;
         const input = await waitFor(() => canvas.getByLabelText('Current slide'));
         /** @type {FormComponent} */
