@@ -182,7 +182,6 @@ export const Test = {
     play: async ({ canvasElement, step }) => {
         const { galleryNode, canvas } = await Test.playSetup(canvasElement);
         /** @type {GalleryItem | null} */
-        // console.log('canvas', canvas);
         await step('Renders the gallery', async () => {
             expect(galleryNode).toBeInTheDocument();
         });

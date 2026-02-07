@@ -10,7 +10,7 @@
  * @typedef {import('@storybook/web-components-vite').Args} Args
  */
 import { Default as GalleryStory } from '../../gallery/gallery.stories';
-import { expect, waitFor } from 'storybook/test';
+import { expect, waitFor, userEvent } from 'storybook/test';
 
 /** @type {StoryObj} */
 export const Render = {
@@ -61,8 +61,8 @@ export const Test = {
         });
 
         await step('Clicks the captions button and checks captions are visible', async () => {
-            button.click();
-            await waitFor(() => expect(canvasElement.querySelector('.galleryItem__caption')).toBeVisible());
+            await userEvent.click(button);
+            expect(canvasElement.querySelector('.galleryItem__caption')).toBeVisible();
         });
     }
 };

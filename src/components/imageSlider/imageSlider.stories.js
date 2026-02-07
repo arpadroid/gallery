@@ -59,7 +59,6 @@ export const Render = {
         const { resource, slider } = await Render.initializeSlider(args.id || '');
         const canvas = within(canvasElement);
         step('Renders the image slider', async () => {
-            console.log('canvas', { resource, slider, canvasElement, canvas });
             expect(true).toBe(true);
         });
     },
