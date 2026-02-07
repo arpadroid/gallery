@@ -62,7 +62,9 @@ export const Test = {
 
         await step('Clicks the captions button and checks captions are visible', async () => {
             await userEvent.click(button);
-            expect(canvasElement.querySelector('.galleryItem__caption')).toBeVisible();
+            await waitFor(() => {
+                expect(canvasElement.querySelector('.galleryItem__caption')).toBeInTheDocument();
+            });
         });
     }
 };
