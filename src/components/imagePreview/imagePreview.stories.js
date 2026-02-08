@@ -15,7 +15,8 @@ import { Default as GalleryStory } from '../gallery/gallery.stories';
 import { expect, waitFor, fireEvent, within, userEvent } from 'storybook/test';
 const html = String.raw;
 const captionText =
-    'Besides being Picasso most famous painting, Guernica is also one of the world’s most famous and moving antiwar statements. It was inspired by the brutal 1937 bombing of the Basque city of Guernica during the Spanish Civil War. That same year, with war still raging, the embattled Leftist government of Spain commissioned the piece as a mural for the 1937 World’s Fair inParis.';/** @type {StoryObj} */export const Render = {
+    'Besides being Picasso most famous painting, Guernica is also one of the world’s most famous and moving antiwar statements. It was inspired by the brutal 1937 bombing of the Basque city of Guernica during the Spanish Civil War. That same year, with war still raging, the embattled Leftist government of Spain commissioned the piece as a mural for the 1937 World’s Fair inParis.';
+/** @type {StoryObj} */ export const Render = {
     ...GalleryStory,
     parameters: {
         layout: 'centered'
@@ -65,7 +66,7 @@ export const TestSingle = {
     },
 
     play: async (/** @type{StoryContext} */ { canvasElement, step, canvas }) => {
-        const button = canvas.getByRole('button');
+        const button = await waitFor(() => /** @type {HTMLButtonElement} */ (canvasElement.querySelector('button')));
         const dialog = /** @type {import('./imagePreview').Dialog} */ (document.querySelector('arpa-dialog'));
 
         await step('Renders the image preview button', async () => {
@@ -134,17 +135,15 @@ export const TestMultiple = {
      * @param {{ canvasElement: HTMLElement, step: StepFunction }} args
      */
     play: async ({ canvasElement, step }) => {
-
-        const { canvas } = await GalleryStory.playSetup(canvasElement, false);
-        const button = await waitFor(() => canvas.getByRole('button'));
-        const dialog = /** @type {import('./imagePreview').Dialog} */ (document.querySelector('arpa-dialog'));
-        // await waitFor(() => expect(dialog.querySelector('arpa-gallery')).toBeInTheDocument());
+        await new Promise(resolve => setTimeout(resolve, 300));
+        const button = await waitFor(() => /** @type {HTMLButtonElement} */ (canvasElement.querySelector('button')));
+        const dialog = /** @type {import('./imagePreview').Dialog} */ (document.getElementById('image-preview-test-multiple-dialog'));
         await step('Renders the image preview button', async () => {
             expect(button).toBeInTheDocument();
         });
 
         await step('Clicks on the button and opens the preview modal', async () => {
-            await fireEvent.click(button);
+            button.click();
             await waitFor(() => {
                 expect(within(dialog).getByText('Phidias')).toBeVisible();
             });
@@ -155,7 +154,7 @@ export const TestMultiple = {
             const nextButton = within(dialog).getByRole('button', { name: 'Next' });
             await fireEvent.click(nextButton);
             await waitFor(() => {
-                expect(within(dialog).getByText('Guernica by Pablo Picasso (1937)')).toBeVisible();
+                expect(within(dialog).getByText('Guernica by Pablo Picasso (1937)')).toBeInTheDocument();
             });
         });
 

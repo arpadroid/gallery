@@ -15,13 +15,14 @@
 
 import artworks from '../../../node_modules/@arpadroid/lists/src/mockData/artworks.json';
 import { attrString } from '@arpadroid/tools';
-import { Default as GalleryStory } from '../gallery/gallery.stories';
+import GalleryStory from '../gallery/stories.util.js';
 import { expect, within } from 'storybook/test';
 const html = String.raw;
 
-/** @type {StoryObj} */
-export const Render = {
+/** @type {Meta} */
+const ImageSliderStory = {
     ...GalleryStory,
+    title: 'Gallery/Components/Image Slider',
     /**
      * Initializes the Slider.
      * @param {string} id
@@ -44,7 +45,11 @@ export const Render = {
             })
         );
         return { resource, slider };
-    },
+    }
+};
+
+/** @type {StoryObj} */
+export const Render = {
     parameters: {
         layout: 'flexColumn'
     },
@@ -56,7 +61,7 @@ export const Render = {
     },
 
     play: async (/** @type {StoryContext} */ { canvasElement, step, args }) => {
-        const { resource, slider } = await Render.initializeSlider(args.id || '');
+        const { resource, slider } = await ImageSliderStory.initializeSlider(args.id || '');
         const canvas = within(canvasElement);
         step('Renders the image slider', async () => {
             expect(true).toBe(true);
@@ -101,12 +106,7 @@ export const Render = {
     }
 };
 
-const Default = {
-    ...Render,
-    title: 'Gallery/Components/Image Slider'
-};
-
-export default Default;
+export default ImageSliderStory;
 
 export const Test = {
     ...Render,
@@ -121,8 +121,10 @@ export const Test = {
      * @param {{ canvasElement: HTMLElement, step: StepFunction, args: ImageSliderConfigType }} args
      */
     play: async ({ canvasElement, step, args }) => {
-        const { slider } = await Default.initializeSlider(args.id || '');
+        const { slider } = await ImageSliderStory.initializeSlider(args.id || '');
 
-        await step('Renders the image preview button', async () => {});
+        await step('Renders the image preview button', async () => {
+            expect(slider).toBeInTheDocument();
+        });
     }
 };
