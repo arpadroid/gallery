@@ -2,7 +2,6 @@
  * @typedef {import('@arpadroid/lists').List} List
  * @typedef {import('../../gallery/gallery.js').default} Gallery
  * @typedef {import('../../galleryItem/galleryItem.js').default} GalleryItem
- * @typedef {import('@arpadroid/module').StepFunction} StepFunction
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
  * @typedef {import('@arpadroid/forms').FormComponent} FormComponent
  * @typedef {import('@arpadroid/forms').FieldInput} FieldInput
@@ -21,7 +20,7 @@ export const Render = {
     ...GalleryStory,
     args: {
         ...GalleryStory.args,
-        controls: 'input',
+        controls: 'input, next',
         id: 'gallery-input'
     },
     play: async () => {},
@@ -84,8 +83,9 @@ export const Test = {
         });
 
         await step('Changes slide and expects the input to update', async () => {
-            await new Promise(resolve => setTimeout(resolve, 200));
-            await resource.nextPage();
+            await new Promise(resolve => setTimeout(resolve, 100));
+            const nextButton = canvas.getByRole('button', { name: 'Next' });
+            await fireEvent.click(nextButton);
             await waitFor(() => {
                 expect(input.value).toBe('2');
             });
