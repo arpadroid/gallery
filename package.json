@@ -2,14 +2,22 @@
     "name": "@arpadroid/gallery",
     "version": "1.0.0",
     "description": "A custom elements library for building image galleries",
-    "exports": "./dist/arpadroid-gallery.js",
+    "exports": {
+        ".": {
+            "types": "./dist/@types/types.compiled.d.ts",
+            "import": "./dist/arpadroid-gallery.js"
+        }
+    },
     "types": "./dist/@types/types.compiled.d.ts",
     "type": "module",
     "scripts": {
         "build": "arpadroid-build --minify",
         "clean": "arpadroid-clean",
         "dev": "arpadroid-build --storybook --watch",
-        "test": "arpadroid-test --storybook --jest"
+        "test": "arpadroid-test --storybook --jest",
+        "t": "npm run test -- --slim",
+        "check:types": "arpadroid-check-types",
+        "initialize": "arpadroid-initialize"
     },
     "repository": {
         "type": "git",
