@@ -9,6 +9,9 @@ import { ArpaElement } from '@arpadroid/ui';
 class GalleryDragControl extends ArpaElement {
     deltaX = 0;
     startX = 0;
+    /** @type {GalleryDragConfigType} */
+    _config = this._config;
+
     _initialize() {
         this.bind('_onTouchStart', '_onTouchMove', '_onTouchEnd');
     }
@@ -16,15 +19,15 @@ class GalleryDragControl extends ArpaElement {
     /**
      * Returns the default configuration for the gallery control.
      * @returns {GalleryDragConfigType} The default configuration.
-     */ // @ts-ignore
+     */
     getDefaultConfig() {
         /** @type {Gallery | null} */
         this.gallery = this.closest('.gallery');
         /** @type {ListResource} */
         this.resource = this.gallery?.listResource;
-        return {
+        return super.getDefaultConfig({
             swipeThreshold: this.gallery?.getProperty('swipe-threshold') || 100
-        };
+        });
     }
 
     _onConnected() {
@@ -61,13 +64,13 @@ class GalleryDragControl extends ArpaElement {
         event.preventDefault();
         this.startX =
             'touches' in event ? event.touches[0].clientX : (event instanceof MouseEvent && event?.clientX) || 0;
-        this.currentX = this.startX; // @ts-ignore
+        this.currentX = this.startX;
         listen(canvas, ['touchmove', 'mousemove'], this._onTouchMove, { passive: false });
     }
 
     /**
      * Called when the user moves the item.
-     * @param {TouchEvent | MouseEvent} event
+     * @param {Event} event
      */
     _onTouchMove(event) {
         if (this.gallery?.listResource?.getTotalItems() < 2) return;
