@@ -2,7 +2,6 @@
  * @typedef {import('@arpadroid/lists').List} List
  * @typedef {import('../gallery/gallery.js').default} Gallery
  * @typedef {import('../galleryItem/galleryItem.js').default} GalleryItem
- * @typedef {import('@arpadroid/module').StepFunction} StepFunction
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
  * @typedef {import('./imagePreview.types').ImagePreviewConfigType} ImagePreviewConfigType
  * @typedef {import('@storybook/web-components-vite').Meta} Meta
@@ -11,13 +10,20 @@
  * @typedef {import('@storybook/web-components-vite').Args} Args
  */
 import { attrString } from '@arpadroid/tools';
-import { Default as GalleryStory } from '../gallery/gallery.stories';
+import GalleryStory from '../gallery/gallery.stories';
 import { expect, waitFor, fireEvent, within, userEvent } from 'storybook/test';
+import { playSetup } from '../gallery/gallery.stories.util';
 const html = String.raw;
 const captionText =
     'Besides being Picasso most famous painting, Guernica is also one of the world’s most famous and moving antiwar statements. It was inspired by the brutal 1937 bombing of the Basque city of Guernica during the Spanish Civil War. That same year, with war still raging, the embattled Leftist government of Spain commissioned the piece as a mural for the 1937 World’s Fair inParis.';
-/** @type {StoryObj} */ export const Render = {
-    ...GalleryStory,
+
+/** @type {Meta} */
+const ImagePreviewStory = {
+    title: 'Gallery/Components/Image Preview'
+};
+
+/** @type {StoryObj} */
+export const Render = {
     parameters: {
         layout: 'centered'
     },
@@ -27,11 +33,6 @@ const captionText =
         // title: 'Guernica by Pablo Picasso (1937)',
         image: '/test-assets/artworks/guernica.jpg'
     },
-    /**
-     * Renders the gallery.
-     * @param {Record<string, any>} args
-     * @returns {string}
-     */
     render: args => {
         return html`
             <arpa-button icon="image">
@@ -43,21 +44,12 @@ const captionText =
             </arpa-button>
         `;
     },
-    /**
-     * Plays the gallery.
-     * @param {{ canvasElement: HTMLElement }} args
-     * @returns {Promise<void>}
-     */
     play: async ({ canvasElement }) => {
-        await Render.playSetup(canvasElement, false);
+        await playSetup(canvasElement, { initList: false });
     }
 };
 
-const Default = {
-    ...Render,
-    title: 'Gallery/Components/Image Preview'
-};
-
+/** @type {StoryObj} */
 export const TestSingle = {
     ...Render,
     args: {
@@ -97,6 +89,7 @@ export const TestSingle = {
     }
 };
 
+/** @type {StoryObj} */
 export const TestMultiple = {
     ...Render,
     args: {
@@ -105,11 +98,6 @@ export const TestMultiple = {
         title: 'Phidias',
         image: undefined
     },
-    /**
-     * Renders the gallery.
-     * @param {Record<string, any>} args
-     * @returns {string}
-     */
     render: args => {
         return html`
             <arpa-button icon="image">
@@ -129,15 +117,12 @@ export const TestMultiple = {
             </arpa-button>
         `;
     },
-
-    /**
-     * Plays the gallery.
-     * @param {{ canvasElement: HTMLElement, step: StepFunction }} args
-     */
     play: async ({ canvasElement, step }) => {
         await new Promise(resolve => setTimeout(resolve, 300));
         const button = await waitFor(() => /** @type {HTMLButtonElement} */ (canvasElement.querySelector('button')));
-        const dialog = /** @type {import('./imagePreview').Dialog} */ (document.getElementById('image-preview-test-multiple-dialog'));
+        const dialog = /** @type {import('./imagePreview').Dialog} */ (
+            document.getElementById('image-preview-test-multiple-dialog')
+        );
         await step('Renders the image preview button', async () => {
             expect(button).toBeInTheDocument();
         });
@@ -150,7 +135,6 @@ export const TestMultiple = {
         });
 
         await step('Clicks next and shows next image', async () => {
-            
             const nextButton = within(dialog).getByRole('button', { name: 'Next' });
             await fireEvent.click(nextButton);
             await waitFor(() => {
@@ -168,4 +152,4 @@ export const TestMultiple = {
     }
 };
 
-export default Default;
+export default ImagePreviewStory;

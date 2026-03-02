@@ -10,11 +10,15 @@
  * @typedef {import('@storybook/web-components-vite').StoryContext} StoryContext
  * @typedef {import('@storybook/web-components-vite').Args} Args
  */
-// import { attrString } from '@arpadroid/tools';
-import { Default as GalleryStory } from '../../gallery/gallery.stories';
+import { playSetup } from '../../gallery/gallery.stories.util';
+import GalleryStory from '../../gallery/gallery.stories';
 import { expect, waitFor, fireEvent } from 'storybook/test';
 
-// const html = String.raw;
+/** @type {Meta} */
+const GalleryInputStory = {
+    title: 'Gallery/Controls/Input'
+};
+
 /** @type {StoryObj} */
 export const Render = {
     ...GalleryStory,
@@ -22,32 +26,19 @@ export const Render = {
         ...GalleryStory.args,
         controls: 'input, next',
         id: 'gallery-input'
-    },
-    play: async () => {},
-    /**
-     * Renders the gallery.
-     * @param {Record<string, any>} args
-     * @returns {string}
-     */
-    render: args => GalleryStory.renderStatic(args)
+    }
 };
 
-const Default = {
-    ...Render,
-    title: 'Gallery/Controls/Input'
-};
-
+/** @type {StoryObj} */
 export const Test = {
-    ...Render,
+    ...GalleryStory,
     args: {
         ...Render.args,
         id: 'gallery-input-test'
     },
+    play: async ({ canvasElement, step }) => {
+        const { canvas } = await playSetup(canvasElement);
 
-    play: async (/** @type {StoryContext} */ { canvasElement, step }) => {
-        const { canvas, galleryNode } = await Render.playSetup(canvasElement, false);
-        /** @type {ListResource} */
-        const resource = galleryNode.listResource;
         const input = await waitFor(() => canvas.getByLabelText('Current slide'));
         /** @type {FormComponent} */
         const form = input.closest('arpa-form');
@@ -63,10 +54,8 @@ export const Test = {
             input.focus();
             form?.formNode && fireEvent.submit(form.formNode);
             await waitFor(() => {
-                expect(input.value).toBe('2');
-                expect(
-                    canvas.getByRole('heading', { level: 2, name: 'Blue II by Joan Miró (1961)' })
-                ).toBeInTheDocument();
+                expect(input.value).toBe('54');
+                expect(canvas.getByRole('heading', { level: 2, name: 'Henri Rousseau' })).toBeInTheDocument();
             });
         });
 
@@ -76,9 +65,7 @@ export const Test = {
             form.formNode && (await fireEvent.submit(form.formNode));
             await waitFor(() => {
                 expect(input.value).toBe('1');
-                expect(
-                    canvas.getByRole('heading', { level: 2, name: 'Guernica by Pablo Picasso (1937)' })
-                ).toBeInTheDocument();
+                expect(canvas.getByRole('heading', { level: 2, name: 'Phidias' })).toBeInTheDocument();
             });
         });
 
@@ -93,4 +80,4 @@ export const Test = {
     }
 };
 
-export default Default;
+export default GalleryInputStory;

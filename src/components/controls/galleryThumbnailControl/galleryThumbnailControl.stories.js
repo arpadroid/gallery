@@ -2,15 +2,22 @@
  * @typedef {import('@arpadroid/lists').List} List
  * @typedef {import('../../gallery/gallery.js').default} Gallery
  * @typedef {import('../../galleryItem/galleryItem.js').default} GalleryItem
- * @typedef {import('@arpadroid/module').StepFunction} StepFunction
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
  * @typedef {import('@storybook/web-components-vite').Meta} Meta
  * @typedef {import('@storybook/web-components-vite').StoryObj} StoryObj
  * @typedef {import('@storybook/web-components-vite').StoryContext} StoryContext
  * @typedef {import('@storybook/web-components-vite').Args} Args
  */
-import { Default as GalleryStory } from '../../gallery/gallery.stories';
+import { playSetup, renderStatic } from '../../gallery/gallery.stories.util';
+import GalleryStory from '../../gallery/gallery.stories';
 import { expect, waitFor, fireEvent } from 'storybook/test';
+
+/** @type {Meta} */
+const GalleryThumbnailControlStory = {
+    title: 'Gallery/Controls/Thumbnails',
+
+    render: args => renderStatic(args)
+};
 
 /** @type {StoryObj} */
 export const Render = {
@@ -19,33 +26,18 @@ export const Render = {
         ...GalleryStory.args,
         controls: 'thumbnailControl',
         id: 'gallery-thumbnails'
-    },
-    play: async () => {},
-    /**
-     * Renders the gallery.
-     * @param {Record<string, any>} args
-     * @returns {string}
-     */
-    render: args => GalleryStory.renderStatic(args)
+    }
 };
 
-const Default = {
-    ...Render,
-    title: 'Gallery/Controls/Thumbnails'
-};
-
+/** @type {StoryObj} */
 export const Test = {
-    ...Render,
+    ...GalleryStory,
     args: {
         ...Render.args,
         id: 'gallery-thumbnails-test'
     },
-    /**
-     * Plays the gallery.
-     * @param {{ canvasElement: HTMLElement, step: StepFunction }} args
-     */
     play: async ({ canvasElement, step }) => {
-        const { canvas, galleryNode } = await Render.playSetup(canvasElement, false);
+        const { canvas, galleryNode } = await playSetup(canvasElement);
         const button = await waitFor(() => canvas.getByRole('button', { name: 'Toggle thumbnails' }));
         const thumbnails = canvasElement.querySelector('gallery-thumbnails');
         await customElements.whenDefined('gallery-thumbnails');
@@ -67,7 +59,7 @@ export const Test = {
             const button = item?.querySelector('button');
             button && fireEvent.click(button);
             await waitFor(() => {
-                expect(canvas.getByText('Blue II by Joan Miró (1961)')).toBeVisible();
+                expect(canvas.getByText('Leonardo da Vinci')).toBeVisible();
             });
         });
 
@@ -88,4 +80,4 @@ export const Test = {
     }
 };
 
-export default Default;
+export default GalleryThumbnailControlStory;

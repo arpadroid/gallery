@@ -2,7 +2,6 @@
  * @typedef {import('@arpadroid/lists').List} List
  * @typedef {import('../../gallery/gallery.js').default} Gallery
  * @typedef {import('../../galleryItem/galleryItem.js').default} GalleryItem
- * @typedef {import('@arpadroid/module').StepFunction} StepFunction
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
  * @typedef {import('@storybook/web-components-vite').Meta} Meta
  * @typedef {import('@storybook/web-components-vite').StoryObj} StoryObj
@@ -10,43 +9,33 @@
  * @typedef {import('@storybook/web-components-vite').Args} Args
  */
 
-import { Default as GalleryStory } from '../../gallery/gallery.stories';
+import { playSetup, renderStatic } from '../../gallery/gallery.stories.util';
+import GalleryStory from '../../gallery/gallery.stories';
 import { expect, waitFor } from 'storybook/test';
+
+/** @type {Meta} */
+const GalleryFullScreenStory = {
+    title: 'Gallery/Controls/Full Screen'
+};
 
 /** @type {StoryObj} */
 export const Render = {
     ...GalleryStory,
     args: {
-        ...GalleryStory.args,
         controls: 'fullScreen',
         id: 'gallery-full-screen'
-    },
-    play: async () => {},
-    /**
-     * Renders the gallery.
-     * @param {Record<string, any>} args
-     * @returns {string}
-     */
-    render: args => GalleryStory.renderStatic(args)
+    }
 };
 
-const Default = {
-    ...Render,
-    title: 'Gallery/Controls/Full Screen'
-};
-
+/** @type {StoryObj} */
 export const Test = {
-    ...Render,
+    ...GalleryStory,
     args: {
         ...Render.args,
         id: 'gallery-full-screen-test'
     },
-    /**
-     * Plays the gallery.
-     * @param {{ canvasElement: HTMLElement, step: StepFunction }} args
-     */
     play: async ({ canvasElement, step }) => {
-        const { canvas } = await Render.playSetup(canvasElement, false);
+        const { canvas } = await playSetup(canvasElement);
         const button = await waitFor(() => canvas.getByRole('button', { name: 'Toggle full screen' }));
         const control = button.closest('gallery-full-screen');
         await step('Renders the full screen control', async () => {
@@ -69,4 +58,4 @@ export const Test = {
     }
 };
 
-export default Default;
+export default GalleryFullScreenStory;

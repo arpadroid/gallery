@@ -2,7 +2,6 @@
  * @typedef {import('@arpadroid/lists').List} List
  * @typedef {import('../../gallery/gallery.js').default} Gallery
  * @typedef {import('../../galleryItem/galleryItem.js').default} GalleryItem
- * @typedef {import('@arpadroid/module').StepFunction} StepFunction
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
  * @typedef {import('@storybook/web-components-vite').Meta} Meta
  * @typedef {import('@storybook/web-components-vite').StoryObj} StoryObj
@@ -10,8 +9,14 @@
  * @typedef {import('@storybook/web-components-vite').Args} Args
  */
 
-import { Default as GalleryStory } from '../../gallery/gallery.stories';
+import { playSetup } from '../../gallery/gallery.stories.util';
+import GalleryStory from '../../gallery/gallery.stories';
 import { expect, waitFor } from 'storybook/test';
+
+/** @type {Meta} */
+const GalleryToggleControlsStory = {
+    title: 'Gallery/Controls/Toggle Controls',
+};
 
 /** @type {StoryObj} */
 export const Render = {
@@ -20,33 +25,18 @@ export const Render = {
         ...GalleryStory.args,
         controls: 'toggleControls',
         id: 'gallery-toggle-controls'
-    },
-    play: async () => {},
-    /**
-     * Renders the gallery.
-     * @param {Record<string, any>} args
-     * @returns {string}
-     */
-    render: args => GalleryStory.renderStatic(args)
+    }
 };
 
-const Default = {
-    ...Render,
-    title: 'Gallery/Controls/Toggle Controls'
-};
-
+/** @type {StoryObj} */
 export const Test = {
-    ...Render,
+    ...GalleryStory,
     args: {
         ...Render.args,
         id: 'gallery-toggle-controls-test'
     },
-    /**
-     * Plays the gallery.
-     * @param {{ canvasElement: HTMLElement, step: StepFunction }} args
-     */
     play: async ({ canvasElement, step }) => {
-        const { canvas } = await Render.playSetup(canvasElement, false);
+        const { canvas } = await playSetup(canvasElement);
         const button = await waitFor(() => canvas.getByRole('button', { name: 'Toggle controls' }));
 
         await step('Renders the toggle control', async () => {
@@ -82,4 +72,4 @@ export const Test = {
     }
 };
 
-export default Default;
+export default GalleryToggleControlsStory;

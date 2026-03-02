@@ -5,10 +5,9 @@
         "rootDir": "./src",
         "outDir": "./.tmp/.types",
         "preserveSymlinks": true,
-        "skipLibCheck": true,
-        "skipDefaultLibCheck": true,
+        "skipLibCheck": false,
         "moduleResolution": "bundler"
     },
     "include": ["src/**/*", ".storybook"],
-    "exclude": ["node_modules", "dist", "src/**/*.stories.js", "src/**/stories.util.js"]
+    "exclude": ["node_modules", "dist"]
 }

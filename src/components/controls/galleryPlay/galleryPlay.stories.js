@@ -2,33 +2,30 @@
  * @typedef {import('@arpadroid/lists').List} List
  * @typedef {import('../../gallery/gallery.js').default} Gallery
  * @typedef {import('../../galleryItem/galleryItem.js').default} GalleryItem
- * @typedef {import('@arpadroid/module').StepFunction} StepFunction
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
  * @typedef {import('@storybook/web-components-vite').Meta} Meta
  * @typedef {import('@storybook/web-components-vite').StoryObj} StoryObj
  * @typedef {import('@storybook/web-components-vite').StoryContext} StoryContext
  * @typedef {import('@storybook/web-components-vite').Args} Args
  */
-import { Default as GalleryStory } from '../../gallery/gallery.stories';
+import { playSetup, renderStatic } from '../../gallery/gallery.stories.util';
+import GalleryStory from '../../gallery/gallery.stories';
 import { expect, waitFor, fireEvent } from 'storybook/test';
+
+/** @type {Meta} */
+const GalleryPlayStory = {
+    title: 'Gallery/Controls/Play'
+};
 
 /** @type {StoryObj} */
 export const Render = {
     ...GalleryStory,
-    /**
-     * Renders the gallery.
-     * @param {Record<string, any>} args
-     * @returns {string}
-     */
-    render: args => GalleryStory.renderStatic(args),
-    /**
-     * Plays the gallery.
-     * @param {{ canvasElement: HTMLElement }} args
-     * @returns {Promise<void>}
-     */
     play: async ({ canvasElement }) => {
-        await Render.playSetup(canvasElement, false);
+        await playSetup(canvasElement, {
+            initList: false
+        });
     },
+    render: args => renderStatic(args),
     args: {
         ...GalleryStory.args,
         controls: 'play',
@@ -36,24 +33,15 @@ export const Render = {
     }
 };
 
-const Default = {
-    ...Render,
-    title: 'Gallery/Controls/Play'
-};
-
+/** @type {StoryObj} */
 export const Test = {
-    ...Render,
+    ...GalleryStory,
     args: {
         ...Render.args,
         id: 'gallery-play-test'
     },
-
-    /**
-     * Plays the gallery.
-     * @param {{ canvasElement: HTMLElement, step: StepFunction }} args
-     */
     play: async ({ canvasElement, step }) => {
-        const { canvas } = await GalleryStory.playSetup(canvasElement, false);
+        const { canvas } = await playSetup(canvasElement);
         const playControl = await waitFor(() => canvas.getByRole('button', { name: 'Play' }));
         await step('Renders the play control', async () => {
             expect(playControl).toBeInTheDocument();
@@ -61,7 +49,7 @@ export const Test = {
         await step('Clicks the play control and verifies state', async () => {
             await new Promise(resolve => setTimeout(resolve, 200));
             expect(
-                canvas.getByRole('heading', { level: 2, name: 'Guernica by Pablo Picasso (1937)' })
+                canvas.getByRole('heading', { level: 2, name: 'Phidias' })
             ).toBeInTheDocument();
             await fireEvent.click(playControl);
 
@@ -81,4 +69,4 @@ export const Test = {
     }
 };
 
-export default Default;
+export default GalleryPlayStory;

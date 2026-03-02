@@ -1,10 +1,10 @@
 /**
  * @typedef {import('./galleryItem.types').GalleryItemConfigType} GalleryItemConfigType
  */
-import { ListItem } from '@arpadroid/lists';
+import { ListManagerItem } from '@arpadroid/list-manager';
 import { classNames, mergeObjects, defineCustomElement, attrString } from '@arpadroid/tools';
 const html = String.raw;
-class GalleryItem extends ListItem {
+class GalleryItem extends ListManagerItem {
     /** @type {GalleryItemConfigType} */
     _config = this._config;
     isGrid = false;

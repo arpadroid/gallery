@@ -49,6 +49,7 @@
         "@arpadroid/resources": "file:../resources",
         "@arpadroid/services": "file:../services",
         "@arpadroid/tools": "file:../tools",
-        "@arpadroid/ui": "file:../ui"
+        "@arpadroid/ui": "file:../ui",
+        "@arpadroid/list-manager": "file:../list-manager"
     }
 }

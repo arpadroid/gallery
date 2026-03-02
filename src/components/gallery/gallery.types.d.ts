@@ -1,7 +1,7 @@
-import { ListConfigType } from '@arpadroid/lists';
+import { ListManagerConfigType } from '@arpadroid/list-manager';
 import { ThumbnailsPositionType } from '../controls/galleryThumbnailControl/galleryThumbnailControl.types';
 
-export type GalleryConfigType = ListConfigType & {
+export type GalleryConfigType = ListManagerConfigType & {
     activeClass?: string;
     trackActivity?: boolean;
     activityTimeout?: number;

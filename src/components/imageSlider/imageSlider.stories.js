@@ -1,7 +1,6 @@
 /**
  * @typedef {import('@arpadroid/lists').List} List
  * @typedef {import('../gallery/gallery.js').default} Gallery
- * @typedef {import('@arpadroid/module').StepFunction} StepFunction
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
  * @typedef {import('./imageSlider.types').ImageSliderConfigType} ImageSliderConfigType
  * @typedef {import('../sliderItem/sliderItem.js').default} SliderItem
@@ -13,39 +12,17 @@
  *
  */
 
-import artworks from '../../../node_modules/@arpadroid/lists/src/mockData/artworks.json';
+// import artworks from '../../../node_modules/@arpadroid/lists/src/mockData/artworks.json';
 import { attrString } from '@arpadroid/tools';
-import GalleryStory from '../gallery/stories.util.js';
+import GalleryStory from '../gallery/gallery.stories.js';
 import { expect, within } from 'storybook/test';
+import { initializeSlider } from './imageSlider.stories.util';
 const html = String.raw;
 
 /** @type {Meta} */
 const ImageSliderStory = {
     ...GalleryStory,
-    title: 'Gallery/Components/Image Slider',
-    /**
-     * Initializes the Slider.
-     * @param {string} id
-     * @param {Record<string, any>[]} payload
-     * @returns {Promise<{ resource: ListResource | undefined, slider: ImageSlider | null }>}
-     */
-    initializeSlider: async (id, payload = artworks) => {
-        const slider = /** @type {ImageSlider | null} */ (document.getElementById(id));
-        /** @type {ListResource | undefined} */
-        const resource = slider?.listResource;
-        await resource?.setItems(
-            payload.map(item => {
-                return {
-                    ...item,
-                    title: item.title,
-                    image: item.imageUrl,
-                    caption: item.description,
-                    id: item.id
-                };
-            })
-        );
-        return { resource, slider };
-    }
+    title: 'Gallery/Components/Image Slider'
 };
 
 /** @type {StoryObj} */
@@ -61,7 +38,7 @@ export const Render = {
     },
 
     play: async (/** @type {StoryContext} */ { canvasElement, step, args }) => {
-        const { resource, slider } = await ImageSliderStory.initializeSlider(args.id || '');
+        const { resource, slider } = await initializeSlider(args?.id?.toString() || '');
         const canvas = within(canvasElement);
         step('Renders the image slider', async () => {
             expect(true).toBe(true);
@@ -106,25 +83,20 @@ export const Render = {
     }
 };
 
-export default ImageSliderStory;
-
+/** @type {StoryObj} */
 export const Test = {
     ...Render,
-
     args: {
         ...Render.args,
         id: 'image-slider-test'
     },
-
-    /**
-     * Plays the gallery.
-     * @param {{ canvasElement: HTMLElement, step: StepFunction, args: ImageSliderConfigType }} args
-     */
-    play: async ({ canvasElement, step, args }) => {
-        const { slider } = await ImageSliderStory.initializeSlider(args.id || '');
+    play: async ({ step, args }) => {
+        const { slider } = await initializeSlider(args.id || '');
 
         await step('Renders the image preview button', async () => {
             expect(slider).toBeInTheDocument();
         });
     }
 };
+
+export default ImageSliderStory;

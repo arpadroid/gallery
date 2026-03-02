@@ -1,7 +1,7 @@
 /**
  * @typedef {import('../gallery/gallery.js').default} Gallery
  */
-import { ListControls } from '@arpadroid/lists';
+import { ListControls } from '@arpadroid/list-manager';
 import { defineCustomElement } from '@arpadroid/tools';
 
 const html = String.raw;

@@ -4,13 +4,13 @@
  * @typedef {import('../galleryItem/galleryItem.types.js').GalleryItemConfigType} GalleryItemConfigType
  * @typedef {import('../controls/gallerySettings/gallerySettings.js').default} GallerySettings
  */
-import { List } from '@arpadroid/lists';
+import { ListManager } from '@arpadroid/list-manager';
 import GalleryItem from '../galleryItem/galleryItem';
 import { observerMixin, dummySignal, goFullScreen, listen } from '@arpadroid/tools';
 import { exitFullScreen, dummyListener, dummyOff, defineCustomElement } from '@arpadroid/tools';
 
 const html = String.raw;
-class Gallery extends List {
+class Gallery extends ListManager {
     //////////////////////////////
     // #region Initialization
     //////////////////////////////
@@ -56,7 +56,6 @@ class Gallery extends List {
                 'spacer',
                 'toggleCaptions',
                 'thumbnailControl',
-                'views',
                 'toggleControls',
                 'darkMode',
                 'fullScreen',

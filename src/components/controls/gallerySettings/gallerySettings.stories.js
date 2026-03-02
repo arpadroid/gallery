@@ -2,7 +2,6 @@
  * @typedef {import('@arpadroid/lists').List} List
  * @typedef {import('../../gallery/gallery.js').default} Gallery
  * @typedef {import('../../galleryItem/galleryItem.js').default} GalleryItem
- * @typedef {import('@arpadroid/module').StepFunction} StepFunction
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
  * @typedef {import('@arpadroid/forms').FormComponent} FormComponent
  * @typedef {import('@storybook/web-components-vite').Meta} Meta
@@ -10,11 +9,16 @@
  * @typedef {import('@storybook/web-components-vite').StoryContext} StoryContext
  * @typedef {import('@storybook/web-components-vite').Args} Args
  */
-// import { attrString } from '@arpadroid/tools';
-import { Default as GalleryStory } from '../../gallery/gallery.stories';
+import { playSetup, renderStatic } from '../../gallery/gallery.stories.util';
+import GalleryStory from '../../gallery/gallery.stories';
 import { expect, waitFor, fireEvent, within } from 'storybook/test';
 
-// const html = String.raw;
+/** @type {Meta} */
+const GallerySettingsStory = {
+    title: 'Gallery/Controls/Settings',
+    render: args => renderStatic(args)
+};
+
 /** @type {StoryObj} */
 export const Render = {
     ...GalleryStory,
@@ -22,33 +26,18 @@ export const Render = {
         ...GalleryStory.args,
         controls: 'play,thumbnailControl,spacer,settings',
         id: 'gallery-settings'
-    },
-    play: async () => {},
-    /**
-     * Renders the gallery.
-     * @param {Record<string, any>} args
-     * @returns {string}
-     */
-    render: args => GalleryStory.renderStatic(args)
+    }
 };
 
-const Default = {
-    ...Render,
-    title: 'Gallery/Controls/Settings'
-};
-
+/** @type {StoryObj} */
 export const Test = {
-    ...Render,
+    ...GalleryStory,
     args: {
         ...Render.args,
         id: 'gallery-settings-test'
     },
-    /**
-     * Plays the gallery.
-     * @param {{ canvasElement: HTMLElement, step: StepFunction }} args
-     */
     play: async ({ canvasElement, step }) => {
-        const { canvas, galleryNode } = await Render.playSetup(canvasElement, false);
+        const { canvas, galleryNode } = await playSetup(canvasElement);
         const button = await waitFor(() => canvas.getByRole('button', { name: 'Settings' }));
 
         const settingsForm = /** @type {FormComponent | null} */ (
@@ -115,4 +104,4 @@ export const Test = {
     }
 };
 
-export default Default;
+export default GallerySettingsStory;
