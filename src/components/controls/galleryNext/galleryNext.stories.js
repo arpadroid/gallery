@@ -53,7 +53,7 @@ export const Test = {
             prevControl.click();
             await waitFor(() => {
                 expect(
-                    canvas.getByRole('heading', { level: 2, name: 'Blue II by Joan Miró (1961)' })
+                    canvas.getByRole('heading', { level: 2, name: 'Leonardo da Vinci' })
                 ).toBeInTheDocument();
             });
         });
