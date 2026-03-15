@@ -24,11 +24,40 @@ class GalleryThumbnails extends List {
             itemComponent: GalleryThumbnail,
             itemTag: 'gallery-thumbnail',
             hasArrows: false,
-            selectedClass: 'galleryThumbnail--selected'
+            selectedClass: 'galleryThumbnail--selected',
+            templateChildren: {
+                arrowBack: {
+                    tag: 'icon-button',
+                    canRender: 'has-arrows',
+                    className: 'galleryThumbnails__arrowBack galleryThumbnails__arrow',
+                    attr: {
+                        icon: 'keyboard_arrow_left',
+                        tooltip: 'Previous',
+                        tooltipPosition: 'right'
+                    }
+                },
+                thumbnails: {
+                    tag: 'div',
+                    canRender: true,
+                    className: 'galleryThumbnails__mask',
+                    content: () => this.renderItems()
+                },
+                arrowForward: {
+                    tag: 'icon-button',
+                    canRender: 'has-arrows',
+                    className: 'galleryThumbnails__arrowForward galleryThumbnails__arrow',
+                    attr: {
+                        icon: 'keyboard_arrow_right',
+                        tooltip: 'Next',
+                        tooltipPosition: 'left'
+                    }
+                }
+            }
         });
     }
 
     async _initialize() {
+        this.bind('scrollForward', 'scrollBack', '_handleSelectedItem', '_initializeThumbnails');
         super._initialize();
         await customElements.whenDefined('arpa-gallery');
         this.bind('_initializeThumbnails', '_handleSelectedItem');
@@ -80,7 +109,9 @@ class GalleryThumbnails extends List {
 
     _initializeThumbnails() {
         if (this.thumbnailsInitialized) return;
-        this.thumbnailMask && (this.thumbnailMask.innerHTML = this.renderItems());
+        const mask = this.querySelector('.galleryThumbnails__mask');
+        const itemHTML = this.renderItems();
+        mask && (mask.innerHTML = itemHTML);
         this.thumbnailsInitialized = true;
     }
 
@@ -88,14 +119,8 @@ class GalleryThumbnails extends List {
     // #region Rendering
     ///////////////////////////////
 
-    render() {
-        const hasArrows = this.getProperty('has-arrows');
-        const content = html`
-            ${(hasArrows && this.renderArrowBack()) || ''}
-            <div class="galleryThumbnails__mask"></div>
-            ${(hasArrows && this.renderArrowForward()) || ''}
-        `;
-        this.innerHTML = content;
+    _getTemplate() {
+        return html`{arrowBack}{thumbnails}{arrowForward}`;
     }
 
     getTemplateVars() {
@@ -186,20 +211,6 @@ class GalleryThumbnails extends List {
         );
     }
 
-    renderArrowBack() {
-        return html`<icon-button
-            icon="keyboard_arrow_left"
-            class="galleryThumbnails__arrowBack galleryThumbnails__arrow"
-        ></icon-button>`;
-    }
-
-    renderArrowForward() {
-        return html`<icon-button
-            icon="keyboard_arrow_right"
-            class="galleryThumbnails__arrowForward galleryThumbnails__arrow"
-        ></icon-button>`;
-    }
-
     /////////////////////////////
     // #endregion Rendering
     ////////////////////////////
@@ -227,6 +238,7 @@ class GalleryThumbnails extends List {
     }
 
     scrollForward() {
+        this.thumbnailMask = this.querySelector('.galleryThumbnails__mask');
         if (!this.thumbnailMask) return;
         const viewWidth = this.getViewWidth();
         const rect = this.thumbnailMask.getBoundingClientRect();

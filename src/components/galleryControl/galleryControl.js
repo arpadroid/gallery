@@ -56,16 +56,17 @@ class GalleryControl extends ArpaElement {
     }
 
     _getTemplate() {
+        const lbl = this.getProperty('label') || this.getProperty('label-text') || '';
         return html`<icon-button
             ${attrString({
                 variant: 'compact',
                 icon: this.getProperty('icon'),
                 class: 'galleryControl__button',
                 tooltipPosition: this.getTooltipPosition(),
-                ariaLabel: this.getProperty('label-text') || this.getProperty('label')
+                ariaLabel: this.getProperty('label-text') || this.getProperty('label') || ''
             })}
         >
-            <zone name="tooltip-content">${this.getProperty('label')}</zone>
+            <zone name="tooltip-content">${lbl}</zone>
         </icon-button>`;
     }
 
