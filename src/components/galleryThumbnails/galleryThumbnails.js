@@ -199,8 +199,8 @@ class GalleryThumbnails extends List {
         const position = this.getProperty('position');
         const imageSize = ['left', 'right'].includes(position) ? 'thumbnail_vertical' : 'thumbnail';
         return mapHTML(
-            items, // @ts-ignore
-            item =>
+            items,
+            (/** @type {GalleryItemConfigType} */ item) =>
                 html`<gallery-thumbnail
                     item-id="${item.itemId}"
                     render-mode="minimal"
