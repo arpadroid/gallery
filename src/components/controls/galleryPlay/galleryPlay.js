@@ -19,7 +19,6 @@ class GalleryPlay extends GalleryControl {
             icon: 'play_arrow',
             iconPause: 'pause',
             label: this.i18n('lblPlay'),
-            labelText: this.i18nText('lblPlay'),
             labelPause: this.i18n('lblPause'),
             labelPosition: 'bottom',
             playInterval: this.gallery?.getProperty('play-interval') || 5000

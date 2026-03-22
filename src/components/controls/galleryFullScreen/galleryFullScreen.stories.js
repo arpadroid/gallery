@@ -9,7 +9,7 @@
  * @typedef {import('@storybook/web-components-vite').Args} Args
  */
 
-import { playSetup, renderStatic } from '../../gallery/gallery.stories.util';
+import { playSetup } from '../../gallery/gallery.stories.util';
 import GalleryStory from '../../gallery/gallery.stories';
 import { expect, waitFor } from 'storybook/test';
 
@@ -36,7 +36,7 @@ export const Test = {
     },
     play: async ({ canvasElement, step }) => {
         const { canvas } = await playSetup(canvasElement);
-        const button = await waitFor(() => canvas.getByRole('button', { name: 'Toggle full screen' }));
+        const button = await waitFor(() => canvas.getByRole('button', { name: 'Enter full screen' }));
         const control = button.closest('gallery-full-screen');
         await step('Renders the full screen control', async () => {
             expect(button).toBeInTheDocument();

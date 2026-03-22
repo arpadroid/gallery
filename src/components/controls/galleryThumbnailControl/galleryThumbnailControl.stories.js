@@ -38,7 +38,7 @@ export const Test = {
     },
     play: async ({ canvasElement, step }) => {
         const { canvas, galleryNode } = await playSetup(canvasElement);
-        const button = await waitFor(() => canvas.getByRole('button', { name: 'Toggle thumbnails' }));
+        const button = await waitFor(() => canvas.getByRole('button', { name: 'Hide thumbnails' }));
         const thumbnails = canvasElement.querySelector('gallery-thumbnails');
         await customElements.whenDefined('gallery-thumbnails');
 

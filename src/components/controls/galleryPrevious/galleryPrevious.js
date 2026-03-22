@@ -7,8 +7,7 @@ class GalleryPrevious extends GalleryControl {
         return mergeObjects(super.getDefaultConfig(), {
             className: 'galleryPrevious',
             icon: 'skip_previous',
-            label: this.i18n('lblPrevious'),
-            labelText: this.i18nText('lblPrevious')
+            label: this.i18n('lblPrevious')
         });
     }
 

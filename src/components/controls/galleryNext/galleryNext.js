@@ -7,8 +7,7 @@ class GalleryNext extends GalleryControl {
         return mergeObjects(super.getDefaultConfig(), {
             className: 'galleryNext',
             icon: 'skip_next',
-            label: this.i18n('lblNext'),
-            labelText: this.i18nText('lblNext')
+            label: this.i18n('lblNext')
         });
     }
 

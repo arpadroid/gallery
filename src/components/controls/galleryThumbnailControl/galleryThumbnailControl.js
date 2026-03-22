@@ -18,7 +18,6 @@ class GalleryThumbnailControl extends GalleryControl {
             className: 'galleryThumbnailControl',
             icon: 'view_carousel',
             label: this.i18n('lblHideThumbnails'),
-            labelText: this.i18nText('lblToggleThumbnails'),
             labelHide: this.i18n('lblHideThumbnails'),
             labelPosition: 'bottom',
             thumbnailsPosition: 'left',

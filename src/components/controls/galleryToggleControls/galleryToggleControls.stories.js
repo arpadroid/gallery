@@ -37,7 +37,7 @@ export const Test = {
     },
     play: async ({ canvasElement, step }) => {
         const { canvas } = await playSetup(canvasElement);
-        const button = await waitFor(() => canvas.getByRole('button', { name: 'Toggle controls' }));
+        const button = await waitFor(() => canvas.getByRole('button', { name: 'Hide controls' }));
 
         await step('Renders the toggle control', async () => {
             expect(button).toBeInTheDocument();

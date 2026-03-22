@@ -3,6 +3,6 @@ import { ArpaElementConfigType } from '@arpadroid/ui';
 export type GalleryControlConfigType = ArpaElementConfigType & {
     icon?: string;
     label?: string;
-    labelText?: string;
+    ariaLabel?: string;
     debounceTime?: number;
 };

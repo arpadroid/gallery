@@ -20,7 +20,6 @@ class GalleryToggleControls extends GalleryControl {
             icon: 'keyboard_double_arrow_down',
             openIcon: 'keyboard_double_arrow_up',
             label: this.i18n('lblHideControls'),
-            labelText: this.i18nText('lblToggleControls'),
             openLabel: this.i18n('lblShowControls')
         };
     }
