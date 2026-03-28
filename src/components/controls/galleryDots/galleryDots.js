@@ -61,8 +61,9 @@ class GalleryDots extends GalleryControl {
         this.pager = this.querySelector('arpa-pager');
 
         this.pager?.onRendered(() => {
-            if (typeof window?.requestIdleCallback !== 'function') return;
-            window.requestIdleCallback(() => this._initializeTooltip());
+            requestAnimationFrame(() => {
+                this._initializeTooltip();
+            });
         });
         this.gallery?._initializePager();
         await this.pager?.promise;
@@ -145,8 +146,7 @@ class GalleryDots extends GalleryControl {
     ////////////////////
 
     _onComplete() {
-        if (typeof window?.requestIdleCallback !== 'function') return;
-        window.requestIdleCallback(() => this._initializeTooltip());
+        window.requestAnimationFrame(() => this._initializeTooltip());
     }
 
     // #endregion Lifecycle

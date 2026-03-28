@@ -49,8 +49,8 @@ class GalleryControl extends ArpaElement {
         const config = {
             className: 'galleryControl',
             icon: 'sports_esports',
-            label: 'Gallery control',
-            debounceTime: 500
+            debounceTime: 500,
+            handleContent: false
         };
         return super.getDefaultConfig(config);
     }
