@@ -2,6 +2,7 @@
  * @typedef {import('./galleryThumbnailControl.types').GalleryThumbnailControlConfigType} GalleryThumbnailControlConfigType
  * @typedef {import('./galleryThumbnailControl.types').ThumbnailsPositionType} ThumbnailsPositionType
  * @typedef {import('../../gallery/gallery').GallerySettings} GallerySettings
+ * @typedef {import('../../galleryThumbnails/galleryThumbnails').default} GalleryThumbnails
  */
 import { defineCustomElement, renderNode } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl';
@@ -33,7 +34,7 @@ class GalleryThumbnailControl extends GalleryControl {
 
     _initializeThumbnails() {
         this.thumbnails && this.thumbnails.remove();
-        this.thumbnails = renderNode(this.renderThumbnails());
+        this.thumbnails = /** @type {GalleryThumbnails} */ (renderNode(this.renderThumbnails()));
         this.thumbnails && this.gallery?.append(this.thumbnails);
         this.positionThumbnails();
     }
