@@ -6,11 +6,11 @@ import { defineCustomElement } from '@arpadroid/tools';
 
 const html = String.raw;
 class GalleryControls extends ListControls {
-    initializeProperties() {
+    $initializeProperties() {
         /** @type {Gallery | null} */
         this.list = /** @type {Gallery | null} */ (this.closest('.arpaList, arpa-gallery'));
         this.listResource = this.list?.listResource;
-        return super.initializeProperties();
+        return super.$initializeProperties();
     }
 
     getDefaultConfig() {

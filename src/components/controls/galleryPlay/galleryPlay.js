@@ -26,9 +26,9 @@ class GalleryPlay extends GalleryControl {
         return config;
     }
 
-    _initialize() {
+    $initialize() {
         this.bind('_onPlay', '_onPause');
-        super._initialize();
+        super.$initialize();
         this.gallery?.on('play', this._onPlay);
         this.gallery?.on('pause', this._onPause);
     }
@@ -52,8 +52,8 @@ class GalleryPlay extends GalleryControl {
         this.buttonComponent?.setTooltip(playLabel);
     }
 
-    async _onComplete() {
-        super._onComplete();
+    async $onComplete() {
+        super.$onComplete();
         const itemCount = this.gallery?.getItemCount() || 0;
         itemCount < 2 && this.remove();
     }

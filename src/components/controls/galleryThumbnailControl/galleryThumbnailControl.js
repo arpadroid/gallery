@@ -26,8 +26,8 @@ class GalleryThumbnailControl extends GalleryControl {
         };
     }
 
-    _initialize() {
-        super._initialize();
+    $initialize() {
+        super.$initialize();
         this.isActive = this.getProp('is-active');
         this._initializeThumbnails();
     }

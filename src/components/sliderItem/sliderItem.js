@@ -31,7 +31,7 @@ class SliderItem extends GalleryItem {
      * Returns the template for the list item.
      * @returns {string}
      */
-    _getTemplate() {
+    $renderTemplate() {
         this.getContentOverlay() && this.setAttribute('content-overlay', '');
         const contentPosition = this.getContentPosition();
         contentPosition && this.setAttribute('content-position', contentPosition);

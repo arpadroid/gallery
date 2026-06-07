@@ -76,7 +76,7 @@ class ImagePreview extends ArpaElement {
         }
     }
 
-    _getTemplate() {
+    $renderTemplate() {
         return html`<arpa-dialog class="imagePreview__dialog" id="{id}-dialog" variant="compact" size="full-screen">
             <zone name="content">
                 <arpa-gallery id="{id}-gallery" controls="{controls}" zone="gallery">{item}</arpa-gallery>

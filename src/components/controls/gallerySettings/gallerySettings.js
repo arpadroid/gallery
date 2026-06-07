@@ -29,8 +29,8 @@ class GallerySettings extends GalleryControl {
         });
     }
 
-    initializeProperties() {
-        super.initializeProperties();
+    $initializeProperties() {
+        super.$initializeProperties();
         /** @type {Gallery | null} */
         this.gallery = this.closest('.arpaList, .gallery');
         /** @type {ListResource} */
@@ -107,7 +107,7 @@ class GallerySettings extends GalleryControl {
     // #region Rendering
     ////////////////////////////
 
-    _getTemplate() {
+    $renderTemplate() {
         return html`<icon-menu
             variant="compact"
             menu-position="false"
@@ -172,7 +172,7 @@ class GallerySettings extends GalleryControl {
     // #region Initialize Nodes
     ////////////////////////////
 
-    async _initializeNodes() {
+    async $initializeNodes() {
         /** @type {IconMenu | null} */
         this.menuNode = this.querySelector('icon-menu');
         this.menuNode?.promise.then(() => {

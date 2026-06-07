@@ -56,9 +56,9 @@ class GalleryThumbnails extends List {
         });
     }
 
-    async _initialize() {
+    async $initialize() {
         this.bind('scrollForward', 'scrollBack', '_handleSelectedItem', '_initializeThumbnails');
-        super._initialize();
+        super.$initialize();
         await customElements.whenDefined('arpa-gallery');
         this.bind('_initializeThumbnails', '_handleSelectedItem');
         /** @type {Gallery | null} */
@@ -119,7 +119,7 @@ class GalleryThumbnails extends List {
     // #region Rendering
     ///////////////////////////////
 
-    _getTemplate() {
+    $renderTemplate() {
         return html`{arrowBack}{thumbnails}{arrowForward}`;
     }
 
@@ -129,8 +129,8 @@ class GalleryThumbnails extends List {
         };
     }
 
-    async _initializeNodes() {
-        await super._initializeNodes();
+    async $initializeNodes() {
+        await super.$initializeNodes();
         /** @type {HTMLElement | null} */
         this.thumbnailMask = this.querySelector('.galleryThumbnails__mask');
         this.thumbnailMask?.append(...(this._childNodes || []));

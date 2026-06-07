@@ -12,7 +12,7 @@ class GalleryDragControl extends ArpaElement {
     /** @type {GalleryDragConfigType} */
     _config = this._config;
 
-    _initialize() {
+    $initialize() {
         this.bind('_onTouchStart', '_onTouchMove', '_onTouchEnd');
     }
 
@@ -30,11 +30,11 @@ class GalleryDragControl extends ArpaElement {
         });
     }
 
-    _onConnected() {
-        super._onConnected();
+    $onConnected() {
+        super.$onConnected();
     }
 
-    async _onComplete() {
+    async $onComplete() {
         await this.gallery?.promise;
         this._initializeEventListeners();
         this.remove();

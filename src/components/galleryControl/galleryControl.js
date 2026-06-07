@@ -33,7 +33,7 @@ class GalleryControl extends ArpaElement {
         observerMixin(this);
     }
 
-    _initialize() {
+    $initialize() {
         /** @type {Gallery | null} */
         this.gallery = this.closest('.gallery');
         /** @type {ListResource} */
@@ -55,7 +55,7 @@ class GalleryControl extends ArpaElement {
         return super.getDefaultConfig(config);
     }
 
-    _getTemplate() {
+    $renderTemplate() {
         const lbl = this.getProp('label') || '';
         return html`<icon-button
             ${attrString({
@@ -88,7 +88,7 @@ class GalleryControl extends ArpaElement {
         return tooltipPosition;
     }
 
-    async _initializeNodes() {
+    async $initializeNodes() {
         /** @type {IconButton | null} */
         this.buttonComponent = /** @type {IconButton | null} */ (this.querySelector('icon-button'));
         this.buttonComponent?.promise.then(() => {

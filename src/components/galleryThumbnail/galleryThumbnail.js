@@ -11,8 +11,8 @@ import { defineCustomElement, mergeObjects } from '@arpadroid/tools';
 
 const html = String.raw;
 class GalleryThumbnail extends ListItem {
-    _preInitialize() {
-        super._preInitialize();
+    $preInitialize() {
+        super.$preInitialize();
         /** @type {Gallery | null} */
         this.gallery = this.closest('.gallery');
         /** @type {ListResource} */
@@ -53,7 +53,7 @@ class GalleryThumbnail extends ListItem {
      * Returns the template for the list item.
      * @returns {string}
      */
-    _getTemplate() {
+    $renderTemplate() {
         return html`<{wrapperComponent} {wrapperAttributes}>
                 {image}
                 ${this.hasTitle() ? '{title}' : ''}

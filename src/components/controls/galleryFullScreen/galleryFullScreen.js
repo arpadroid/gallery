@@ -12,9 +12,9 @@ class GalleryFullScreen extends GalleryControl {
         });
     }
 
-    _initialize() {
+    $initialize() {
         this.bind('_onFullScreenChange');
-        super._initialize();
+        super.$initialize();
         document.addEventListener('fullscreenchange', this._onFullScreenChange);
     }
 
@@ -38,8 +38,8 @@ class GalleryFullScreen extends GalleryControl {
         this.buttonComponent?.setTooltip(this.i18n('lblExitFullScreen'));
     }
 
-    _onDestroy() {
-        super._onDestroy();
+    $onDestroy() {
+        super.$onDestroy();
         document.removeEventListener('fullscreenchange', this._onFullScreenChange);
     }
 }

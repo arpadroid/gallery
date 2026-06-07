@@ -47,8 +47,8 @@ class GalleryToggleControls extends GalleryControl {
         }
     }
 
-    async _onComplete() {
-        super._onComplete();
+    async $onComplete() {
+        super.$onComplete();
         await this?.gallery?.promise;
         await customElements.whenDefined('arpa-gallery');
     }

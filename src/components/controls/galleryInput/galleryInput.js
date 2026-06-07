@@ -7,9 +7,9 @@ import GalleryControl from '../../galleryControl/galleryControl';
 
 const html = String.raw;
 class GalleryInput extends GalleryControl {
-    _initialize() {
+    $initialize() {
         this.bind('_onSubmit', '_onPageFilterChange', '_onItemsChange');
-        super._initialize();
+        super.$initialize();
         this.resource?.pageFilter?.on('value', this._onPageFilterChange);
         this.resource?.on('items', this._onItemsChange);
     }
@@ -51,7 +51,7 @@ class GalleryInput extends GalleryControl {
         return true;
     }
 
-    async _initializeNodes() {
+    async $initializeNodes() {
         /** @type {FormComponent | null} */
         this.form = this.querySelector('arpa-form'); // @ts-ignore
         this.form?.onSubmit(this._onSubmit);
@@ -91,8 +91,8 @@ class GalleryInput extends GalleryControl {
         this.inputField?.input?.setAttribute('max', totalItems);
     }
 
-    async _onComplete() {
-        super._onComplete();
+    async $onComplete() {
+        super.$onComplete();
         const itemCount = this.gallery?.getItemCount() || 0;
         itemCount < 2 && this.remove();
     }

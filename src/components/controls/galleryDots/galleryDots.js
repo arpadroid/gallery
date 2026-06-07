@@ -31,7 +31,7 @@ class GalleryDots extends GalleryControl {
         };
     }
 
-    _getTemplate() {
+    $renderTemplate() {
         return html`<arpa-pager
             id="${this.id}-listPager"
             has-arrow-controls="false"
@@ -43,8 +43,8 @@ class GalleryDots extends GalleryControl {
             url-param="${this.gallery?.getParamName('page')}"
         ></arpa-pager>`;
     }
-    _initialize() {
-        super._initialize();
+    $initialize() {
+        super.$initialize();
         this.pageFilter = this.gallery?.listResource?.getFilter('page');
         this.classList.add('galleryDots');
         this._container = this.querySelector('.galleryDots__container');
@@ -55,8 +55,8 @@ class GalleryDots extends GalleryControl {
         }
     }
 
-    async _initializeNodes() {
-        await super._initializeNodes();
+    async $initializeNodes() {
+        await super.$initializeNodes();
         /** @type {Pager | null} */
         this.pager = this.querySelector('arpa-pager');
 
@@ -145,7 +145,7 @@ class GalleryDots extends GalleryControl {
     // #region Lifecycle
     ////////////////////
 
-    _onComplete() {
+    $onComplete() {
         window.requestAnimationFrame(() => this._initializeTooltip());
     }
 

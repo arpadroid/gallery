@@ -28,7 +28,7 @@ class GalleryItem extends ListManagerItem {
      * Returns the template for the list item.
      * @returns {string}
      */
-    _getTemplate() {
+    $renderTemplate() {
         return html`<{wrapperComponent} {wrapperAttributes}>
             <div class="galleryItem__contentWrapper">{titleContainer}{children}{image}</div>
             {caption} 
@@ -79,8 +79,8 @@ class GalleryItem extends ListManagerItem {
         return html`<truncate-text ${attrString(attr)}>${this.getCaption() || ''}</truncate-text>`;
     }
 
-    async _initializeNodes() {
-        await super._initializeNodes();
+    async $initializeNodes() {
+        await super.$initializeNodes();
         this.captionNode = this.querySelector('.galleryItem__caption');
         return true;
     }

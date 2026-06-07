@@ -23,7 +23,7 @@ class GalleryToggleCaptions extends GalleryControl {
         return this.gallery?.classList.contains('gallery--captions-on');
     }
 
-    _onConnected() {
+    $onConnected() {
         this.updateCaptions(true);
     }
 

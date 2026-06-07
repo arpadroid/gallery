@@ -86,9 +86,9 @@ class Gallery extends ListManager {
         return /** @type {GalleryConfigType} */ (super.getDefaultConfig(conf));
     }
 
-    _initialize() {
+    $initialize() {
         this.bind('_onItemsUpdated');
-        super._initialize();
+        super.$initialize();
     }
 
     getActiveClass() {
@@ -181,8 +181,8 @@ class Gallery extends ListManager {
         `;
     }
 
-    async _initializeNodes() {
-        super._initializeNodes();
+    async $initializeNodes() {
+        super.$initializeNodes();
         this.controls = /** @type {GalleryControls | null} */ (this.querySelector('gallery-controls'));
         this.footerNode = this.querySelector('.gallery__footer');
         this.headerNode = this.querySelector('.gallery__header');
@@ -225,8 +225,8 @@ class Gallery extends ListManager {
         }
     }
 
-    async _onComplete() {
-        await super._onComplete();
+    async $onComplete() {
+        await super.$onComplete();
         await this.promise;
         this.trackActivity();
     }
