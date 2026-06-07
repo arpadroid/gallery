@@ -54,7 +54,7 @@ class GalleryItem extends ListManagerItem {
     }
 
     getCaption() {
-        return this.getProperty('caption');
+        return this.getProp('caption');
     }
 
     /**
@@ -74,7 +74,7 @@ class GalleryItem extends ListManagerItem {
         const attr = {
             class: 'galleryItem__caption',
             zone: 'caption',
-            maxLength: this.getProperty('truncate-caption') ?? 200
+            maxLength: this.getProp('truncate-caption') ?? 200
         };
         return html`<truncate-text ${attrString(attr)}>${this.getCaption() || ''}</truncate-text>`;
     }

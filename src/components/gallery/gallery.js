@@ -92,7 +92,7 @@ class Gallery extends ListManager {
     }
 
     getActiveClass() {
-        return this?.getProperty('active-class');
+        return this?.getProp('active-class');
     }
 
     // #endregion Initialization
@@ -107,7 +107,7 @@ class Gallery extends ListManager {
     }
 
     getControlsHiddenClass() {
-        return this?.getProperty('controls-hidden-class') || 'gallery--hide-controls';
+        return this?.getProp('controls-hidden-class') || 'gallery--hide-controls';
     }
 
     toggleControls() {
@@ -135,7 +135,7 @@ class Gallery extends ListManager {
         const activeClass = this.getActiveClass();
         clearTimeout(this.activeTimeout);
         this.isActive = true;
-        const activityTimeout = this.getProperty('activity-timeout') || 3000;
+        const activityTimeout = this.getProp('activity-timeout') || 3000;
         !this.classList.contains(activeClass) && this.classList.add(activeClass);
         this.activeTimeout = setTimeout(() => {
             this.isActive = false;
@@ -151,7 +151,7 @@ class Gallery extends ListManager {
     //////////////////////////////
 
     getLoadingMode() {
-        return this.getProperty('loading-mode');
+        return this.getProp('loading-mode');
     }
 
     getLazyLoadImages() {
@@ -159,7 +159,7 @@ class Gallery extends ListManager {
     }
 
     getCurrentItem() {
-        const itemTag = this.getProperty('item-tag') || 'gallery-item';
+        const itemTag = this.getProp('item-tag') || 'gallery-item';
         return this.querySelector(itemTag);
     }
 
@@ -192,7 +192,7 @@ class Gallery extends ListManager {
         this.controls?.promise && (await this.controls?.promise);
         /** @type {GallerySettings | null} */
         this.settings = this.querySelector('gallery-settings');
-        this.getProperty('autoplay') && this.play();
+        this.getProp('autoplay') && this.play();
         return true;
     }
 
@@ -242,7 +242,7 @@ class Gallery extends ListManager {
     //////////////////////////////
 
     getPlayInterval() {
-        return (Number(this.settings?.getPlayInterval() || this.getProperty('play-interval')) || 5) * 1000;
+        return (Number(this.settings?.getPlayInterval() || this.getProp('play-interval')) || 5) * 1000;
     }
 
     play(playRightAway = true) {

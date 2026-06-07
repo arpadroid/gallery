@@ -39,10 +39,10 @@ class GalleryToggleControls extends GalleryControl {
     _onClick() {
         this.gallery?.toggleControls();
         if (this.gallery?.isControlsHidden()) {
-            this.buttonComponent?.setIcon(this.getProperty('open-icon'));
+            this.buttonComponent?.setIcon(this.getProp('open-icon'));
             this.buttonComponent?.setTooltip(this.i18n('open-label'));
         } else {
-            this.buttonComponent?.setIcon(this.getProperty('icon'));
+            this.buttonComponent?.setIcon(this.getProp('icon'));
             this.buttonComponent?.setTooltip(this.i18n('lblHideControls'));
         }
     }

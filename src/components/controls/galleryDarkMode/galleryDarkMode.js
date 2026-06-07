@@ -23,12 +23,12 @@ class GalleryDarkMode extends GalleryControl {
         const styleNode = /** @type {HTMLLinkElement | null} */ (document.getElementById('dark-styles'));
         if (styleNode?.disabled) {
             styleNode.removeAttribute('disabled');
-            this.buttonComponent?.setIcon(this.getProperty('icon-light'));
-            this.buttonComponent?.setTooltip(this.getProperty('label-light'));
+            this.buttonComponent?.setIcon(this.getProp('icon-light'));
+            this.buttonComponent?.setTooltip(this.getProp('label-light'));
         } else {
             styleNode && (styleNode.disabled = true);
-            this.buttonComponent?.setIcon(this.getProperty('icon'));
-            this.buttonComponent?.setTooltip(this.getProperty('label'));
+            this.buttonComponent?.setIcon(this.getProp('icon'));
+            this.buttonComponent?.setTooltip(this.getProp('label'));
         }
     }
 }

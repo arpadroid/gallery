@@ -46,18 +46,18 @@ class SliderItem extends GalleryItem {
     getContentOverlay() {
         return (
             this.payload?.contentOverlay ||
-            this.getProperty('content-overlay') ||
-            this.list?.getProperty('content-overlay') ||
-            this.getProperty('default-content-overlay')
+            this.getProp('content-overlay') ||
+            this.list?.getProp('content-overlay') ||
+            this.getProp('default-content-overlay')
         );
     }
 
     getContentPosition() {
         return (
             this.payload?.contentPosition ||
-            this.getProperty('content-position') ||
-            this.list?.getProperty('content-position') ||
-            this.getProperty('default-content-position')
+            this.getProp('content-position') ||
+            this.list?.getProp('content-position') ||
+            this.getProp('default-content-position')
         );
     }
 }

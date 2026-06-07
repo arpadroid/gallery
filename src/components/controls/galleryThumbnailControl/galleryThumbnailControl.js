@@ -28,7 +28,7 @@ class GalleryThumbnailControl extends GalleryControl {
 
     _initialize() {
         super._initialize();
-        this.isActive = this.getProperty('is-active');
+        this.isActive = this.getProp('is-active');
         this._initializeThumbnails();
     }
 
@@ -47,8 +47,8 @@ class GalleryThumbnailControl extends GalleryControl {
         const settingsNode = this.gallery?.getSettingsNode();
         return (
             (typeof settingsNode?.getThumbnailsPosition === 'function' && settingsNode?.getThumbnailsPosition()) ||
-            this.gallery?.getProperty('thumbnails-position') ||
-            this.getProperty('thumbnails-position') ||
+            this.gallery?.getProp('thumbnails-position') ||
+            this.getProp('thumbnails-position') ||
             'bottom'
         );
     }

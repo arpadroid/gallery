@@ -21,7 +21,7 @@ class GalleryPlay extends GalleryControl {
             label: this.i18n('lblPlay'),
             labelPause: this.i18n('lblPause'),
             labelPosition: 'bottom',
-            playInterval: this.gallery?.getProperty('play-interval') || 5000
+            playInterval: this.gallery?.getProp('play-interval') || 5000
         };
         return config;
     }
@@ -39,7 +39,7 @@ class GalleryPlay extends GalleryControl {
 
     _onPlay() {
         this.buttonComponent?.setIcon('pause');
-        const pauseLabel = this.getProperty('label-pause');
+        const pauseLabel = this.getProp('label-pause');
         this.buttonComponent?.setTooltip(pauseLabel);
     }
 
@@ -48,7 +48,7 @@ class GalleryPlay extends GalleryControl {
      */
     _onPause() {
         this.buttonComponent?.setIcon('play_arrow');
-        const playLabel = this.getProperty('label');
+        const playLabel = this.getProp('label');
         this.buttonComponent?.setTooltip(playLabel);
     }
 

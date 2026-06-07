@@ -58,7 +58,7 @@ class GalleryInput extends GalleryControl {
         
         this.inputField = /** @type {NumberField | null} */ (this.querySelector('number-field'));
         this.inputField?.promise.then(() => {
-            const lblCurrentSlide = this.getProperty('lbl-current-slide');
+            const lblCurrentSlide = this.getProp('lbl-current-slide');
             lblCurrentSlide && this.inputField?.input?.setAttribute('aria-label', lblCurrentSlide);
         });
         return true;

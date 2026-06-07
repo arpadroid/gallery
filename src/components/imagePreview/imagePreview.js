@@ -35,8 +35,8 @@ class ImagePreview extends ArpaElement {
         return {
             ...super.getTemplateVars(),
             item: this.renderGalleryItem(),
-            id: this.getProperty('id') || 'imagePreview',
-            controls: this.getProperty('controls')
+            id: this.getProp('id') || 'imagePreview',
+            controls: this.getProp('controls')
         };
     }
 
@@ -85,9 +85,9 @@ class ImagePreview extends ArpaElement {
     }
 
     renderGalleryItem() {
-        const image = this.getProperty('image');
-        const title = this.getProperty('title') || '';
-        const caption = this.getProperty('caption');
+        const image = this.getProp('image');
+        const title = this.getProp('title') || '';
+        const caption = this.getProp('caption');
         if (!image) return '';
         return html`<gallery-item ${attrString({ title, caption, image })} zone="item"></gallery-item>`;
     }

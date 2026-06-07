@@ -30,12 +30,12 @@ class GalleryToggleCaptions extends GalleryControl {
     updateCaptions(on = this.hasCaptions()) {
         if (!on) {
             this.gallery?.classList.remove('gallery--captions-on');
-            this.buttonComponent?.setIcon(this.getProperty('icon-off'));
-            this.buttonComponent?.setTooltip(this.getProperty('label-off'));
+            this.buttonComponent?.setIcon(this.getProp('icon-off'));
+            this.buttonComponent?.setTooltip(this.getProp('label-off'));
         } else {
             this.gallery?.classList.add('gallery--captions-on');
-            this.buttonComponent?.setIcon(this.getProperty('icon'));
-            this.buttonComponent?.setTooltip(this.getProperty('label'));
+            this.buttonComponent?.setIcon(this.getProp('icon'));
+            this.buttonComponent?.setTooltip(this.getProp('label'));
         }
     }
 

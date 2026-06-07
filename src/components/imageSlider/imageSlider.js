@@ -30,8 +30,8 @@ class ImageSlider extends Gallery {
 
     _preRender() {
         super._preRender();
-        this.setAttribute('content-position', this.getProperty('content-position'));
-        const contentOverlay = this.getProperty('content-overlay');
+        this.setAttribute('content-position', this.getProp('content-position'));
+        const contentOverlay = this.getProp('content-overlay');
         contentOverlay && this.setAttribute('content-overlay', contentOverlay);
     }
 }

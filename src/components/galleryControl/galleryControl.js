@@ -56,14 +56,14 @@ class GalleryControl extends ArpaElement {
     }
 
     _getTemplate() {
-        const lbl = this.getProperty('label') || '';
+        const lbl = this.getProp('label') || '';
         return html`<icon-button
             ${attrString({
                 variant: 'compact',
-                icon: this.getProperty('icon'),
+                icon: this.getProp('icon'),
                 class: 'galleryControl__button',
                 tooltipPosition: this.getTooltipPosition(),
-                ariaLabel: this.resolveAriaLabel(this.getProperty('label') || '')
+                ariaLabel: this.resolveAriaLabel(this.getProp('label') || '')
             })}
         >
             <zone name="tooltip-content">${lbl}</zone>
@@ -109,7 +109,7 @@ class GalleryControl extends ArpaElement {
      * @param {MouseEvent} event - The click event.
      */
     _onClicked(event) {
-        const debounceTime = this.getProperty('debounce-time');
+        const debounceTime = this.getProp('debounce-time');
         if (debounceTime && this.isClicking) return;
         this.isClicking = true;
         this.signal('click', {

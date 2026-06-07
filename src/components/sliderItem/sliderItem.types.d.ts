@@ -1,9 +1,11 @@
 import { GalleryItemConfigType } from '../galleryItem/galleryItem.types';
 
+export type SliderItemContentPositionType = 'top' | 'bottom' | 'left' | 'right';
+
 export type SliderItemConfigType = GalleryItemConfigType & {
     someProperty?: string;
     contentOverlay?: boolean;
     defaultContentOverlay?: boolean;
-    contentPosition?: 'top' | 'bottom' | 'left' | 'right';
-    defaultContentPosition?: SliderItemConfigType['contentPosition'];
+    contentPosition?: SliderItemContentPositionType;
+    defaultContentPosition?: SliderItemContentPositionType;
 };

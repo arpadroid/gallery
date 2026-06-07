@@ -61,13 +61,13 @@ class GallerySettings extends GalleryControl {
     getThumbnailsPosition() {
         return (
             localStorage.getItem('gallery:thumbnails-position') ||
-            this.gallery?.getProperty('thumbnails-position') ||
+            this.gallery?.getProp('thumbnails-position') ||
             'bottom'
         );
     }
 
     getPlayInterval() {
-        return this.getSavedPlayInterval() || this.gallery?.getProperty('play-interval') || 5;
+        return this.getSavedPlayInterval() || this.gallery?.getProp('play-interval') || 5;
     }
 
     getSavedPlayInterval() {
@@ -115,7 +115,7 @@ class GallerySettings extends GalleryControl {
             tooltip="${this.i18nText('lblSettings')}"
             ${attrString({
                 ...this.getProperties('icon', 'label'),
-                tooltip: this.getProperty('btn-label')
+                tooltip: this.getProp('btn-label')
             })}
         >
             <div class="gallerySettings__content">{form}</div>

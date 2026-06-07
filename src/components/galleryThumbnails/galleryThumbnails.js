@@ -75,7 +75,7 @@ class GalleryThumbnails extends List {
      */
     async _handleSelectedItem(items) {
         if (!items?.length) return;
-        const selectedClass = this.getProperty('selected-class');
+        const selectedClass = this.getProp('selected-class');
         const selected = items && items?.[0];
         if (!selected) return;
         const selectedItems = this.querySelectorAll(`.${selectedClass}`);
@@ -146,7 +146,7 @@ class GalleryThumbnails extends List {
     async _initializeTooltip() {
         const cursorTooltipPosition = this.getCursorTooltipPosition();
         const tooltip = new Tooltip({
-            text: 'Thumbnails tooltip',
+            content: 'Thumbnails tooltip',
             className: 'galleryThumbnails__tooltip',
             handler: /** @type {HTMLElement} */ (this.thumbnailMask),
             position: 'cursor',
@@ -175,7 +175,7 @@ class GalleryThumbnails extends List {
     }
 
     getCursorTooltipPosition() {
-        const position = this.getProperty('position');
+        const position = this.getProp('position');
         if (position === 'top') return 'bottom';
         if (position === 'bottom') return 'top';
         if (position === 'left') return 'right';
@@ -184,7 +184,7 @@ class GalleryThumbnails extends List {
     }
 
     getCursorAxis() {
-        const position = this.getProperty('position');
+        const position = this.getProp('position');
         if (['top', 'bottom'].includes(position)) return 'x';
         if (['left', 'right'].includes(position)) return 'y';
         return 'x';
@@ -196,7 +196,7 @@ class GalleryThumbnails extends List {
      * @returns {string}
      */
     renderItems(items = this.getThumbnailsPayload() || []) {
-        const position = this.getProperty('position');
+        const position = this.getProp('position');
         const imageSize = ['left', 'right'].includes(position) ? 'thumbnail_vertical' : 'thumbnail';
         return mapHTML(
             items,

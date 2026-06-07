@@ -42,11 +42,11 @@ class GalleryThumbnail extends ListItem {
     }
 
     getItemThumbnail() {
-        return this.itemNode?.getProperty('thumbnail') || this.itemNode?.getProperty('image');
+        return this.itemNode?.getProp('thumbnail') || this.itemNode?.getProp('image');
     }
 
     hasTitle() {
-        return this.hasProperty('has-title');
+        return this.hasProp('has-title');
     }
 
     /**
@@ -63,7 +63,7 @@ class GalleryThumbnail extends ListItem {
     }
 
     getGalleryItem() {
-        const itemId = this.getProperty('item-id');
+        const itemId = this.getProp('item-id');
         return this.galleryResource?.getItem(itemId);
     }
 

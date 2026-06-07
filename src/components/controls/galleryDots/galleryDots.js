@@ -90,7 +90,7 @@ class GalleryDots extends GalleryControl {
         }
 
         this.tooltip = new Tooltip({
-            text: 'Thumbnails tooltip',
+            content: 'Thumbnails tooltip',
             className: 'galleryDots__tooltip',
             handler: /** @type {HTMLElement} */ (this.pager?.itemsNode),
             position: 'cursor',

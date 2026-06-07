@@ -26,7 +26,7 @@ class GalleryDragControl extends ArpaElement {
         /** @type {ListResource} */
         this.resource = this.gallery?.listResource;
         return super.getDefaultConfig({
-            swipeThreshold: this.gallery?.getProperty('swipe-threshold') || 100
+            swipeThreshold: this.gallery?.getProp('swipe-threshold') || 100
         });
     }
 
@@ -84,7 +84,7 @@ class GalleryDragControl extends ArpaElement {
         this.deltaX = Number(this.currentX) - this.startX;
         const item = this.gallery?.getCurrentItem();
         item instanceof HTMLElement && (item.style.transform = `translateX(${this.deltaX}px)`);
-        const threshold = this.getProperty('swipe-threshold');
+        const threshold = this.getProp('swipe-threshold');
         const shouldSlideLeft = this.deltaX < -threshold;
         const shouldSlideRight = this.deltaX > threshold;
         if (shouldSlideLeft || shouldSlideRight) {
