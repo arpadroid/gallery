@@ -146,8 +146,8 @@ class GalleryThumbnails extends List {
     async _initializeTooltip() {
         const cursorTooltipPosition = this.getCursorTooltipPosition();
         const tooltip = new Tooltip({
-            content: 'Thumbnails tooltip',
-            className: 'galleryThumbnails__tooltip',
+            content: '',
+            classNames: ['galleryThumbnails__tooltip '],
             handler: /** @type {HTMLElement} */ (this.thumbnailMask),
             position: 'cursor',
             hasCursorPosition: true,
