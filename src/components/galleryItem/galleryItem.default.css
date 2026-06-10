@@ -22,7 +22,7 @@
     }
 
     circular-spinner {
-        --preloader-size: 120px;
+        --spinner-size: 120px;
     }
 }
 
