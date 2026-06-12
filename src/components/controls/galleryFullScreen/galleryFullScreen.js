@@ -7,8 +7,8 @@ class GalleryFullScreen extends GalleryControl {
         return mergeObjects(super.getDefaultConfig(), {
             className: 'galleryFullScreen',
             icon: 'fullscreen',
-            label: this.i18n('lblEnterFullScreen'),
-            labelText: this.i18nText('lblToggleFullScreen')
+            label: '{i18n:lblEnterFullScreen}',
+            labelText: '{i18n:lblToggleFullScreen}'
         });
     }
 
