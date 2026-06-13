@@ -25,7 +25,7 @@ class GallerySettings extends GalleryControl {
         this.bind('onSubmit', 'updatePlayInterval', 'updateThumbnailsPosition');
         return mergeObjects(super.getDefaultConfig(), {
             icon: 'settings',
-            lblSettings: this.i18nText('lblSettings')
+            lblSettings: '{i18n:lblSettings}'
         });
     }
 
@@ -112,12 +112,14 @@ class GallerySettings extends GalleryControl {
             variant="compact"
             menu-position="false"
             nav-class="gallerySettings__nav"
-            tooltip="${this.i18nText('lblSettings')}"
             ${attrString({
                 ...this.getProperties('icon', 'label'),
                 tooltip: this.getProp('btn-label')
             })}
         >
+            <arpa-zone name="tooltip">
+                ${this.getProp('lblSettings')}
+            </arpa-zone>
             <div class="gallerySettings__content">{form}</div>
         </icon-menu>`;
     }
