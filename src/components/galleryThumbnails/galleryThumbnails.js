@@ -25,7 +25,7 @@ class GalleryThumbnails extends List {
             itemTag: 'gallery-thumbnail',
             hasArrows: false,
             selectedClass: 'galleryThumbnail--selected',
-            templateChildren: {
+            nodesConfig: {
                 arrowBack: {
                     tag: 'icon-button',
                     canRender: 'has-arrows',

@@ -77,7 +77,7 @@ class Gallery extends ListManager {
             tagName: 'arpa-gallery',
             thumbnailsPosition: 'bottom',
             views: ['full'],
-            templateChildren: {
+            nodesConfig: {
                 controls: {
                     tag: 'gallery-controls'
                 }
