@@ -19,8 +19,8 @@ class GalleryToggleControls extends GalleryControl {
             className: 'galleryToggleControls',
             icon: 'keyboard_double_arrow_down',
             openIcon: 'keyboard_double_arrow_up',
-            label: this.i18n('lblHideControls'),
-            openLabel: this.i18n('lblShowControls')
+            label: '{i18n:lblHideControls}',
+            openLabel: '{i18n:lblShowControls}'
         };
     }
 
@@ -39,11 +39,11 @@ class GalleryToggleControls extends GalleryControl {
     _onClick() {
         this.gallery?.toggleControls();
         if (this.gallery?.isControlsHidden()) {
-            this.buttonComponent?.setIcon(this.getProp('open-icon'));
-            this.buttonComponent?.setTooltip(this.i18n('open-label'));
+            this.buttonComponent?.setProp('icon', this.getProp('openIcon'));
+            this.buttonComponent?.setProp('tooltip', this.getProp('openLabel'));
         } else {
-            this.buttonComponent?.setIcon(this.getProp('icon'));
-            this.buttonComponent?.setTooltip(this.i18n('lblHideControls'));
+            this.buttonComponent?.setProp('icon', this.getProp('icon'));
+            this.buttonComponent?.setProp('tooltip', this.getProp('label'));
         }
     }
 

@@ -38,18 +38,18 @@ class GalleryPlay extends GalleryControl {
     }
 
     _onPlay() {
-        this.buttonComponent?.setIcon('pause');
+        this.buttonComponent?.setProp('icon', this.getProp('icon-pause'));
         const pauseLabel = this.getProp('label-pause');
-        this.buttonComponent?.setTooltip(pauseLabel);
+        this.buttonComponent?.setProp('tooltip', pauseLabel);
     }
 
     /**
      * Handles the pause event.
      */
     _onPause() {
-        this.buttonComponent?.setIcon('play_arrow');
+        this.buttonComponent?.setProp('icon', this.getProp('icon'));
         const playLabel = this.getProp('label');
-        this.buttonComponent?.setTooltip(playLabel);
+        this.buttonComponent?.setProp('tooltip', playLabel);
     }
 
     async $onComplete() {

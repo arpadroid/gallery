@@ -66,7 +66,7 @@ class GalleryControl extends ArpaElement {
                 ariaLabel: this.resolveAriaLabel(this.getProp('label') || '')
             })}
         >
-            <zone name="tooltip-content">${lbl}</zone>
+            <arpa-zone name="tooltip">${lbl}</arpa-zone>
         </icon-button>`;
     }
 

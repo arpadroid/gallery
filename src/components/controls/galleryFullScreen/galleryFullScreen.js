@@ -31,11 +31,11 @@ class GalleryFullScreen extends GalleryControl {
     }
 
     onExit() {
-        this.buttonComponent?.setTooltip(this.i18n('lblEnterFullScreen'));
+        this.buttonComponent?.setProp('tooltip', this.i18n('lblEnterFullScreen'));
     }
 
     onEnter() {
-        this.buttonComponent?.setTooltip(this.i18n('lblExitFullScreen'));
+        this.buttonComponent?.setProp('tooltip', this.i18n('lblExitFullScreen'));
     }
 
     $onDestroy() {

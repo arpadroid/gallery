@@ -14,8 +14,8 @@ class GalleryToggleCaptions extends GalleryControl {
         return {
             icon: 'subtitles',
             iconOff: 'subtitles_off',
-            label: this.i18nText('lblShowCaptions'),
-            labelOff: this.i18n('lblHideCaptions')
+            label: '{i18n:lblShowCaptions}',
+            labelOff: '{i18n:lblHideCaptions}'
         };
     }
 
@@ -30,12 +30,12 @@ class GalleryToggleCaptions extends GalleryControl {
     updateCaptions(on = this.hasCaptions()) {
         if (!on) {
             this.gallery?.classList.remove('gallery--captions-on');
-            this.buttonComponent?.setIcon(this.getProp('icon-off'));
-            this.buttonComponent?.setTooltip(this.getProp('label-off'));
+            this.buttonComponent?.setProp('icon', this.getProp('icon-off'));
+            this.buttonComponent?.setProp('tooltip', this.getProp('label-off'));
         } else {
             this.gallery?.classList.add('gallery--captions-on');
-            this.buttonComponent?.setIcon(this.getProp('icon'));
-            this.buttonComponent?.setTooltip(this.getProp('label'));
+            this.buttonComponent?.setProp('icon', this.getProp('icon'));
+            this.buttonComponent?.setProp('tooltip', this.getProp('label'));
         }
     }
 

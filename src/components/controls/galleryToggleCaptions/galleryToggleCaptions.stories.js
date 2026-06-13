@@ -8,7 +8,7 @@
  * @typedef {import('@storybook/web-components-vite').StoryContext} StoryContext
  * @typedef {import('@storybook/web-components-vite').Args} Args
  */
-import { playSetup, renderStatic } from '../../gallery/gallery.stories.util';
+import { playSetup } from '../../gallery/gallery.stories.util';
 import GalleryStory from '../../gallery/gallery.stories';
 import { expect, waitFor, userEvent } from 'storybook/test';
 
