@@ -1,26 +1,20 @@
 /**
  * @typedef {import('./imagePreview.types').ImagePreviewConfigType} ImagePreviewConfigType
- * @typedef {import('../galleryItem/galleryItem').default} GalleryItem
- * @typedef {import('../gallery/gallery.js').default} Gallery
  * @typedef {import('@arpadroid/ui').Dialog} Dialog
- * @typedef {import('@arpadroid/ui').ZoneToolPlaceZoneType} ZoneToolPlaceZoneType
  */
-import { attrString, defineCustomElement } from '@arpadroid/tools';
-import { insertZone, ArpaElement } from '@arpadroid/ui';
+import { defineCustomElement } from '@arpadroid/tools';
+import { ArpaElement } from '@arpadroid/ui';
 
 const html = String.raw;
 class ImagePreview extends ArpaElement {
     /** @type {Dialog | undefined} */ // @ts-ignore
     dialog = this.dialog;
-    _initializeContent() {
-        super._initializeContent();
-    }
+
     /**
      * Returns the default configuration for the image preview.
      * @returns {ImagePreviewConfigType}
      */
     getDefaultConfig() {
-        this.bind('_onZonesLoaded');
         /** @type {ImagePreviewConfigType} */
         const config = {
             id: 'imagePreview',
@@ -31,65 +25,23 @@ class ImagePreview extends ArpaElement {
         return super.getDefaultConfig(config);
     }
 
-    getTemplateVars() {
-        return {
-            ...super.getTemplateVars(),
-            item: this.renderGalleryItem(),
-            id: this.getProp('id') || 'imagePreview',
-            controls: this.getProp('controls')
-        };
-    }
-
-    /**
-     * Returns the item node.
-     * @returns {GalleryItem | null | undefined}
-     */
-    getItem() {
-        return this.item || this.dialog?.querySelector('gallery-item');
-    }
-
-    /**
-     * Manual allocation of zones.
-     * @param {ZoneToolPlaceZoneType} payload
-     * @returns {boolean | ((payload: ZoneToolPlaceZoneType) => any)}
-     */
-    _onLostZone({ zoneName }) {
-        return zoneName && ['title', 'caption', 'gallery'].includes(zoneName) ? this._onZonesLoaded : false;
-    }
-
-    /**
-     * Callback for when zones are loaded.
-     * @param {ZoneToolPlaceZoneType} payload
-     */
-    _onZonesLoaded({ zone, zoneName }) {
-        this.item = this.getItem();
-        /** @type {Gallery | null} */
-        this.gallery = this.dialog?.querySelector('arpa-gallery');
-        const itemCount = Number(this.gallery?.getItemCount());
-        if (zoneName === 'title' && itemCount < 2) {
-            zone && insertZone(zone, this.dialog);
-        } else if (zoneName === 'caption') {
-            this.item && zone && insertZone(zone, this.item);
-        } else if (zoneName === 'gallery') {
-            const children = /** @type {HTMLElement []} */ (Array.from(zone?.childNodes || []));
-            this.gallery?.addChildNodes(children);
-        }
-    }
-
     $renderTemplate() {
-        return html`<arpa-dialog class="imagePreview__dialog" id="{id}-dialog" variant="compact" size="full-screen">
-            <zone name="content">
-                <arpa-gallery id="{id}-gallery" controls="{controls}" zone="gallery">{item}</arpa-gallery>
-            </zone>
-        </arpa-dialog>`;
-    }
-
-    renderGalleryItem() {
-        const image = this.getProp('image');
-        const title = this.getProp('title') || '';
-        const caption = this.getProp('caption');
-        if (!image) return '';
-        return html`<gallery-item ${attrString({ title, caption, image })} zone="item"></gallery-item>`;
+        return html`<arpa-node name="dialog" tag="arpa-dialog" id="{id}-dialog" variant="compact" size="full-screen">
+            <arpa-zone name="content">
+                <arpa-gallery id="{id}-gallery" controls="{controls}" zone="gallery" zone-target=".arpaList__items">
+                    ${(this.getProp('image') &&
+                        html`<gallery-item
+                            name="item"
+                            can-render
+                            title="{title}"
+                            caption="{caption}"
+                            image="{image}"
+                            zone="item"
+                        ></gallery-item>`) ||
+                    ''}
+                </arpa-gallery>
+            </arpa-zone>
+        </arpa-node>`;
     }
 }
 

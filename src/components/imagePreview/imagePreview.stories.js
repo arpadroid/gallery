@@ -11,7 +11,7 @@
  */
 import { attrString } from '@arpadroid/tools';
 import GalleryStory from '../gallery/gallery.stories';
-import { expect, waitFor, fireEvent, within, userEvent } from 'storybook/test';
+import { expect, waitFor, within, userEvent } from 'storybook/test';
 import { playSetup } from '../gallery/gallery.stories.util';
 const html = String.raw;
 const captionText =
@@ -30,7 +30,6 @@ export const Render = {
     args: {
         ...GalleryStory.args,
         id: 'image-preview',
-        // title: 'Guernica by Pablo Picasso (1937)',
         image: '/test-assets/artworks/guernica.jpg'
     },
     render: args => {
@@ -38,8 +37,8 @@ export const Render = {
             <arpa-button icon="image">
                 View image
                 <image-preview ${attrString(args)}>
-                    <zone name="title" owner="gallery-item">Guernica by Pablo Picasso (1937)</zone>
-                    <zone name="caption" owner="gallery-item">${captionText}</zone>
+                    <arpa-zone name="title">Guernica by Pablo Picasso (1937)</arpa-zone>
+                    <arpa-zone name="caption">${captionText}</arpa-zone>
                 </image-preview>
             </arpa-button>
         `;
@@ -57,10 +56,11 @@ export const TestSingle = {
         id: 'image-preview-test'
     },
 
-    play: async (/** @type{StoryContext} */ { canvasElement, step, canvas }) => {
+    play: async ({ canvasElement, step }) => {
+        await customElements.whenDefined('delete-dialog');
+        await customElements.whenDefined('arpa-dialogs');
         const button = await waitFor(() => /** @type {HTMLButtonElement} */ (canvasElement.querySelector('button')));
-        const dialog = /** @type {import('./imagePreview').Dialog} */ (document.querySelector('arpa-dialog'));
-
+        let dialog = /** @type {HTMLElement} */ (document.querySelector('#image-preview-test-dialog'));
         await step('Renders the image preview button', async () => {
             expect(button).toBeInTheDocument();
         });
@@ -68,7 +68,17 @@ export const TestSingle = {
         await step('Clicks on the button and opens the preview modal', async () => {
             await userEvent.click(button);
             await waitFor(() => {
+                dialog = /** @type {import('./imagePreview').Dialog} */ (
+                    document.querySelector('#image-preview-test-dialog')
+                );
                 expect(within(dialog).getByText('Guernica by Pablo Picasso (1937)')).toBeInTheDocument();
+            });
+        });
+
+        await step('Renders and loads the image', async () => {
+            await waitFor(() => {
+                const image = document.querySelector('.listItem__image img');
+                expect(image).toBeInTheDocument();
             });
         });
 
@@ -80,7 +90,6 @@ export const TestSingle = {
         await step('Closes the dialog', async () => {
             /** @type {HTMLButtonElement | null} */
             const button = dialog.querySelector('.dialog__close');
-            // const button = within(dialog).getByRole('button', { name: 'close' });
             expect(button).toBeInTheDocument();
             button?.click?.();
             await waitFor(() => expect(dialog).not.toHaveAttribute('open'));
@@ -103,40 +112,42 @@ export const TestMultiple = {
             <arpa-button icon="image">
                 Open Gallery
                 <image-preview ${attrString(args)}>
-                    <!--<zone name="title" owner="gallery-item">My preview gallery</zone> -->
-                    <zone name="gallery">
-                        <gallery-item image="/test-assets/artists/phidias.jpg">
-                            <zone name="title">Phidias</zone>
+                    <arpa-zone name="title">My preview gallery</arpa-zone>
+                    <arpa-zone name="gallery">
+                        <gallery-item image="/test-assets/artists/phidias.jpg" title="Phidias"> </gallery-item>
+                        <gallery-item
+                            image="/test-assets/artworks/guernica.jpg"
+                            title="Guernica by Pablo Picasso (1937)"
+                        >
+                            <arpa-zone name="caption">${captionText}</arpa-zone>
                         </gallery-item>
-                        <gallery-item image="/test-assets/artworks/guernica.jpg">
-                            <zone name="title">Guernica by Pablo Picasso (1937)</zone>
-                            <zone name="caption">${captionText}</zone>
-                        </gallery-item>
-                    </zone>
+                    </arpa-zone>
                 </image-preview>
             </arpa-button>
         `;
     },
     play: async ({ canvasElement, step }) => {
-        await new Promise(resolve => setTimeout(resolve, 300));
+        await customElements.whenDefined('image-preview');
+        await customElements.whenDefined('arpa-dialogs');
+
         const button = await waitFor(() => /** @type {HTMLButtonElement} */ (canvasElement.querySelector('button')));
-        const dialog = /** @type {import('./imagePreview').Dialog} */ (
-            document.getElementById('image-preview-test-multiple-dialog')
-        );
+        let dialog = /** @type {HTMLElement} */ (document.querySelector('#image-preview-test-multiple-dialog'));
+
         await step('Renders the image preview button', async () => {
             expect(button).toBeInTheDocument();
         });
 
         await step('Clicks on the button and opens the preview modal', async () => {
-            button.click();
+            await userEvent.click(button);
             await waitFor(() => {
+                dialog = /** @type {HTMLElement} */ (document.querySelector('#image-preview-test-multiple-dialog'));
                 expect(within(dialog).getByText('Phidias')).toBeVisible();
             });
         });
 
         await step('Clicks next and shows next image', async () => {
             const nextButton = within(dialog).getByRole('button', { name: 'Next' });
-            await fireEvent.click(nextButton);
+            await userEvent.click(nextButton);
             await waitFor(() => {
                 expect(within(dialog).getByText('Guernica by Pablo Picasso (1937)')).toBeInTheDocument();
             });
