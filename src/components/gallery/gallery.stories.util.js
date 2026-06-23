@@ -69,7 +69,7 @@ export async function playSetup(canvasElement, opt = {}) {
     await customElements.whenDefined('gallery-item');
     const canvas = within(canvasElement);
     /** @type {Gallery | null} */
-    const galleryNode = canvasElement.querySelector('arpa-gallery');
+    const galleryNode = document.querySelector('arpa-gallery');
     await galleryNode?.promise;
     galleryNode?.listResource?.pageFilter?.setValue(1);
 

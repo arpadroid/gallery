@@ -1,1 +1,5 @@
-.imagePreview__dialog {}
+.imagePreview__dialog {
+    .dialog__body {
+        overflow: visible;
+    }
+}
