@@ -11,6 +11,7 @@
  * @typedef {import('./gallerySettings.types').GallerySettingsType} GallerySettingsType
  * @typedef {import('../galleryThumbnailControl/galleryThumbnailControl').ThumbnailsPositionType} ThumbnailsPositionType
  * @typedef {import('@arpadroid/ui').Tooltip} Tooltip
+ * @typedef {IconMenu & { tooltip?: Tooltip | null }} IconMenuWithTooltip
  */
 import { mergeObjects, attrString, defineCustomElement } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl';
@@ -143,7 +144,7 @@ class GallerySettings extends GalleryControl {
             class="gallerySettings__form"
         >
             <group-field open id="general" icon="settings">
-                <zone name="label">${this.i18n('lblGeneral')}</zone>
+                <arpa-zone name="label">${this.i18n('lblGeneral')}</arpa-zone>
                 <number-field
                     class="gallerySettings__playInterval"
                     id="playInterval"
@@ -151,14 +152,14 @@ class GallerySettings extends GalleryControl {
                     min="1"
                     max="60"
                 >
-                    <zone name="label">${this.i18n('lblPlayInterval')}</zone>
+                    <arpa-zone name="label">${this.i18n('lblPlayInterval')}</arpa-zone>
                 </number-field>
                 <select-combo
                     class="gallerySettings__thumbnailsPosition"
                     id="thumbnailsPosition"
                     value="${thumbnailsPosition}"
                 >
-                    <zone name="label">${this.i18n('lblThumbnailsPosition')}</zone>
+                    <arpa-zone name="label">${this.i18n('lblThumbnailsPosition')}</arpa-zone>
                     <select-option value="top">${this.i18n('lblTop')}</select-option>
                     <select-option value="bottom">${this.i18n('lblBottom')}</select-option>
                     <select-option value="left">${this.i18n('lblLeft')}</select-option>
@@ -175,13 +176,13 @@ class GallerySettings extends GalleryControl {
     ////////////////////////////
 
     async $initializeNodes() {
-        /** @type {IconMenu | null} */
+        /** @type {IconMenuWithTooltip | null} */
         this.menuNode = this.querySelector('icon-menu');
         this.menuNode?.promise.then(() => {
             this.menuNode?.button?.setAttribute('variant', 'compact');
             this.menuNode?.button?.setAttribute('aria-label', this.i18nText('lblSettings'));
             /** @type {Tooltip | null} */
-            this.tooltip = this.menuNode?.tooltip;
+            this.tooltip = this.menuNode?.tooltip || null;
             this.setTooltipPosition('top-right');
         });
         await this._initializeForm();

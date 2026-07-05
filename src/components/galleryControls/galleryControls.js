@@ -1,5 +1,6 @@
 /**
  * @typedef {import('../gallery/gallery.js').default} Gallery
+ * @typedef {import('@arpadroid/list-manager').ListControlsConfigType} ListControlsConfigType
  */
 import { ListControls } from '@arpadroid/list-manager';
 import { defineCustomElement } from '@arpadroid/tools';
@@ -13,6 +14,10 @@ class GalleryControls extends ListControls {
         return super.$initializeProperties();
     }
 
+    /**
+     * Returns default config.
+     * @returns {ListControlsConfigType}
+     */
     getDefaultConfig() {
         this.list = this.getList();
         return {

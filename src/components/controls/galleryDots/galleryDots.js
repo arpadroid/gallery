@@ -271,7 +271,7 @@ class GalleryDots extends GalleryControl {
      */
     _updateThumbnailTitle(payload = this.thumbnailPayload) {
         const title = payload && this.getThumbTitle(payload);
-        title && this.thumbnail?.setTitle(title);
+        title && this.thumbnail?.setProp('title', title);
     }
 
     // #endregion Event Handlers

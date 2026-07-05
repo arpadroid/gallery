@@ -40,11 +40,11 @@ class GalleryInput extends GalleryControl {
         });
         const content = html`<arpa-form id="${formId}" variant="mini" class="galleryInput__form">
             <number-field id="page" variant="compact" value="1" min="1" enforce-value ${attr}>
-                <zone name="input-wrapper">
+                <arpa-zone name="input-wrapper">
                     <arpa-tooltip handler="#${formId}-page" position="top">
                         ${this.i18n('lblCurrentSlide')}
                     </arpa-tooltip>
-                </zone>
+                </arpa-zone>
             </number-field>
         </arpa-form>`;
         this.innerHTML = content;

@@ -158,7 +158,8 @@ class GalleryThumbnails extends List {
                 const item = target.closest('gallery-thumbnail');
                 const payload = item?.getPayload();
                 const content = payload?.title;
-                tooltip.contentNode && (tooltip.contentNode.style.display = content ? 'block' : 'none');
+                tooltip.nodes.content instanceof HTMLElement &&
+                    (tooltip.nodes.content.style.display = content ? 'block' : 'none');
                 if (typeof content === 'string') {
                     tooltip.setContent(content);
                 }

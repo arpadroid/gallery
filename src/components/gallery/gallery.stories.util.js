@@ -96,7 +96,7 @@ export function renderStatic(args, tag = 'arpa-gallery', renderItemTemplate = ()
                     image="/test-assets/artworks/guernica.jpg"
                     thumbnail="/test-assets/artworks/guernica.jpg"
                 >
-                    <zone name="caption">
+                    <arpa-zone name="caption">
                         Besides being Picasso most famous painting, Guernica is also one of the world’s most famous and
                         moving antiwar statements. It was inspired by the brutal 1937 bombing of the Basque city of
                         Guernica during the Spanish Civil War. That same year, with war still raging, the embattled
@@ -109,7 +109,7 @@ export function renderStatic(args, tag = 'arpa-gallery', renderItemTemplate = ()
                         became a gallery dealer of note, defaced the piece with spray paint. MoMA declined to press
                         charges, and was able to restore Guernica because Shafrazi had been prudent enough to use paint
                         that could easily clean off.
-                    </zone>
+                    </arpa-zone>
                 </gallery-item>
                 <gallery-item
                     id="gallery-item-2"
@@ -117,7 +117,7 @@ export function renderStatic(args, tag = 'arpa-gallery', renderItemTemplate = ()
                     image="/test-assets/artworks/blue-ii.jpg"
                     thumbnail="/test-assets/artworks/blue-ii.jpg"
                 >
-                    <zone name="caption">
+                    <arpa-zone name="caption">
                         Blue II is a painting by Joan Miró, a Spanish painter and sculptor who was born in Barcelona. He
                         was a key figure in the Surrealist movement. His work is known for its dream-like quality and
                         use of symbols. Miró’s work is often characterized by bright colors and bold shapes. Blue II is
@@ -126,7 +126,7 @@ export function renderStatic(args, tag = 'arpa-gallery', renderItemTemplate = ()
                         abstract, but it suggests a landscape or a figure. The colors and shapes in the painting create
                         a sense of movement and energy. Blue II is a powerful and dynamic work of art that captures the
                         spirit of Miró’s work.
-                    </zone>
+                    </arpa-zone>
                 </gallery-item>
             </${tag}>
         `;
