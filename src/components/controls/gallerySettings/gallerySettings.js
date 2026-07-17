@@ -11,7 +11,7 @@
  * @typedef {import('./gallerySettings.types').GallerySettingsType} GallerySettingsType
  * @typedef {import('../galleryThumbnailControl/galleryThumbnailControl').ThumbnailsPositionType} ThumbnailsPositionType
  * @typedef {import('@arpadroid/ui').Tooltip} Tooltip
- * @typedef {IconMenu & { tooltip?: Tooltip | null }} IconMenuWithTooltip
+ * @typedef {IconMenu }
  */
 import { mergeObjects, attrString, defineCustomElement } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl';
@@ -118,10 +118,10 @@ class GallerySettings extends GalleryControl {
                 tooltip: this.getProp('btn-label')
             })}
         >
-            <arpa-zone name="tooltip">
-                ${this.getProp('lblSettings')}
+            <arpa-zone name="tooltip"> ${this.getProp('lblSettings')} </arpa-zone>
+            <arpa-zone name="nav">
+                <div class="gallerySettings__content">{form}</div>
             </arpa-zone>
-            <div class="gallerySettings__content">{form}</div>
         </icon-menu>`;
     }
 
@@ -158,8 +158,8 @@ class GallerySettings extends GalleryControl {
                     class="gallerySettings__thumbnailsPosition"
                     id="thumbnailsPosition"
                     value="${thumbnailsPosition}"
+                    label="{i18n:lblThumbnailsPosition}"
                 >
-                    <arpa-zone name="label">${this.i18n('lblThumbnailsPosition')}</arpa-zone>
                     <select-option value="top">${this.i18n('lblTop')}</select-option>
                     <select-option value="bottom">${this.i18n('lblBottom')}</select-option>
                     <select-option value="left">${this.i18n('lblLeft')}</select-option>
@@ -176,15 +176,19 @@ class GallerySettings extends GalleryControl {
     ////////////////////////////
 
     async $initializeNodes() {
-        /** @type {IconMenuWithTooltip | null} */
+        await super.$initializeNodes();
+
+        /** @type {IconMenu | null} */
         this.menuNode = this.querySelector('icon-menu');
-        this.menuNode?.promise.then(() => {
-            this.menuNode?.button?.setAttribute('variant', 'compact');
-            this.menuNode?.button?.setAttribute('aria-label', this.i18nText('lblSettings'));
-            /** @type {Tooltip | null} */
-            this.tooltip = this.menuNode?.tooltip || null;
-            this.setTooltipPosition('top-right');
-        });
+        await this.menuNode?.promise;
+        this.menuNode?.button?.setAttribute('variant', 'compact');
+        this.menuNode?.button?.setAttribute('aria-label', this.i18nText('lblSettings'));
+
+        this.nav = this.menuNode?.navigation;
+        await this.nav?.promise;
+
+        this.tooltip = /** @type {Tooltip | null} */ (this.menuNode?.nodes?.tooltip);
+        this.setTooltipPosition('top-right');
         await this._initializeForm();
         this._initializeIconMenu();
 
@@ -209,7 +213,7 @@ class GallerySettings extends GalleryControl {
 
     async _initializeForm() {
         /** @type {FormComponent | null} */
-        this.form = this.querySelector('.gallerySettings__form');
+        this.form = this.nav?.querySelector('arpa-form');
         await this.form?.promise;
         this.onSubmit && this.form?.onSubmit(this.onSubmit);
         return true;

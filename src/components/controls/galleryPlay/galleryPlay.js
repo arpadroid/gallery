@@ -53,7 +53,7 @@ class GalleryPlay extends GalleryControl {
     }
 
     async $onComplete() {
-        super.$onComplete();
+        await super.$onComplete();
         const itemCount = this.gallery?.getItemCount() || 0;
         itemCount < 2 && this.remove();
     }

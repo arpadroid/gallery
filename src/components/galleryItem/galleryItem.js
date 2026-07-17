@@ -2,7 +2,7 @@
  * @typedef {import('./galleryItem.types').GalleryItemConfigType} GalleryItemConfigType
  */
 import { ListManagerItem } from '@arpadroid/list-manager';
-import { classNames, mergeObjects, defineCustomElement, attrString } from '@arpadroid/tools';
+import { mergeObjects, defineCustomElement, attrString } from '@arpadroid/tools';
 const html = String.raw;
 class GalleryItem extends ListManagerItem {
     /** @type {GalleryItemConfigType} */
@@ -16,7 +16,7 @@ class GalleryItem extends ListManagerItem {
         /** @type {GalleryItemConfigType} */
         const config = {
             imageSize: 'adaptive',
-            classNames: ['galleryItem'],
+            className: 'galleryItem',
             titleTag: 'h2',
             listSelector: '.gallery',
             truncateCaption: 200
@@ -29,21 +29,10 @@ class GalleryItem extends ListManagerItem {
      * @returns {string}
      */
     $renderTemplate() {
-        return html`<{wrapperComponent} {wrapperAttributes}>
-            <div class="galleryItem__contentWrapper">{titleContainer}{children}{image}</div>
-            {caption} 
-        </{wrapperComponent}>`;
-    }
-
-    /**
-     * Returns the attributes for the list item wrapper.
-     * @returns {Record<string, any>}
-     */
-    getWrapperAttrs() {
-        return {
-            href: this.link,
-            class: classNames('galleryItem__main', { listItem__link: this.link })
-        };
+        return html`<arpa-node {wrapperAttr()}>
+            <div class="galleryItem__contentWrapper">{titleWrapper}{content}{image}</div>
+            {caption}
+        </arpa-node>`;
     }
 
     getTemplateVars() {
@@ -55,18 +44,6 @@ class GalleryItem extends ListManagerItem {
 
     getCaption() {
         return this.getProp('caption');
-    }
-
-    /**
-     * Handles a lost zone.
-     * @param {import('@arpadroid/ui').ZoneToolPlaceZoneType} event - The event object.
-     * @returns {boolean | undefined} Whether the zone was handled.
-     */
-    _onLostZone({ zone, zoneName }) {
-        if (zoneName === 'caption') {
-            this.promise.then(() => zone && this.captionNode?.append(...zone.childNodes));
-            return true;
-        }
     }
 
     renderCaption(hasContent = this.hasContent('caption')) {

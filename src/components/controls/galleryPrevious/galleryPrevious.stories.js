@@ -9,30 +9,35 @@
  * @typedef {import('@storybook/web-components-vite').Args} Args
  */
 
-import { playSetup, renderStatic } from '../../gallery/gallery.stories.util';
+import { playSetup } from '../../gallery/gallery.stories.util';
 import GalleryStory from '../../gallery/gallery.stories';
 import { expect, waitFor } from 'storybook/test';
+import { defaultParams } from '@arpadroid/module/storybook/helper';
 
 /** @type {Meta} */
 const GalleryPreviousStory = {
-    title: 'Gallery/Controls/Previous'
+    ...GalleryStory,
+    title: 'Gallery/Controls/Previous',
+    parameters: {
+        layout: 'flexColumn'
+    },
+    args: {
+        ...GalleryStory.args,
+        controls: 'previous,next',
+    }
 };
 
 /** @type {StoryObj} */
 export const Render = {
-    ...GalleryStory,
+    parameters: defaultParams,
     args: {
-        ...GalleryStory.args,
-        controls: 'previous',
-        id: 'gallery-previous'
+        ...GalleryPreviousStory.args
     }
 };
 
 /** @type {StoryObj} */
 export const Test = {
-    ...GalleryStory,
     args: {
-        ...Render.args,
         id: 'gallery-previous-test'
     },
     play: async ({ canvasElement, step }) => {
@@ -52,9 +57,7 @@ export const Test = {
         await step('Clicks the previous button and verifies state', async () => {
             prevControl.click();
             await waitFor(() => {
-                expect(
-                    canvas.getByRole('heading', { level: 2, name: 'Henri Rousseau' })
-                ).toBeInTheDocument();
+                expect(canvas.getByRole('heading', { level: 2, name: 'Henri Rousseau' })).toBeInTheDocument();
             });
         });
     }

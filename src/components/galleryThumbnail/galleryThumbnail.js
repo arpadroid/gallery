@@ -54,11 +54,10 @@ class GalleryThumbnail extends ListItem {
      * @returns {string}
      */
     $renderTemplate() {
-        return html`<{wrapperComponent} {wrapperAttributes}>
-                {image}
-                ${this.hasTitle() ? '{title}' : ''}
-            </{wrapperComponent}>
-        {rhs}`;
+        return html`
+            <arpa-node {wrapperAttr()}> {image} {title} </arpa-node>
+            {rhs}
+        `;
         // <arpa-tooltip class="tooltip--contained" text="${this.title}" position="right"></arpa-tooltip>
     }
 

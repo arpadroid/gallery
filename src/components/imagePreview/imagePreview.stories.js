@@ -8,11 +8,13 @@
  * @typedef {import('@storybook/web-components-vite').StoryObj} StoryObj
  * @typedef {import('@storybook/web-components-vite').StoryContext} StoryContext
  * @typedef {import('@storybook/web-components-vite').Args} Args
+ * @typedef {import('@arpadroid/ui').Button} Button
  */
 import { attrString } from '@arpadroid/tools';
 import GalleryStory from '../gallery/gallery.stories';
 import { expect, waitFor, within, userEvent } from 'storybook/test';
 import { playSetup } from '../gallery/gallery.stories.util';
+
 const html = String.raw;
 const captionText =
     'Besides being Picasso most famous painting, Guernica is also one of the world’s most famous and moving antiwar statements. It was inspired by the brutal 1937 bombing of the Basque city of Guernica during the Spanish Civil War. That same year, with war still raging, the embattled Leftist government of Spain commissioned the piece as a mural for the 1937 World’s Fair inParis.';
@@ -77,7 +79,7 @@ export const TestSingle = {
 
         await step('Renders and loads the image', async () => {
             await waitFor(() => {
-                const image = document.querySelector('.listItem__image img');
+                const image = document.querySelector('.galleryItem__image img');
                 expect(image).toBeInTheDocument();
             });
         });
@@ -88,10 +90,13 @@ export const TestSingle = {
         // });
 
         await step('Closes the dialog', async () => {
-            /** @type {HTMLButtonElement | null} */
-            const button = dialog.querySelector('.dialog__close');
+            /** @type {Button | null} */
+            const buttonComponent = dialog.querySelector('.dialog__close');
+            await buttonComponent?.promise;
+
+            const button = /** @type {HTMLButtonElement | null} */ buttonComponent?.button;
             expect(button).toBeInTheDocument();
-            button?.click?.();
+            button && (await userEvent.click(button));
             await waitFor(() => expect(dialog).not.toHaveAttribute('open'));
             expect(dialog).not.toBeVisible();
         });
