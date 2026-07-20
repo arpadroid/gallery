@@ -62,7 +62,7 @@ class Gallery extends ListManager {
                 'settings'
             ],
             hasPreloader: false,
-            defaultView: 'full',
+            view: 'full',
             trackActivity: true,
             hasControls: true,
             hasItemsTransition: true,
