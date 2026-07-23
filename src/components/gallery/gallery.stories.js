@@ -10,7 +10,7 @@
  */
 import { attrString } from '@arpadroid/tools';
 import { getArgTypes, playSetup } from './gallery.stories.util';
-import { expect } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 
 const html = String.raw;
 
@@ -19,7 +19,6 @@ const GalleryStory = {
     title: 'Gallery/Gallery',
     tags: [],
     argTypes: getArgTypes(),
-
     args: {
         id: 'gallery'
     },
@@ -51,20 +50,18 @@ export const Test = {
         ...GalleryStory.args,
         id: 'gallery-test'
     },
-    play: async ({ canvasElement, step }) => {
-        const { galleryNode, canvas } = await playSetup(canvasElement);
+    play: async ({ canvasElement, step, canvas }) => {
+        const { galleryNode } = await playSetup(canvasElement);
         /** @type {GalleryItem | null} */
         await step('Renders the gallery', async () => {
             expect(galleryNode).toBeInTheDocument();
         });
-        // const currentItem = galleryNode.itemsNode.children[0];
-        // console.log('currentItem', currentItem);
 
-        // await step('Renders the gallery item', async () => {
-        //     expect(canvas.getByText(currentItem.caption)).toBeInTheDocument();
-        //     const heading = canvas.getByRole('heading', { level: 2, name: currentItem.title });
-        //     expect(heading).toBeInTheDocument();
-        // });
+        await step('Renders the gallery item', async () => {
+            await waitFor(() => {
+                canvas.getByText('Phidias');
+            });
+        });
     }
 };
 

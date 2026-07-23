@@ -6,7 +6,7 @@
  */
 import { ListManager } from '@arpadroid/list-manager';
 import GalleryItem from '../galleryItem/galleryItem';
-import { observerMixin, dummySignal, goFullScreen, listen } from '@arpadroid/tools';
+import { observerMixin, dummySignal, goFullScreen, listen, mergeObjects } from '@arpadroid/tools';
 import { exitFullScreen, dummyListener, dummyOff, defineCustomElement } from '@arpadroid/tools';
 
 const html = String.raw;
@@ -40,13 +40,23 @@ class Gallery extends ListManager {
      * @returns {GalleryConfigType} The default configuration.
      */
     getDefaultConfig() {
+        const superConfig = super.getDefaultConfig();
         /** @type {GalleryConfigType} */
         const conf = {
             activeClass: 'gallery--active',
             activityTimeout: 3000,
+            blueprint: () => {
+                let superBlueprint = superConfig?.blueprint;
+                if (typeof superBlueprint === 'function') {
+                    superBlueprint = superBlueprint.call(this);
+                }
+                const blueprint = html`${superBlueprint}${ListManager.prototype.$renderTemplate.call(this)}`;
+                return blueprint;
+            },
             autoplay: false,
             controlsHiddenClass: 'gallery--hide-controls',
-            className: 'gallery',
+            controlsComponent: 'gallery-controls',
+            classNames: ['gallery'],
             controls: [
                 'play',
                 'drag',
@@ -76,14 +86,9 @@ class Gallery extends ListManager {
             playInterval: 5,
             tagName: 'arpa-gallery',
             thumbnailsPosition: 'bottom',
-            views: ['full'],
-            nodesConfig: {
-                controls: {
-                    tag: 'gallery-controls'
-                }
-            }
+            views: ['full']
         };
-        return /** @type {GalleryConfigType} */ (super.getDefaultConfig(conf));
+        return mergeObjects(superConfig, conf);
     }
 
     $initialize() {
@@ -169,9 +174,9 @@ class Gallery extends ListManager {
     // #region Rendering
     //////////////////////////////
 
-    renderFull() {
+    $renderTemplate() {
         return html`
-            <div class="gallery__header">{title}</div>
+            <div class="gallery__header">{titleWrapper}</div>
             {info}
             <div class="gallery__body">
                 <div class="gallery__view">{heading}{items}{preloader}</div>
@@ -228,7 +233,6 @@ class Gallery extends ListManager {
 
     async $onComplete() {
         await super.$onComplete();
-        await this.promise;
         this.trackActivity();
     }
 
