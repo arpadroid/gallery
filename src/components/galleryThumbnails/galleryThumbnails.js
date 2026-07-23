@@ -143,7 +143,7 @@ class GalleryThumbnails extends List {
         return true;
     }
 
-    async _initializeTooltip() {
+    createTooltip() {
         const cursorTooltipPosition = this.getCursorTooltipPosition();
         const tooltip = new Tooltip({
             content: '',
@@ -165,6 +165,12 @@ class GalleryThumbnails extends List {
                 }
             }
         });
+        return tooltip;
+    }
+
+    async _initializeTooltip() {
+        const tooltip = this.tooltip || this.createTooltip();
+        this.tooltip = tooltip;
         await this.gallery?.promise;
         const thumbnailControl = /** @type {GalleryThumbnailControl | null | undefined} */ (
             this.gallery?.getControl('thumbnailControl')

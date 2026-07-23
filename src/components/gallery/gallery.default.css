@@ -9,10 +9,12 @@
 }
 
 .gallery {
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: column;
+    --list-layout-gap: 0;
+
     position: relative;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
 
     .galleryThumbnails {
         display: none;
@@ -25,28 +27,28 @@
 
 .gallery__body {
     display: flex;
-    flex-direction: column;
     flex: 1 1 auto;
+    flex-direction: column;
 }
 
 .gallery__view {
+    position: relative;
+    display: flex;
     flex: 1 1 auto;
+    flex-direction: column;
     width: 100%;
     min-width: 0;
-    display: flex;
-    flex-direction: column;
-    position: relative;
     touch-action: none;
 }
 
 .gallery__controls {
-    padding: 0.5rem 0;
     z-index: 1;
+    padding: 0.5rem 0;
 }
 
 .gallery__footer {
-    overflow: visible;
     z-index: 1;
+    overflow: visible;
 }
 
 gallery-spacer {
@@ -65,21 +67,25 @@ gallery-spacer {
     .galleryThumbnails {
         display: flex;
     }
+
     &:has(.galleryThumbnails[position='left']) {
         .galleryItem {
             arpa-image {
                 padding-left: calc(var(--gallery-thumbnails-width) + 4px);
             }
+
             .galleryItem__caption {
                 margin-left: calc(var(--gallery-thumbnails-width));
             }
         }
     }
+
     &:has(.galleryThumbnails[position='right']) {
         .galleryItem {
             arpa-image {
                 padding-right: calc(var(--gallery-thumbnails-width) + 4px);
             }
+
             .galleryItem__caption {
                 margin-right: calc(var(--gallery-thumbnails-width));
             }
@@ -96,16 +102,16 @@ gallery-spacer {
         .galleryThumbnails,
         .gallery__footer,
         .listItem__titleWrapper {
-            opacity: 1;
             z-index: 1;
+            opacity: 1;
         }
     }
 
     .gallery__footer,
     .listItem__titleWrapper {
         position: absolute;
-        left: 0;
         right: 0;
+        left: 0;
         height: 54px;
         opacity: 0;
         transition: var(--theme-transition);
@@ -144,8 +150,8 @@ gallery-spacer {
     }
 
     .galleryThumbnails[position='bottom'] {
-        bottom: var(--gallery-vertical-clearance);
         top: auto;
+        bottom: var(--gallery-vertical-clearance);
     }
 
     .galleryThumbnails[position='top'] {
@@ -156,6 +162,7 @@ gallery-spacer {
     &:has(.galleryThumbnails[position='left']) .galleryItem arpa-image {
         padding-left: 0;
     }
+
     &:has(.galleryThumbnails[position='right']) .galleryItem arpa-image {
         padding-right: 0;
     }

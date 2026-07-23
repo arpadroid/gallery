@@ -11,9 +11,8 @@
  * @typedef {import('./gallerySettings.types').GallerySettingsType} GallerySettingsType
  * @typedef {import('../galleryThumbnailControl/galleryThumbnailControl').ThumbnailsPositionType} ThumbnailsPositionType
  * @typedef {import('@arpadroid/ui').Tooltip} Tooltip
- * @typedef {IconMenu }
  */
-import { mergeObjects, attrString, defineCustomElement } from '@arpadroid/tools';
+import { mergeObjects, defineCustomElement } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl';
 
 const html = String.raw;
@@ -109,64 +108,53 @@ class GallerySettings extends GalleryControl {
     ////////////////////////////
 
     $renderTemplate() {
-        return html`<icon-menu
-            variant="compact"
-            menu-position="false"
-            nav-class="gallerySettings__nav"
-            ${attrString({
-                ...this.getProperties('icon', 'label'),
-                tooltip: this.getProp('btn-label')
-            })}
-        >
-            <arpa-zone name="tooltip"> ${this.getProp('lblSettings')} </arpa-zone>
-            <arpa-zone name="nav">
-                <div class="gallerySettings__content">{form}</div>
-            </arpa-zone>
-        </icon-menu>`;
-    }
-
-    getTemplateVars() {
-        return {
-            form: this.renderForm()
-        };
-    }
-
-    /**
-     * Renders the form for the gallery settings.
-     * @returns {string} The form HTML.
-     */
-    renderForm() {
         const { playInterval, thumbnailsPosition } = this.settings || {};
-        return html`<arpa-form
-            variant="compact"
-            id="${this.gallery?.getId() || 'gallery'}-filters-form"
-            has-submit="false"
-            class="gallerySettings__form"
-        >
-            <group-field open id="general" icon="settings">
-                <arpa-zone name="label">${this.i18n('lblGeneral')}</arpa-zone>
-                <number-field
-                    class="gallerySettings__playInterval"
-                    id="playInterval"
-                    value="${playInterval}"
-                    min="1"
-                    max="60"
-                >
-                    <arpa-zone name="label">${this.i18n('lblPlayInterval')}</arpa-zone>
-                </number-field>
-                <select-combo
-                    class="gallerySettings__thumbnailsPosition"
-                    id="thumbnailsPosition"
-                    value="${thumbnailsPosition}"
-                    label="{i18n:lblThumbnailsPosition}"
-                >
-                    <select-option value="top">${this.i18n('lblTop')}</select-option>
-                    <select-option value="bottom">${this.i18n('lblBottom')}</select-option>
-                    <select-option value="left">${this.i18n('lblLeft')}</select-option>
-                    <select-option value="right">${this.i18n('lblRight')}</select-option>
-                </select-combo>
-            </group-field>
-        </arpa-form>`;
+        return html`
+            <icon-menu
+                variant="compact"
+                menu-position="false"
+                nav-class="gallerySettings__nav"
+                icon="{icon}"
+                label="{label}"
+                tooltip="{btnLabel}"
+            >
+                <arpa-zone name="tooltip">{lblSettings}</arpa-zone>
+                <arpa-zone name="nav">
+                    <div class="gallerySettings__content">
+                        <arpa-form
+                            variant="compact"
+                            id="${this.gallery?.getProp('id') || 'gallery'}-filters-form"
+                            has-submit="false"
+                            class="gallerySettings__form"
+                        >
+                            <group-field open id="general" icon="settings">
+                                <arpa-zone name="label">${this.i18n('lblGeneral')}</arpa-zone>
+                                <number-field
+                                    class="gallerySettings__playInterval"
+                                    id="playInterval"
+                                    value="${playInterval}"
+                                    min="1"
+                                    max="60"
+                                >
+                                    <arpa-zone name="label">${this.i18n('lblPlayInterval')}</arpa-zone>
+                                </number-field>
+                                <select-combo
+                                    class="gallerySettings__thumbnailsPosition"
+                                    id="thumbnailsPosition"
+                                    value="${thumbnailsPosition}"
+                                    label="{i18n:lblThumbnailsPosition}"
+                                >
+                                    <select-option value="top">${this.i18n('lblTop')}</select-option>
+                                    <select-option value="bottom">${this.i18n('lblBottom')}</select-option>
+                                    <select-option value="left">${this.i18n('lblLeft')}</select-option>
+                                    <select-option value="right">${this.i18n('lblRight')}</select-option>
+                                </select-combo>
+                            </group-field>
+                        </arpa-form>
+                    </div>
+                </arpa-zone>
+            </icon-menu>
+        `;
     }
 
     // #endregion
