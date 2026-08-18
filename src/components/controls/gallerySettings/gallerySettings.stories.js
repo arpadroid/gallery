@@ -8,10 +8,11 @@
  * @typedef {import('@storybook/web-components-vite').StoryObj} StoryObj
  * @typedef {import('@storybook/web-components-vite').StoryContext} StoryContext
  * @typedef {import('@storybook/web-components-vite').Args} Args
+ * @typedef {import('@arpadroid/forms').SelectCombo} SelectCombo
  */
 import { playSetup, renderStatic } from '../../gallery/gallery.stories.util';
 import GalleryStory from '../../gallery/gallery.stories';
-import { expect, waitFor, fireEvent, within } from 'storybook/test';
+import { expect, waitFor, fireEvent, within, userEvent } from 'storybook/test';
 
 /** @type {Meta} */
 const GallerySettingsStory = {
@@ -43,7 +44,11 @@ export const Test = {
         const settingsForm = /** @type {FormComponent | null} */ (
             document.getElementById('gallery-settings-test-filters-form')
         );
+
         await settingsForm?.promise;
+        const positionField = /** @type {SelectCombo | undefined} */ (settingsForm?.getField('thumbnailsPosition'));
+        await positionField?.promise;
+        const optionsNode = positionField?.optionsNode;
         const playIntervalField = settingsForm?.getField('playInterval');
         await playIntervalField?.promise;
 
@@ -68,24 +73,23 @@ export const Test = {
         });
 
         await step('Opens the thumbnail position dropdown', async () => {
-            await new Promise(resolve => setTimeout(resolve, 50));
             const dropdown = canvas.getByLabelText('Thumbnails position');
-            await fireEvent.click(dropdown);
+            await userEvent.click(dropdown);
             await waitFor(() => {
-                const combo = within(galleryNode?.settings?.form?.getField('thumbnailsPosition')?.optionsNode);
-                expect(combo.getByText('Top')).toBeVisible();
-                expect(combo.getByText('Bottom')).toBeVisible();
-                expect(combo.getByText('Left')).toBeVisible();
-                expect(combo.getByText('Right')).toBeVisible();
+                const combo = optionsNode && within(optionsNode);
+                expect(combo?.getByText('Top')).toBeVisible();
+                expect(combo?.getByText('Bottom')).toBeVisible();
+                expect(combo?.getByText('Left')).toBeVisible();
+                expect(combo?.getByText('Right')).toBeVisible();
             });
         });
 
         await step('Sets the thumbnails position to "Right"', async () => {
             const dropdown = canvas.getByLabelText('Thumbnails position');
             await fireEvent.click(dropdown);
-            const combo = within(galleryNode?.settings?.form?.getField('thumbnailsPosition')?.optionsNode);
-            const option = combo.getByText('Right');
-            await fireEvent.click(option);
+            const combo = optionsNode && within(optionsNode);
+            const option = combo?.getByText('Right');
+            option && (await userEvent.click(option));
             await waitFor(() => {
                 expect(galleryNode.querySelector('gallery-thumbnails')).toHaveAttribute('position', 'right');
             });
@@ -94,9 +98,9 @@ export const Test = {
         await step('Sets the thumbnails position to "left"', async () => {
             const dropdown = canvas.getByLabelText('Thumbnails position');
             await fireEvent.click(dropdown);
-            const combo = within(galleryNode?.settings?.form?.getField('thumbnailsPosition')?.optionsNode);
-            const option = combo.getByText('Left');
-            await fireEvent.click(option);
+            const combo = optionsNode && within(optionsNode);
+            const option = combo?.getByText('Left');
+            option && (await userEvent.click(option));
             await waitFor(() => {
                 expect(galleryNode.querySelector('gallery-thumbnails')).toHaveAttribute('position', 'left');
             });

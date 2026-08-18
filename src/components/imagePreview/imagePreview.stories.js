@@ -1,19 +1,11 @@
 /**
- * @typedef {import('@arpadroid/lists').List} List
- * @typedef {import('../gallery/gallery.js').default} Gallery
- * @typedef {import('../galleryItem/galleryItem.js').default} GalleryItem
- * @typedef {import('@arpadroid/resources').ListResource} ListResource
  * @typedef {import('./imagePreview.types').ImagePreviewConfigType} ImagePreviewConfigType
- * @typedef {import('@storybook/web-components-vite').Meta} Meta
- * @typedef {import('@storybook/web-components-vite').StoryObj} StoryObj
- * @typedef {import('@storybook/web-components-vite').StoryContext} StoryContext
- * @typedef {import('@storybook/web-components-vite').Args} Args
+ * @typedef {import('@storybook/web-components-vite').Meta<ImagePreviewConfigType>} Meta
+ * @typedef {import('@storybook/web-components-vite').StoryObj<ImagePreviewConfigType>} StoryObj
  * @typedef {import('@arpadroid/ui').Button} Button
  */
 import { attrString } from '@arpadroid/tools';
-import GalleryStory from '../gallery/gallery.stories';
 import { expect, waitFor, within, userEvent } from 'storybook/test';
-import { playSetup } from '../gallery/gallery.stories.util';
 
 const html = String.raw;
 const captionText =
@@ -21,18 +13,14 @@ const captionText =
 
 /** @type {Meta} */
 const ImagePreviewStory = {
-    title: 'Gallery/Components/Image Preview'
-};
-
-/** @type {StoryObj} */
-export const Render = {
-    parameters: {
-        layout: 'centered'
-    },
+    title: 'Gallery/Components/Image Preview',
     args: {
-        ...GalleryStory.args,
         id: 'image-preview',
         image: '/test-assets/artworks/guernica.jpg'
+    },
+    component: 'image-preview',
+    parameters: {
+        layout: 'centered'
     },
     render: args => {
         return html`
@@ -44,17 +32,15 @@ export const Render = {
                 </image-preview>
             </arpa-button>
         `;
-    },
-    play: async ({ canvasElement }) => {
-        await playSetup(canvasElement, { initList: false });
     }
 };
 
 /** @type {StoryObj} */
+export const Render = {};
+
+/** @type {StoryObj} */
 export const TestSingle = {
-    ...Render,
     args: {
-        ...Render.args,
         id: 'image-preview-test'
     },
 
@@ -105,9 +91,7 @@ export const TestSingle = {
 
 /** @type {StoryObj} */
 export const TestMultiple = {
-    ...Render,
     args: {
-        ...Render.args,
         id: 'image-preview-test-multiple',
         title: 'Phidias',
         image: undefined
@@ -119,13 +103,13 @@ export const TestMultiple = {
                 <image-preview ${attrString(args)}>
                     <arpa-zone name="title">My preview gallery</arpa-zone>
                     <arpa-zone name="gallery">
-                        <gallery-item image="/test-assets/artists/phidias.jpg" title="Phidias"> </gallery-item>
                         <gallery-item
                             image="/test-assets/artworks/guernica.jpg"
                             title="Guernica by Pablo Picasso (1937)"
                         >
                             <arpa-zone name="caption">${captionText}</arpa-zone>
                         </gallery-item>
+                        <gallery-item image="/test-assets/artists/phidias.jpg" title="Phidias"> </gallery-item>
                     </arpa-zone>
                 </image-preview>
             </arpa-button>
@@ -161,7 +145,7 @@ export const TestMultiple = {
         await step('Closes the dialog', async () => {
             const button = within(dialog).getByRole('button', { name: 'close' });
             expect(button).toBeInTheDocument();
-            button.click();
+            await userEvent.click(button);
             await waitFor(() => expect(dialog).not.toHaveAttribute('open'));
             expect(dialog).not.toBeVisible();
         });
