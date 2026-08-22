@@ -16,7 +16,9 @@ const ImagePreviewStory = {
     title: 'Gallery/Components/Image Preview',
     args: {
         id: 'image-preview',
-        image: '/test-assets/artworks/guernica.jpg'
+        image: '/test-assets/artworks/guernica.jpg',
+        title: 'Guernica by Pablo Picasso (1937)',
+        caption: captionText
     },
     component: 'image-preview',
     parameters: {
@@ -26,10 +28,7 @@ const ImagePreviewStory = {
         return html`
             <arpa-button icon="image">
                 View image
-                <image-preview ${attrString(args)}>
-                    <arpa-zone name="title">Guernica by Pablo Picasso (1937)</arpa-zone>
-                    <arpa-zone name="caption">${captionText}</arpa-zone>
-                </image-preview>
+                <image-preview ${attrString(args)}></image-preview>
             </arpa-button>
         `;
     }
@@ -70,10 +69,13 @@ export const TestSingle = {
             });
         });
 
-        // await step('Shows the caption', async () => {
-        //     const captionsButton = within(dialog).getByRole('button', { name: 'Show caption' });
-        //     console.log('captionsButton', captionsButton);
-        // });
+        await step('Shows the caption and verifies it', async () => {
+            await waitFor(() => {
+                expect(within(dialog).getByText(captionText)).toBeInTheDocument();
+            });
+            const captionsButton = within(dialog).getByRole('button', { name: 'Show captions' });
+            await userEvent.click(captionsButton);
+        });
 
         await step('Closes the dialog', async () => {
             /** @type {Button | null} */
@@ -106,8 +108,8 @@ export const TestMultiple = {
                         <gallery-item
                             image="/test-assets/artworks/guernica.jpg"
                             title="Guernica by Pablo Picasso (1937)"
+                            caption="${captionText}"
                         >
-                            <arpa-zone name="caption">${captionText}</arpa-zone>
                         </gallery-item>
                         <gallery-item image="/test-assets/artists/phidias.jpg" title="Phidias"> </gallery-item>
                     </arpa-zone>

@@ -1,3 +1,5 @@
 import { PagerConfigType } from '@arpadroid/ui';
 
-export type GalleryDotsConfigType = PagerConfigType & {};
+export type GalleryDotsConfigType = PagerConfigType & {
+    someProp?: boolean;
+};

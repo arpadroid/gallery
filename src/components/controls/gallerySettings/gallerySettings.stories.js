@@ -41,14 +41,16 @@ export const Test = {
         const { canvas, galleryNode } = await playSetup(canvasElement);
         const button = await waitFor(() => canvas.getByRole('button', { name: 'Settings' }));
 
-        const settingsForm = /** @type {FormComponent | null} */ (
-            document.getElementById('gallery-settings-test-filters-form')
+        const settingsForm = await waitFor(
+            () => /** @type {FormComponent | null} */ (document.getElementById('gallery-settings-test-filters-form'))
         );
 
-        await settingsForm?.promise;
         const positionField = /** @type {SelectCombo | undefined} */ (settingsForm?.getField('thumbnailsPosition'));
         await positionField?.promise;
         const optionsNode = positionField?.optionsNode;
+
+        await settingsForm?.promise;
+
         const playIntervalField = settingsForm?.getField('playInterval');
         await playIntervalField?.promise;
 
@@ -64,7 +66,8 @@ export const Test = {
         });
 
         await step('Renders the settings form', async () => {
-            await fireEvent.click(button);
+            await userEvent.click(button);
+
             await waitFor(() => {
                 expect(canvas.getByText('General')).toBeVisible();
                 expect(canvas.getByText('Play interval')).toBeVisible();
@@ -73,6 +76,7 @@ export const Test = {
         });
 
         await step('Opens the thumbnail position dropdown', async () => {
+            await new Promise(resolve => setTimeout(resolve, 100));
             const dropdown = canvas.getByLabelText('Thumbnails position');
             await userEvent.click(dropdown);
             await waitFor(() => {

@@ -2,7 +2,7 @@
  * @typedef {import('./galleryItem.types').GalleryItemConfigType} GalleryItemConfigType
  */
 import { ListManagerItem } from '@arpadroid/list-manager';
-import { mergeObjects, defineCustomElement, attrString } from '@arpadroid/tools';
+import { mergeObjects, defineCustomElement } from '@arpadroid/tools';
 const html = String.raw;
 class GalleryItem extends ListManagerItem {
     /** @type {GalleryItemConfigType} */
@@ -19,9 +19,13 @@ class GalleryItem extends ListManagerItem {
             className: 'galleryItem',
             titleTag: 'h2',
             listSelector: '.gallery',
-            truncateCaption: 200
+            truncateCaption: 'false'
         };
         return mergeObjects(super.getDefaultConfig(), config);
+    }
+
+    async hasCaption() {
+        return Boolean(this.getProp('caption') || this.hasProp('hasCaption'));
     }
 
     /**
@@ -31,29 +35,9 @@ class GalleryItem extends ListManagerItem {
     $renderTemplate() {
         return html`<arpa-node {wrapperAttr()}>
             <div class="galleryItem__contentWrapper">{titleWrapper}{content}{image}</div>
-            {caption}
+            <arpa-node tag="truncate-text" name="caption" max-length="{truncateCaption}" defer="hasCaption">
+            </arpa-node>
         </arpa-node>`;
-    }
-
-    getTemplateVars() {
-        return {
-            ...super.getTemplateVars(),
-            caption: this.renderCaption()
-        };
-    }
-
-    getCaption() {
-        return this.getProp('caption');
-    }
-
-    renderCaption(hasContent = this.hasContent('caption')) {
-        if (!hasContent) return '';
-        const attr = {
-            class: 'galleryItem__caption',
-            zone: 'caption',
-            maxLength: this.getProp('truncate-caption') ?? 200
-        };
-        return html`<truncate-text ${attrString(attr)}>${this.getCaption() || ''}</truncate-text>`;
     }
 
     async $initializeNodes() {

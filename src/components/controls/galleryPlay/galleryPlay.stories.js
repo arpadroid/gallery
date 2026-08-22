@@ -8,7 +8,7 @@
  * @typedef {import('@storybook/web-components-vite').StoryContext} StoryContext
  * @typedef {import('@storybook/web-components-vite').Args} Args
  */
-import { playSetup, renderStatic } from '../../gallery/gallery.stories.util';
+import { playSetup } from '../../gallery/gallery.stories.util';
 import GalleryStory from '../../gallery/gallery.stories';
 import { expect, waitFor, fireEvent } from 'storybook/test';
 
@@ -21,15 +21,12 @@ const GalleryPlayStory = {
 export const Render = {
     ...GalleryStory,
     play: async ({ canvasElement }) => {
-        await playSetup(canvasElement, {
-            initList: false
-        });
+        await playSetup(canvasElement);
     },
-    render: args => renderStatic(args),
     args: {
         ...GalleryStory.args,
         controls: 'play',
-        id: 'gallery-play-test'
+        id: 'gallery-play-render'
     }
 };
 
@@ -52,13 +49,11 @@ export const Test = {
                 canvas.getByRole('heading', { level: 2, name: 'Phidias' })
             ).toBeInTheDocument();
             await fireEvent.click(playControl);
-
             await waitFor(() => expect(playControl).toHaveTextContent('Pause'));
             expect(playControl.querySelector('arpa-icon')).toHaveTextContent('pause');
-            /** @todo Fix this flaky test if you can. */
-            // await waitFor(() => {
-            //     expect(canvas.getByText('Blue II by Joan Miró (1961)')).toBeVisible();
-            // });
+            await waitFor(() => {
+                expect(canvas.getByText('Leonardo da Vinci')).toBeVisible();
+            });
         });
 
         await step('Pauses playback and verifies state', async () => {
