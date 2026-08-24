@@ -25,9 +25,11 @@ class GalleryDragControl extends ArpaElement {
         this.gallery = this.closest('.gallery');
         /** @type {ListResource} */
         this.resource = this.gallery?.listResource;
-        return super.getDefaultConfig({
+        /** @type {GalleryDragConfigType} */
+        const config = {
             swipeThreshold: this.gallery?.getProp('swipe-threshold') || 100
-        });
+        };
+        return super.getDefaultConfig(config);
     }
 
     $onConnected() {

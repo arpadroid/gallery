@@ -21,7 +21,7 @@ class ImageSlider extends Gallery {
             tagName: 'image-slider',
             itemComponent: SliderItem,
             contentPosition: 'top',
-            controls: ['play', 'dots', 'spacer', 'drag'],
+            controls: ['play', 'dots', 'spacer'],
             maxPagerNodes: 13
         };
         return mergeObjects(super.getDefaultConfig(), config);

@@ -59,7 +59,7 @@ class Gallery extends ListManager {
             classNames: ['gallery'],
             controls: [
                 'play',
-                'drag',
+                // 'drag',
                 'previous',
                 'input',
                 'next',
@@ -245,7 +245,6 @@ class Gallery extends ListManager {
     //////////////////////////////
     // #region Gallery API
     //////////////////////////////
-
     getPlayInterval() {
         return (Number(this.settings?.getPlayInterval() || this.getProp('play-interval')) || 5) * 1000;
     }

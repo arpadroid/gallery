@@ -89,6 +89,7 @@ class GalleryControl extends ArpaElement {
     }
 
     async $initializeNodes() {
+        await super.$initializeNodes();
         /** @type {IconButton | null} */
         this.buttonComponent = /** @type {IconButton | null} */ (this.querySelector('icon-button'));
         this.buttonComponent?.promise.then(() => {

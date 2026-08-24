@@ -1,6 +1,7 @@
 /**
  * @typedef {import('@arpadroid/lists').List} List
  * @typedef {import('../../gallery/gallery.js').default} Gallery
+ * @typedef {import('./gallerySettings.js').default} GallerySettings
  * @typedef {import('../../galleryItem/galleryItem.js').default} GalleryItem
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
  * @typedef {import('@arpadroid/forms').FormComponent} FormComponent
@@ -12,7 +13,7 @@
  */
 import { playSetup, renderStatic } from '../../gallery/gallery.stories.util';
 import GalleryStory from '../../gallery/gallery.stories';
-import { expect, waitFor, fireEvent, within, userEvent } from 'storybook/test';
+import { expect, waitFor, within, userEvent } from 'storybook/test';
 
 /** @type {Meta} */
 const GallerySettingsStory = {
@@ -37,9 +38,13 @@ export const Test = {
         ...Render.args,
         id: 'gallery-settings-test'
     },
-    play: async ({ canvasElement, step }) => {
-        const { canvas, galleryNode } = await playSetup(canvasElement);
+    play: async ({ canvasElement, step, canvas }) => {
+        const { galleryNode } = await playSetup(canvasElement);
         const button = await waitFor(() => canvas.getByRole('button', { name: 'Settings' }));
+        const gallerySettingsNode = /** @type {GallerySettings | null} */ (
+            galleryNode.querySelector('gallery-settings')
+        );
+        await gallerySettingsNode?.promise;
 
         const settingsForm = await waitFor(
             () => /** @type {FormComponent | null} */ (document.getElementById('gallery-settings-test-filters-form'))
@@ -66,8 +71,6 @@ export const Test = {
         });
 
         await step('Renders the settings form', async () => {
-            await userEvent.click(button);
-
             await waitFor(() => {
                 expect(canvas.getByText('General')).toBeVisible();
                 expect(canvas.getByText('Play interval')).toBeVisible();
@@ -90,7 +93,7 @@ export const Test = {
 
         await step('Sets the thumbnails position to "Right"', async () => {
             const dropdown = canvas.getByLabelText('Thumbnails position');
-            await fireEvent.click(dropdown);
+            await userEvent.click(dropdown);
             const combo = optionsNode && within(optionsNode);
             const option = combo?.getByText('Right');
             option && (await userEvent.click(option));
@@ -101,7 +104,7 @@ export const Test = {
 
         await step('Sets the thumbnails position to "left"', async () => {
             const dropdown = canvas.getByLabelText('Thumbnails position');
-            await fireEvent.click(dropdown);
+            await userEvent.click(dropdown);
             const combo = optionsNode && within(optionsNode);
             const option = combo?.getByText('Left');
             option && (await userEvent.click(option));

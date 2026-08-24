@@ -105,13 +105,12 @@ export const TestMultiple = {
                 <image-preview ${attrString(args)}>
                     <arpa-zone name="title">My preview gallery</arpa-zone>
                     <arpa-zone name="gallery">
+                        <gallery-item image="/test-assets/artists/phidias.jpg" title="Phidias"></gallery-item>
                         <gallery-item
                             image="/test-assets/artworks/guernica.jpg"
                             title="Guernica by Pablo Picasso (1937)"
                             caption="${captionText}"
-                        >
-                        </gallery-item>
-                        <gallery-item image="/test-assets/artists/phidias.jpg" title="Phidias"> </gallery-item>
+                        ></gallery-item>
                     </arpa-zone>
                 </image-preview>
             </arpa-button>

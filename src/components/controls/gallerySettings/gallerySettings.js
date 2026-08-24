@@ -25,6 +25,7 @@ class GallerySettings extends GalleryControl {
         this.bind('onSubmit', 'updatePlayInterval', 'updateThumbnailsPosition');
         return mergeObjects(super.getDefaultConfig(), {
             icon: 'settings',
+            className: 'gallerySettings',
             lblSettings: '{i18n:lblSettings}'
         });
     }
@@ -110,7 +111,9 @@ class GallerySettings extends GalleryControl {
     $renderTemplate() {
         const { playInterval, thumbnailsPosition } = this.settings || {};
         return html`
-            <icon-menu
+            <arpa-node
+                tag="icon-menu"
+                name="menu"
                 variant="compact"
                 menu-position="false"
                 nav-class="gallerySettings__nav"
@@ -121,11 +124,12 @@ class GallerySettings extends GalleryControl {
                 <arpa-zone name="tooltip">{lblSettings}</arpa-zone>
                 <arpa-zone name="nav">
                     <div class="gallerySettings__content">
-                        <arpa-form
+                        <arpa-node
+                            tag="arpa-form"
+                            name="form"
                             variant="compact"
                             id="${this.gallery?.getProp('id') || 'gallery'}-filters-form"
                             has-submit="false"
-                            class="gallerySettings__form"
                         >
                             <group-field open id="general" icon="settings">
                                 <arpa-zone name="label">${this.i18n('lblGeneral')}</arpa-zone>
@@ -143,6 +147,7 @@ class GallerySettings extends GalleryControl {
                                     id="thumbnailsPosition"
                                     value="${thumbnailsPosition}"
                                     label="{i18n:lblThumbnailsPosition}"
+                                    on-change="{updateThumbnailsPosition}"
                                 >
                                     <select-option value="top">${this.i18n('lblTop')}</select-option>
                                     <select-option value="bottom">${this.i18n('lblBottom')}</select-option>
@@ -150,10 +155,10 @@ class GallerySettings extends GalleryControl {
                                     <select-option value="right">${this.i18n('lblRight')}</select-option>
                                 </select-combo>
                             </group-field>
-                        </arpa-form>
+                        </arpa-node>
                     </div>
                 </arpa-zone>
-            </icon-menu>
+            </arpa-node>
         `;
     }
 
@@ -165,45 +170,42 @@ class GallerySettings extends GalleryControl {
 
     async $initializeNodes() {
         await super.$initializeNodes();
-
-        /** @type {IconMenu | null} */
-        this.menuNode = this.querySelector('icon-menu');
-        await this.menuNode?.promise;
-        this.menuNode?.button?.setAttribute('variant', 'compact');
-        this.menuNode?.button?.setAttribute('aria-label', this.i18nText('lblSettings'));
-
-        this.nav = this.menuNode?.navigation;
-        await this.nav?.promise;
-
         this.tooltip = /** @type {Tooltip | null} */ (this.menuNode?.nodes?.tooltip);
         this.setTooltipPosition('top-right');
+        await this._initializeIconMenu();
         await this._initializeForm();
-        this._initializeIconMenu();
-
-        this.playIntervalField = /** @type {NumberField | null} */ (
-            this.querySelector('.gallerySettings__playInterval')
-        );
-        this.playIntervalField?.on('change', this.updatePlayInterval);
-        /** @type {SelectCombo | null} */
-        this.thumbPositionField = /** @type {SelectCombo | null} */ (
-            this.querySelector('.gallerySettings__thumbnailsPosition')
-        );
-        this.thumbPositionField?.on('change', this.updateThumbnailsPosition);
         return true;
     }
 
     async _initializeIconMenu() {
-        await customElements.whenDefined('icon-menu');
-        this.menuNode?.promise && (await this.menuNode.promise);
+        this.menuNode = /** @type {IconMenu} */ (this.nodes.menu);
+        await this.menuNode?.promise;
+
+        this.menuNode.setAttribute('variant', 'compact');
+        this.menuNode.button?.setAttribute('aria-label', this.i18nText('lblSettings'));
+
+        this.nav = this.menuNode?.navigation;
+        await this.nav?.promise;
+
+        this.nav = this.menuNode?.navigation;
         const itemsNode = this.menuNode?.navigation?.itemsNode;
         itemsNode?.setAttribute('zone', 'gallery-settings');
     }
 
     async _initializeForm() {
-        /** @type {FormComponent | null} */
-        this.form = this.nav?.querySelector('arpa-form');
+        /** @todo Remove setTimeout. */
+        await new Promise(resolve => setTimeout(resolve, 0));
+        this.form = /** @type {FormComponent | null} */ (this.nav?.nodes.form);
         await this.form?.promise;
         this.onSubmit && this.form?.onSubmit(this.onSubmit);
+        this.playIntervalField = /** @type {NumberField | null} */ (
+            this.querySelector('.gallerySettings__playInterval')
+        );
+        this.playIntervalField?.on('change', this.updatePlayInterval);
+        this.thumbPositionField = /** @type {SelectCombo | null} */ (
+            this.nav?.querySelector('.gallerySettings__thumbnailsPosition')
+        );
+        this.thumbPositionField?.on('change', this.updateThumbnailsPosition);
         return true;
     }
 
