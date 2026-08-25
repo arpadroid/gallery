@@ -50,10 +50,10 @@ export const Test = {
             () => /** @type {FormComponent | null} */ (document.getElementById('gallery-settings-test-filters-form'))
         );
 
+        await new Promise(resolve => setTimeout(resolve, 0));
         const positionField = /** @type {SelectCombo | undefined} */ (settingsForm?.getField('thumbnailsPosition'));
         await positionField?.promise;
         const optionsNode = positionField?.optionsNode;
-
         await settingsForm?.promise;
 
         const playIntervalField = settingsForm?.getField('playInterval');

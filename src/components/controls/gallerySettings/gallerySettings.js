@@ -193,18 +193,17 @@ class GallerySettings extends GalleryControl {
     }
 
     async _initializeForm() {
-        /** @todo Remove setTimeout. */
+        /** @todo Remove setTimeouts. */
         await new Promise(resolve => setTimeout(resolve, 0));
         this.form = /** @type {FormComponent | null} */ (this.nav?.nodes.form);
         await this.form?.promise;
         this.onSubmit && this.form?.onSubmit(this.onSubmit);
+        await new Promise(resolve => setTimeout(resolve, 0));
         this.playIntervalField = /** @type {NumberField | null} */ (
             this.querySelector('.gallerySettings__playInterval')
         );
         this.playIntervalField?.on('change', this.updatePlayInterval);
-        this.thumbPositionField = /** @type {SelectCombo | null} */ (
-            this.nav?.querySelector('.gallerySettings__thumbnailsPosition')
-        );
+        this.thumbPositionField = this.form?.getField('thumbnailsPosition');
         this.thumbPositionField?.on('change', this.updateThumbnailsPosition);
         return true;
     }
