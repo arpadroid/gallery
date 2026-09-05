@@ -59,15 +59,6 @@ class GalleryThumbnails extends List {
     async $initialize() {
         this.bind('scrollForward', 'scrollBack', '_handleSelectedItem', '_initializeThumbnails');
         super.$initialize();
-        await customElements.whenDefined('arpa-gallery');
-        this.bind('_initializeThumbnails', '_handleSelectedItem');
-        /** @type {Gallery | null} */
-        this.gallery = this.closest('.gallery');
-        /** @type {ListResource | null} */
-        this.resource = this.gallery?.listResource;
-        this.handleResize();
-        this.resource?.on('items', this._initializeThumbnails);
-        this.resource?.on('items', this._handleSelectedItem);
     }
     /**
      * Handles the selected item.
@@ -107,7 +98,8 @@ class GalleryThumbnails extends List {
 
     thumbnailsInitialized = false;
 
-    _initializeThumbnails() {
+    async _initializeThumbnails() {
+        await this.promise;
         if (this.thumbnailsInitialized) return;
         const mask = this.querySelector('.galleryThumbnails__mask');
         const itemHTML = this.renderItems();
@@ -127,6 +119,18 @@ class GalleryThumbnails extends List {
         return {
             ...super.getTemplateVars()
         };
+    }
+
+    async $onConnected() {
+        this.gallery = /** @type {Gallery | null} */ (this.closest('.gallery'));
+        /** @type {ListResource | null} */
+        this.resource = this.gallery?.listResource;
+        this.handleResize();
+        if (this.resource?.getItems()?.length) {
+            await this._initializeThumbnails();
+        }
+        this.resource?.on('items', this._initializeThumbnails);
+        this.resource?.on('items', this._handleSelectedItem);
     }
 
     async $initializeNodes() {

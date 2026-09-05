@@ -115,7 +115,7 @@ class GallerySettings extends GalleryControl {
                 tag="icon-menu"
                 name="menu"
                 variant="compact"
-                menu-position="false"
+                menu-position="bottom-right"
                 nav-class="gallerySettings__nav"
                 icon="{icon}"
                 label="{label}"
@@ -131,8 +131,7 @@ class GallerySettings extends GalleryControl {
                             id="${this.gallery?.getProp('id') || 'gallery'}-filters-form"
                             has-submit="false"
                         >
-                            <group-field open id="general" icon="settings">
-                                <arpa-zone name="label">${this.i18n('lblGeneral')}</arpa-zone>
+                            <group-field open id="general" icon="settings" label="${this.i18nText('lblGeneral')}">
                                 <number-field
                                     class="gallerySettings__playInterval"
                                     id="playInterval"

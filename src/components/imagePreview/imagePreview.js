@@ -29,7 +29,14 @@ class ImagePreview extends ArpaElement {
 
     $renderTemplate() {
         return html`
-            <arpa-node name="dialog" tag="arpa-dialog" id="{id}-dialog" variant="compact" size="full-screen">
+            <arpa-node
+                id="{id}-dialog"
+                name="dialog"
+                tag="arpa-dialog"
+                variant="compact"
+                size="full-screen"
+                container="{dialogContainer}"
+            >
                 <arpa-node
                     tag="arpa-gallery"
                     name="gallery"

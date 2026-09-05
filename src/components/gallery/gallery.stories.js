@@ -1,15 +1,14 @@
 /**
  * @typedef {import('@arpadroid/lists').List} List
  * @typedef {import('./gallery.js').default} Gallery
+ * @typedef {import('./gallery.types').GalleryConfigType} GalleryConfigType
  * @typedef {import('../galleryItem/galleryItem.js').default} GalleryItem
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
- * @typedef {import('@storybook/web-components-vite').Meta} Meta
- * @typedef {import('@storybook/web-components-vite').StoryObj} StoryObj
- * @typedef {import('@storybook/web-components-vite').StoryContext} StoryContext
- * @typedef {import('@storybook/web-components-vite').Args} Args
+ * @typedef {import('@storybook/web-components-vite').Meta<GalleryConfigType>} Meta
+ * @typedef {import('@storybook/web-components-vite').StoryObj<GalleryConfigType>} Story
  */
 import { attrString } from '@arpadroid/tools';
-import { getArgTypes, playSetup } from './gallery.stories.util';
+import { playSetup } from './gallery.stories.util';
 import { expect, waitFor } from 'storybook/test';
 
 const html = String.raw;
@@ -17,8 +16,8 @@ const html = String.raw;
 /** @type {Meta} */
 const GalleryStory = {
     title: 'Gallery/Gallery',
+    component: 'arpa-gallery',
     tags: [],
-    argTypes: getArgTypes(),
     args: {
         id: 'gallery'
     },
@@ -33,21 +32,17 @@ const GalleryStory = {
     }
 };
 
-/** @type {StoryObj} */
+/** @type {Story} */
 export const Default = {
-    ...GalleryStory,
     name: 'Render',
     args: {
-        ...GalleryStory.args,
         id: 'gallery-list'
     }
 };
 
-/** @type {StoryObj} */
+/** @type {Story} */
 export const Test = {
-    ...Default,
     args: {
-        ...GalleryStory.args,
         id: 'gallery-test'
     },
     play: async ({ canvasElement, step, canvas }) => {

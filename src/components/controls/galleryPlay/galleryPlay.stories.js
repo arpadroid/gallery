@@ -38,16 +38,18 @@ export const Test = {
         id: 'gallery-play-test'
     },
     play: async ({ canvasElement, step }) => {
-        const { canvas } = await playSetup(canvasElement);
+        const { canvas, galleryNode } = await playSetup(canvasElement);
         const playControl = await waitFor(() => canvas.getByRole('button', { name: 'Play' }));
         await step('Renders the play control', async () => {
             expect(playControl).toBeInTheDocument();
         });
+
+
         await step('Clicks the play control and verifies state', async () => {
-            await new Promise(resolve => setTimeout(resolve, 200));
-            expect(
-                canvas.getByRole('heading', { level: 2, name: 'Phidias' })
-            ).toBeInTheDocument();
+            const playControl = await waitFor(() => canvas.getByRole('button', { name: 'Play' }));
+
+            expect(canvas.getByRole('heading', { level: 2, name: 'Phidias' })).toBeInTheDocument();
+            await new Promise(resolve => setTimeout(resolve, 50));
             await fireEvent.click(playControl);
             await waitFor(() => expect(playControl).toHaveTextContent('Pause'));
             expect(playControl.querySelector('arpa-icon')).toHaveTextContent('pause');
@@ -56,11 +58,14 @@ export const Test = {
             });
         });
 
+
         await step('Pauses playback and verifies state', async () => {
             playControl.click();
             await waitFor(() => expect(playControl).toHaveTextContent('Play'));
             expect(playControl.querySelector('arpa-icon')).toHaveTextContent('play_arrow');
         });
+
+        galleryNode.setPage(1);
     }
 };
 

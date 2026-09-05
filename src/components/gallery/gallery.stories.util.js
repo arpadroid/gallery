@@ -65,8 +65,6 @@ export async function initializeList(id, payload = artists) {
  */
 export async function playSetup(canvasElement, opt = {}) {
     const { initList = true } = opt;
-    await customElements.whenDefined('arpa-gallery');
-    await customElements.whenDefined('gallery-item');
     const canvas = within(canvasElement);
     /** @type {Gallery | null} */
     const galleryNode = document.querySelector('arpa-gallery');

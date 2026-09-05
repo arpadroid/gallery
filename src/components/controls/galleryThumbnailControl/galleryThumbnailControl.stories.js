@@ -7,6 +7,7 @@
  * @typedef {import('@storybook/web-components-vite').StoryObj} StoryObj
  * @typedef {import('@storybook/web-components-vite').StoryContext} StoryContext
  * @typedef {import('@storybook/web-components-vite').Args} Args
+ * @typedef {import('../../galleryThumbnails/galleryThumbnails.js').default} GalleryThumbnails
  */
 import { playSetup, renderStatic } from '../../gallery/gallery.stories.util';
 import GalleryStory from '../../gallery/gallery.stories';
@@ -39,9 +40,8 @@ export const Test = {
     play: async ({ canvasElement, step }) => {
         const { canvas, galleryNode } = await playSetup(canvasElement);
         const button = await waitFor(() => canvas.getByRole('button', { name: 'Hide thumbnails' }));
-        const thumbnails = canvasElement.querySelector('gallery-thumbnails');
-        await customElements.whenDefined('gallery-thumbnails');
-
+        const thumbnails = /** @type {GalleryThumbnails | null} */ (canvasElement.querySelector('gallery-thumbnails'));
+        await thumbnails?.promise;
         await step('Renders the thumbnail control and the thumbnails', async () => {
             expect(button).toBeInTheDocument();
             expect(thumbnails).toBeInTheDocument();
