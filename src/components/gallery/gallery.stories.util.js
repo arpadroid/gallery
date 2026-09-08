@@ -68,13 +68,13 @@ export async function playSetup(canvasElement, opt = {}) {
     const canvas = within(canvasElement);
     /** @type {Gallery | null} */
     const galleryNode = document.querySelector('arpa-gallery');
-    await galleryNode?.promise;
+    await galleryNode?.onRendered();
     galleryNode?.listResource?.pageFilter?.setValue(1);
 
     galleryNode && initList && (await initializeList(galleryNode?.id));
     /** @type {GalleryItem | null} */
     const galleryItem = canvasElement.querySelector('gallery-item');
-    await galleryItem?.promise;
+    await galleryItem?.onRendered();
 
     return { canvas, galleryNode, galleryItem };
 }

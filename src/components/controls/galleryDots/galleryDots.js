@@ -60,7 +60,7 @@ class GalleryDots extends GalleryControl {
         /** @type {Pager | null} */
         this.pager = this.querySelector('arpa-pager');
 
-        this.pager?.onRendered(() => {
+        this.pager?.promise?.then(() => {
             requestAnimationFrame(() => {
                 this._initializeTooltip();
             });

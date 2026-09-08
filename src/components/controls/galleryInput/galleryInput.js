@@ -51,7 +51,8 @@ class GalleryInput extends GalleryControl {
         this.form = this.querySelector('arpa-form'); // @ts-ignore
         this.form?.onSubmit(this._onSubmit);
         this.inputField = /** @type {NumberField | null} */ (this.querySelector('number-field'));
-        this.inputField?.promise.then(() => {
+        this.inputField?.promise.then(async () => {
+            await new Promise(resolve => setTimeout(resolve, 0));
             const lblCurrentSlide = this.getProp('lbl-current-slide');
             lblCurrentSlide && this.inputField?.input?.setAttribute('aria-label', lblCurrentSlide);
         });

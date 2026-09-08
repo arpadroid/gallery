@@ -36,13 +36,13 @@ export const Test = {
         ...Render.args,
         id: 'gallery-input-test'
     },
-    play: async ({ canvasElement, step }) => {
-        const { canvas } = await playSetup(canvasElement);
+    play: async ({ canvasElement, step, canvas }) => {
+        await playSetup(canvasElement);
 
-        const input = await waitFor(() => canvas.getByLabelText('Current slide'));
-        /** @type {FormComponent} */
-        const form = input.closest('arpa-form');
+        const form = /** @type {FormComponent} */ (canvasElement.querySelector('arpa-form'));
         form.setDebounce(0);
+        await form?.onRendered();
+        const input = /** @type {HTMLInputElement} */  (await waitFor(() => canvas.getByRole('spinbutton', { name: 'Current slide' })));
         await step('Renders the input', async () => {
             await waitFor(() => {
                 expect(input).toBeInTheDocument();
