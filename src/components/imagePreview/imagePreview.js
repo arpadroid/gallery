@@ -59,10 +59,11 @@ class ImagePreview extends ArpaElement {
         `;
     }
 
-    async $initializeNodes() {
+    async $onComplete() {
+        super.$onComplete();
+        await this.onNodesReady();
         this.dialog = /** @type {Dialog | undefined} */ (this.nodes.dialog);
         this.gallery = /** @type {Gallery | undefined} */ (this.dialog?.nodes?.gallery);
-        return true;
     }
 }
 

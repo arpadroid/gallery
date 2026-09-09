@@ -5,6 +5,8 @@ import { defineCustomElement } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl.js';
 
 class GalleryToggleCaptions extends GalleryControl {
+    /** @type {GalleryToggleCaptionsConfigType} */
+    _config = this._config;
     /**
      * Returns the default configuration for the gallery control.
      * @returns {GalleryToggleCaptionsConfigType}
@@ -15,7 +17,9 @@ class GalleryToggleCaptions extends GalleryControl {
             icon: 'subtitles',
             iconOff: 'subtitles_off',
             label: '{i18n:lblShowCaptions}',
-            labelOff: '{i18n:lblHideCaptions}'
+            labelOff: '{i18n:lblHideCaptions}',
+            toggleClass: 'gallery--captions-on',
+            enabled: false
         };
     }
 
@@ -23,19 +27,20 @@ class GalleryToggleCaptions extends GalleryControl {
         return this.gallery?.classList.contains('gallery--captions-on');
     }
 
-    $onConnected() {
-        this.updateCaptions(true);
+    async $onComplete() {
+        const { enabled = false } = this._config || {};
+        this.updateCaptions(enabled, true);
     }
 
-    updateCaptions(on = this.hasCaptions()) {
+    updateCaptions(on = this.hasCaptions(), isInitial = false) {
         if (!on) {
-            this.gallery?.classList.remove('gallery--captions-on');
-            this.buttonComponent?.setProp('icon', this.getProp('icon-off'));
-            this.buttonComponent?.setProp('tooltip', this.getProp('label-off'));
+            this.gallery?.classList.remove(this.getProp('toggleClass'));
+            this.buttonComponent?.setIcon(this.getProp('icon'));
+            !isInitial && this.buttonComponent?.setTooltip(this.getProp('label'));
         } else {
-            this.gallery?.classList.add('gallery--captions-on');
-            this.buttonComponent?.setProp('icon', this.getProp('icon'));
-            this.buttonComponent?.setProp('tooltip', this.getProp('label'));
+            this.gallery?.classList.add(this.getProp('toggleClass'));
+            this.buttonComponent?.setIcon(this.getProp('icon'));
+            !isInitial && this.buttonComponent?.setTooltip(this.getProp('labelOff'));
         }
     }
 

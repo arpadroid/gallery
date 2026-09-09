@@ -188,6 +188,7 @@ class Gallery extends ListManager {
 
     async $initializeNodes() {
         super.$initializeNodes();
+        await this.onNodesReady();
         this.controls = /** @type {GalleryControls | null} */ (this.querySelector('gallery-controls'));
         this.footerNode = this.querySelector('.gallery__footer');
         this.headerNode = this.querySelector('.gallery__header');

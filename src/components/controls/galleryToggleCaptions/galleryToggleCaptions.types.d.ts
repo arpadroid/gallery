@@ -3,4 +3,6 @@ import { GalleryControlConfigType } from '../../galleryControl/galleryControl.ty
 export type GalleryToggleCaptionsConfigType = GalleryControlConfigType & {
     iconOff?: string;
     labelOff?: string;
+    toggleClass?: string;
+    enabled?: boolean;
 };

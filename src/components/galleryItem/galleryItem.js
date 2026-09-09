@@ -42,6 +42,7 @@ class GalleryItem extends ListManagerItem {
 
     async $initializeNodes() {
         await super.$initializeNodes();
+        await this.onNodesReady();
         this.captionNode = this.querySelector('.galleryItem__caption');
         return true;
     }

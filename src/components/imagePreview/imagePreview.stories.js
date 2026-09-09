@@ -1,8 +1,11 @@
 /**
+ * @typedef {import('./imagePreview').default} ImagePreview
  * @typedef {import('./imagePreview.types').ImagePreviewConfigType} ImagePreviewConfigType
  * @typedef {import('@storybook/web-components-vite').Meta<ImagePreviewConfigType>} Meta
  * @typedef {import('@storybook/web-components-vite').StoryObj<ImagePreviewConfigType>} StoryObj
  * @typedef {import('@arpadroid/ui').Button} Button
+ * @typedef {import('./imagePreview').Dialog} Dialog
+ * @typedef {import('@arpadroid/gallery').Gallery} Gallery
  */
 import { attrString } from '@arpadroid/tools';
 import { expect, waitFor, within, userEvent } from 'storybook/test';
@@ -15,11 +18,13 @@ const captionText =
 const ImagePreviewStory = {
     title: 'Gallery/Components/Image Preview',
     args: {
+        dialogContainer: '#storybook-root',
         id: 'image-preview',
         image: '/test-assets/artworks/guernica.jpg',
         title: 'Guernica by Pablo Picasso (1937)',
         caption: captionText
     },
+    beforeEach: async ({ canvasElement }) => canvasElement.querySelector('arpa-dialogs')?.remove(),
     component: 'image-preview',
     parameters: {
         layout: 'centered'
@@ -44,16 +49,17 @@ export const TestSingle = {
     },
 
     play: async ({ canvasElement, step }) => {
-        await customElements.whenDefined('delete-dialog');
-        await customElements.whenDefined('arpa-dialogs');
-        const button = await waitFor(() => /** @type {HTMLButtonElement} */ (canvasElement.querySelector('button')));
-        let dialog = /** @type {HTMLElement} */ (document.querySelector('#image-preview-test-dialog'));
+        const arpaButton = await waitFor(() => /** @type {Button} */ (canvasElement.querySelector('arpa-button')));
+        await arpaButton?.promise;
+        const button = arpaButton.button;
+        let dialog = /** @type {Dialog} */ (document.querySelector('#image-preview-test-dialog'));
+        await dialog?.promise;
         await step('Renders the image preview button', async () => {
             expect(button).toBeInTheDocument();
         });
 
         await step('Clicks on the button and opens the preview modal', async () => {
-            await userEvent.click(button);
+            button && (await userEvent.click(button));
             await waitFor(() => {
                 dialog = /** @type {import('./imagePreview').Dialog} */ (
                     document.querySelector('#image-preview-test-dialog')
@@ -116,36 +122,42 @@ export const TestMultiple = {
             </arpa-button>
         `;
     },
-    play: async ({ canvasElement, step }) => {
-        await customElements.whenDefined('image-preview');
-        await customElements.whenDefined('arpa-dialogs');
+    play: async ({ canvasElement, step, canvas }) => {
+        const imagePreview = /** @type {ImagePreview} */ (canvasElement.querySelector('image-preview'));
+        await imagePreview?.promise;
+        const gallery = /** @type {Gallery} */ (canvasElement.querySelector('arpa-gallery'));
+        await gallery?.onNodesReady();
 
-        const button = await waitFor(() => /** @type {HTMLButtonElement} */ (canvasElement.querySelector('button')));
-        let dialog = /** @type {HTMLElement} */ (document.querySelector('#image-preview-test-multiple-dialog'));
-
-        await step('Renders the image preview button', async () => {
-            expect(button).toBeInTheDocument();
-        });
+        const button = /** @type {Button} */ (canvas.getByRole('button', { name: 'Open Gallery' }));
 
         await step('Clicks on the button and opens the preview modal', async () => {
-            await userEvent.click(button);
+            expect(button).toBeInTheDocument();
+            await userEvent.click(button, { delay: 50 });
+            const dialog = /** @type {Dialog} */ (imagePreview.dialog);
             await waitFor(() => {
-                dialog = /** @type {HTMLElement} */ (document.querySelector('#image-preview-test-multiple-dialog'));
-                expect(within(dialog).getByText('Phidias')).toBeVisible();
+                expect(within(dialog).getByText('Phidias')).toBeInTheDocument();
             });
         });
 
         await step('Clicks next and shows next image', async () => {
-            const nextButton = within(dialog).getByRole('button', { name: 'Next' });
-            await userEvent.click(nextButton);
+            const dialog = imagePreview.nodes.dialog;
+            const nextButton = dialog.querySelector('.galleryNext button');
+            expect(nextButton).toBeInTheDocument();
+            await userEvent.click(nextButton, { delay: 50 });
             await waitFor(() => {
                 expect(within(dialog).getByText('Guernica by Pablo Picasso (1937)')).toBeInTheDocument();
             });
         });
 
-        await step('Closes the dialog', async () => {
+        await step('Sets previous image and then closes the dialog', async () => {
+            const dialog = imagePreview.nodes.dialog;
+            const prevButton = dialog.querySelector('.galleryPrevious button');
+
+            await userEvent.click(prevButton, { delay: 50 });
+            await waitFor(() => {
+                expect(within(dialog).getByText('Phidias')).toBeVisible();
+            });
             const button = within(dialog).getByRole('button', { name: 'close' });
-            expect(button).toBeInTheDocument();
             await userEvent.click(button);
             await waitFor(() => expect(dialog).not.toHaveAttribute('open'));
             expect(dialog).not.toBeVisible();

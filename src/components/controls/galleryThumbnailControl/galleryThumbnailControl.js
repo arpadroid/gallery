@@ -58,9 +58,8 @@ class GalleryThumbnailControl extends GalleryControl {
      * @param {ThumbnailsPositionType} [position]
      */
     async positionThumbnails(position) {
-        await customElements.whenDefined('gallery-settings');
         !position && (position = await this.getThumbnailsPosition());
-        this.gallery?.controls?.promise && (await this.gallery.controls.promise);
+        await this.gallery?.controls?.onNodesReady?.();
         if (this.thumbnails) {
             if (position === 'bottom') {
                 this.gallery?.footerNode?.append(this.thumbnails);

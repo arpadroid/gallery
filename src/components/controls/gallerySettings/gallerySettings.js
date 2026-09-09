@@ -11,6 +11,7 @@
  * @typedef {import('./gallerySettings.types').GallerySettingsType} GallerySettingsType
  * @typedef {import('../galleryThumbnailControl/galleryThumbnailControl').ThumbnailsPositionType} ThumbnailsPositionType
  * @typedef {import('@arpadroid/ui').Tooltip} Tooltip
+ * @typedef {import('@arpadroid/navigation').NavList} NavList
  */
 import { mergeObjects, defineCustomElement } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl';
@@ -172,30 +173,24 @@ class GallerySettings extends GalleryControl {
         this.tooltip = /** @type {Tooltip | null} */ (this.menuNode?.nodes?.tooltip);
         this.setTooltipPosition('top-right');
         await this._initializeIconMenu();
-        await this._initializeForm();
+        this._initializeForm();
         return true;
     }
 
     async _initializeIconMenu() {
         this.menuNode = /** @type {IconMenu} */ (this.nodes.menu);
-        await this.menuNode?.promise;
-
+        await this.onNodesReady();
         this.menuNode.setAttribute('variant', 'compact');
         this.menuNode.button?.setAttribute('aria-label', this.i18nText('lblSettings'));
-
-        this.nav = this.menuNode?.navigation;
-        await this.nav?.promise;
-
-        this.nav = this.menuNode?.navigation;
+        this.nav = /** @type {NavList} */ (this.menuNode?.nodes.nav);
         const itemsNode = this.menuNode?.navigation?.itemsNode;
         itemsNode?.setAttribute('zone', 'gallery-settings');
     }
 
     async _initializeForm() {
+        this.form = /** @type {FormComponent | null} */ (this.nav?.querySelector('arpa-form'));
+        await this.form?.onRendered();
         /** @todo Remove setTimeouts. */
-        await new Promise(resolve => setTimeout(resolve, 0));
-        this.form = /** @type {FormComponent | null} */ (this.nav?.nodes.form);
-        await this.form?.promise;
         this.onSubmit && this.form?.onSubmit(this.onSubmit);
         await new Promise(resolve => setTimeout(resolve, 0));
         this.playIntervalField = /** @type {NumberField | null} */ (
