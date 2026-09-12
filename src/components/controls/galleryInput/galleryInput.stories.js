@@ -38,7 +38,9 @@ export const Test = {
     },
     play: async ({ canvasElement, step, canvas }) => {
         await playSetup(canvasElement);
-
+        await waitFor(() => {
+            expect(canvasElement.querySelector('arpa-form')).toBeInTheDocument();
+        });
         const form = /** @type {FormComponent} */ (canvasElement.querySelector('arpa-form'));
         form.setDebounce(0);
         await form?.onRendered();

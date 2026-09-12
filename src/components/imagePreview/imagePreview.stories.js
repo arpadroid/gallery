@@ -48,7 +48,7 @@ export const TestSingle = {
         id: 'image-preview-test'
     },
 
-    play: async ({ canvasElement, step }) => {
+    play: async ({ canvasElement, step, canvas }) => {
         const arpaButton = await waitFor(() => /** @type {Button} */ (canvasElement.querySelector('arpa-button')));
         await arpaButton?.promise;
         const button = arpaButton.button;
@@ -59,7 +59,7 @@ export const TestSingle = {
         });
 
         await step('Clicks on the button and opens the preview modal', async () => {
-            button && (await userEvent.click(button));
+            button && (await userEvent.click(button, { delay: 100 }));
             await waitFor(() => {
                 dialog = /** @type {import('./imagePreview').Dialog} */ (
                     document.querySelector('#image-preview-test-dialog')
@@ -75,22 +75,34 @@ export const TestSingle = {
             });
         });
 
+        await step(
+            'Does not render the play, input, previous, and next controls when there are not enough items',
+            async () => {
+                expect(within(dialog).queryByRole('button', { name: 'Play' })).not.toBeInTheDocument();
+                expect(within(dialog).queryByRole('button', { name: 'Next' })).not.toBeInTheDocument();
+                expect(within(dialog).queryByRole('button', { name: 'Previous' })).not.toBeInTheDocument();
+                expect(within(dialog).queryByRole('button', { name: 'Current slide' })).not.toBeInTheDocument();
+            }
+        );
+
         await step('Shows the caption and verifies it', async () => {
             await waitFor(() => {
                 expect(within(dialog).getByText(captionText)).toBeInTheDocument();
+                expect(within(dialog).getByText(captionText)).not.toBeVisible();
+                expect(within(dialog).getByRole('button', { name: 'Show captions' })).toBeInTheDocument();
             });
             const captionsButton = within(dialog).getByRole('button', { name: 'Show captions' });
-            await userEvent.click(captionsButton);
+            // console.log('captionsButton', captionsButton);
+            await userEvent.click(captionsButton, { delay: 100 });
+            await waitFor(() => {
+                expect(within(dialog).getByText(captionText)).toBeVisible();
+            });
         });
 
         await step('Closes the dialog', async () => {
             /** @type {Button | null} */
-            const buttonComponent = dialog.querySelector('.dialog__close');
-            await buttonComponent?.promise;
-
-            const button = /** @type {HTMLButtonElement | null} */ buttonComponent?.button;
-            expect(button).toBeInTheDocument();
-            button && (await userEvent.click(button));
+            const button = dialog.querySelector('.dialog__close');
+            await button.click(button);
             await waitFor(() => expect(dialog).not.toHaveAttribute('open'));
             expect(dialog).not.toBeVisible();
         });
@@ -123,17 +135,18 @@ export const TestMultiple = {
         `;
     },
     play: async ({ canvasElement, step, canvas }) => {
+        await waitFor(() => {
+            expect(canvasElement.querySelector('image-preview')).toBeInTheDocument();
+        });
         const imagePreview = /** @type {ImagePreview} */ (canvasElement.querySelector('image-preview'));
         await imagePreview?.promise;
-        const gallery = /** @type {Gallery} */ (canvasElement.querySelector('arpa-gallery'));
-        await gallery?.onNodesReady();
 
         const button = /** @type {Button} */ (canvas.getByRole('button', { name: 'Open Gallery' }));
 
         await step('Clicks on the button and opens the preview modal', async () => {
             expect(button).toBeInTheDocument();
             await userEvent.click(button, { delay: 50 });
-            const dialog = /** @type {Dialog} */ (imagePreview.dialog);
+            const dialog = /** @type {Dialog} */ (imagePreview.nodes.dialog);
             await waitFor(() => {
                 expect(within(dialog).getByText('Phidias')).toBeInTheDocument();
             });

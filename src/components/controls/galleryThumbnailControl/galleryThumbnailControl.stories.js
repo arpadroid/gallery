@@ -39,13 +39,16 @@ export const Test = {
     },
     play: async ({ canvasElement, step }) => {
         const { canvas, galleryNode } = await playSetup(canvasElement);
-        const button = await waitFor(() => canvas.getByRole('button', { name: 'Hide thumbnails' }));
-        const thumbnails = /** @type {GalleryThumbnails | null} */ (canvasElement.querySelector('gallery-thumbnails'));
-        await thumbnails?.promise;
         await step('Renders the thumbnail control and the thumbnails', async () => {
-            expect(button).toBeInTheDocument();
-            expect(thumbnails).toBeInTheDocument();
-            expect(galleryNode).toHaveClass('gallery--thumbnails');
+            await waitFor(() => {
+                const button = canvas.getByRole('button', { name: 'Hide thumbnails' });
+                expect(button).toBeInTheDocument();
+                const thumbnails = /** @type {GalleryThumbnails | null} */ (
+                    canvasElement.querySelector('gallery-thumbnails')
+                );
+                expect(thumbnails).toBeInTheDocument();
+                expect(galleryNode).toHaveClass('gallery--thumbnails');
+            });
         });
 
         await step('Selects the second item', async () => {
@@ -64,6 +67,7 @@ export const Test = {
         });
 
         await step('Focuses on the button and displays tooltip', async () => {
+            const button = canvas.getByRole('button', { name: 'Hide thumbnails' });
             button.focus();
             await waitFor(() => {
                 expect(canvas.getByText('Hide thumbnails')).toBeVisible();
@@ -71,6 +75,7 @@ export const Test = {
         });
 
         await step('Hides the thumbnails', async () => {
+            const button = canvas.getByRole('button', { name: 'Hide thumbnails' });
             fireEvent.click(button);
             await waitFor(() => {
                 expect(canvas.getByText('Show thumbnails')).toBeVisible();

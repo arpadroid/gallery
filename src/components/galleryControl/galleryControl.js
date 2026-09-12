@@ -7,7 +7,6 @@
  */
 import { ArpaElement } from '@arpadroid/ui';
 import {
-    attrString,
     camelToDashed,
     defineCustomElement,
     dummyListener,
@@ -33,13 +32,6 @@ class GalleryControl extends ArpaElement {
         observerMixin(this);
     }
 
-    $initialize() {
-        /** @type {Gallery | null} */
-        this.gallery = this.closest('.gallery');
-        /** @type {ListResource} */
-        this.resource = this.gallery?.listResource;
-    }
-
     /**
      * Returns the default configuration for the gallery control.
      * @returns {GalleryControlConfigType} The default configuration.
@@ -55,19 +47,23 @@ class GalleryControl extends ArpaElement {
         return super.getDefaultConfig(config);
     }
 
+    getAriaLabel() {
+        return this.resolveAriaLabel(this.getProp('label') || '');
+    }
+
     $renderTemplate() {
         const lbl = this.getProp('label') || '';
-        return html`<icon-button
-            ${attrString({
-                variant: 'compact',
-                icon: this.getProp('icon'),
-                class: 'galleryControl__button',
-                tooltipPosition: this.getTooltipPosition(),
-                ariaLabel: this.resolveAriaLabel(this.getProp('label') || '')
-            })}
+        return html`<arpa-node
+            tag="icon-button"
+            name="button"
+            variant="compact"
+            icon="{icon}"
+            aria-label="{getAriaLabel()}"
+            tooltip-position="{getTooltipPosition()}"
+            on-click="{_onClicked}"
         >
             <arpa-zone name="tooltip">${lbl}</arpa-zone>
-        </icon-button>`;
+        </arpa-node>`;
     }
 
     setTooltipPosition(position = this.getTooltipPosition()) {
@@ -88,15 +84,20 @@ class GalleryControl extends ArpaElement {
         return tooltipPosition;
     }
 
+    initializeGallery() {
+        /** @type {Gallery | null} */
+        this.gallery = this.closest('.gallery');
+        /** @type {ListResource} */
+        this.resource = this.gallery?.listResource;
+    }
+
     async $initializeNodes() {
         await super.$initializeNodes();
-        /** @type {IconButton | null} */
-        this.buttonComponent = /** @type {IconButton | null} */ (this.querySelector('icon-button'));
-        this.buttonComponent?.promise.then(() => {
-            this.button = this.buttonComponent?.button;
-            this.button?.removeEventListener('click', this._onClicked);
-            this.button?.addEventListener('click', this._onClicked);
-        });
+        await this.onNodesReady();
+        this.initializeGallery();
+        this.buttonComponent = /** @type {IconButton | null} */ (this.nodes.button);
+        await this.buttonComponent?.promise;
+
         /** @type {Tooltip | null} */
         this.tooltip = this.querySelector('arpa-tooltip');
         setTimeout(() => {

@@ -11,7 +11,7 @@
 
 import { playSetup } from '../../gallery/gallery.stories.util';
 import GalleryStory from '../../gallery/gallery.stories';
-import { expect, waitFor } from 'storybook/test';
+import { expect, waitFor, userEvent } from 'storybook/test';
 import { defaultParams } from '@arpadroid/module/storybook/helper';
 
 /** @type {Meta} */
@@ -55,7 +55,7 @@ export const Test = {
         });
 
         await step('Clicks the previous button and verifies state', async () => {
-            prevControl.click();
+            await userEvent.click(prevControl, { delay: 100 });
             await waitFor(() => {
                 expect(canvas.getByRole('heading', { level: 2, name: 'Henri Rousseau' })).toBeInTheDocument();
             });

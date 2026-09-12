@@ -13,7 +13,6 @@ import { playSetup } from '../../gallery/gallery.stories.util';
 import GalleryStory from '../../gallery/gallery.stories';
 import { expect, waitFor, userEvent } from 'storybook/test';
 
-
 /** @type {Meta} */
 const GalleryDarkModeStory = {
     ...GalleryStory,
@@ -41,16 +40,19 @@ export const Test = {
         const { canvas } = await playSetup(canvasElement);
         const btnComponent = /** @type {IconButton} */ (canvasElement.querySelector('.galleryControl__button'));
         await btnComponent.promise;
-        const darkModeControl = await waitFor(() => canvas.getByRole('button', { name: 'Dark mode' }));
         await step('Renders the Dark Mode button', async () => {
-            expect(darkModeControl).toBeInTheDocument();
+            const btn = canvas.getByRole('button', { name: 'Dark mode' });
+            expect(btn).toBeInTheDocument();
         });
 
         await step('Clicks the Dark Mode button and verifies state', async () => {
-            await userEvent.click(darkModeControl);
+            const btn = canvas.getByRole('button', { name: 'Dark mode' });
+            expect(btn).toHaveTextContent('Dark mode');
+
+            await userEvent.click(btn, { delay: 100 });
             await waitFor(() => {
-                expect(darkModeControl).toHaveTextContent('Light mode');
-                expect(darkModeControl.querySelector('arpa-icon')).toHaveTextContent('light_mode');
+                expect(btn).toHaveTextContent('Light mode');
+                expect(btn.querySelector('arpa-icon')).toHaveTextContent('light_mode');
                 const stylesheet = document.getElementById('dark-styles');
                 expect(stylesheet).toBeInTheDocument();
                 expect(stylesheet).not.toHaveAttribute('disabled');
@@ -58,10 +60,11 @@ export const Test = {
         });
 
         await step('Clicks the Dark Mode button again and verifies state', async () => {
-            await userEvent.click(darkModeControl);
+            const btn = canvas.getByRole('button', { name: 'Dark mode' });
+            await userEvent.click(btn, { delay: 200 });
             await waitFor(() => {
-                expect(darkModeControl).toHaveTextContent('Dark mode');
-                expect(darkModeControl.querySelector('arpa-icon')).toHaveTextContent('dark_mode');
+                expect(btn).toHaveTextContent('Dark mode');
+                expect(btn.querySelector('arpa-icon')).toHaveTextContent('dark_mode');
                 const stylesheet = document.getElementById('dark-styles');
                 expect(stylesheet).toBeInTheDocument();
                 expect(stylesheet).toHaveAttribute('disabled');

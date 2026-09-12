@@ -11,12 +11,6 @@ class GalleryNext extends GalleryControl {
         });
     }
 
-    async $onComplete() {
-        await super.$onComplete();
-        const itemCount = this.gallery?.getItemCount() || 0;
-        itemCount < 2 && this.remove();
-    }
-
     _onClick() {
         this.gallery?.pause();
         this.resource?.nextPage();

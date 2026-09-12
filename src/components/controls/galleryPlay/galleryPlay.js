@@ -1,7 +1,7 @@
 /**
  * @typedef {import('./galleryPlay.types').GalleryPlayConfigType} GalleryPlayConfigType
  */
-import { defineCustomElement } from '@arpadroid/tools';
+import { defineCustomElement, mergeObjects } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl.js';
 
 class GalleryPlay extends GalleryControl {
@@ -23,12 +23,14 @@ class GalleryPlay extends GalleryControl {
             labelPosition: 'bottom',
             playInterval: this.gallery?.getProp('play-interval') || 5000
         };
-        return config;
+        return mergeObjects(super.getDefaultConfig(), config);
     }
 
     $initialize() {
         this.bind('_onPlay', '_onPause');
-        super.$initialize();
+    }
+
+    $onComplete() {
         this.gallery?.on('play', this._onPlay);
         this.gallery?.on('pause', this._onPause);
     }
@@ -50,12 +52,6 @@ class GalleryPlay extends GalleryControl {
         this.buttonComponent?.setProp('icon', this.getProp('icon'));
         const playLabel = this.getProp('label');
         this.buttonComponent?.setProp('tooltip', playLabel);
-    }
-
-    async $onComplete() {
-        await super.$onComplete();
-        const itemCount = this.gallery?.getItemCount() || 0;
-        itemCount < 2 && this.remove();
     }
 }
 

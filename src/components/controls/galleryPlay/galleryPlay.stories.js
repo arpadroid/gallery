@@ -10,10 +10,13 @@
  */
 import { playSetup } from '../../gallery/gallery.stories.util';
 import GalleryStory from '../../gallery/gallery.stories';
-import { expect, waitFor, fireEvent } from 'storybook/test';
+import { expect, waitFor, userEvent } from 'storybook/test';
 
 /** @type {Meta} */
 const GalleryPlayStory = {
+    args: {
+        ...GalleryStory.args
+    },
     title: 'Gallery/Controls/Play'
 };
 
@@ -24,7 +27,6 @@ export const Render = {
         await playSetup(canvasElement);
     },
     args: {
-        ...GalleryStory.args,
         controls: 'play',
         id: 'gallery-play-render'
     }
@@ -44,13 +46,10 @@ export const Test = {
             expect(playControl).toBeInTheDocument();
         });
 
-
         await step('Clicks the play control and verifies state', async () => {
             const playControl = await waitFor(() => canvas.getByRole('button', { name: 'Play' }));
-
             expect(canvas.getByRole('heading', { level: 2, name: 'Phidias' })).toBeInTheDocument();
-            await new Promise(resolve => setTimeout(resolve, 50));
-            await fireEvent.click(playControl);
+            await userEvent.click(playControl, { delay: 100 });
             await waitFor(() => expect(playControl).toHaveTextContent('Pause'));
             expect(playControl.querySelector('arpa-icon')).toHaveTextContent('pause');
             await waitFor(() => {
@@ -58,9 +57,10 @@ export const Test = {
             });
         });
 
-
         await step('Pauses playback and verifies state', async () => {
-            playControl.click();
+            const playControl = await waitFor(() => canvas.getByRole('button', { name: 'Play' }));
+
+            await userEvent.click(playControl, { delay: 200 });
             await waitFor(() => expect(playControl).toHaveTextContent('Play'));
             expect(playControl.querySelector('arpa-icon')).toHaveTextContent('play_arrow');
         });

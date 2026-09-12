@@ -11,7 +11,7 @@
 
 import { playSetup } from '../../gallery/gallery.stories.util';
 import GalleryStory from '../../gallery/gallery.stories';
-import { expect, waitFor } from 'storybook/test';
+import { expect, waitFor, userEvent } from 'storybook/test';
 
 /** @type {Meta} */
 const GalleryToggleControlsStory = {
@@ -54,7 +54,7 @@ export const Test = {
             const controls = canvasElement.querySelector('gallery-controls');
             expect(controls).toBeVisible();
             expect(canvas.getByText('Hide controls')).toBeVisible();
-            button.click();
+            await userEvent.click(button, { delay: 100 });
             await waitFor(() => {
                 expect(controls).not.toBeVisible();
             });
@@ -63,8 +63,7 @@ export const Test = {
         await step('Clicks on the gallery and shows the controls', async () => {
             const controls = canvasElement.querySelector('gallery-controls');
             expect(controls).not.toBeVisible();
-            const event = new MouseEvent('click', { bubbles: true, cancelable: true });
-            button.dispatchEvent(event);
+            await userEvent.click(button, { delay: 100 });
             await waitFor(() => {
                 expect(controls).toBeVisible();
             });

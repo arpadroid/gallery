@@ -15,12 +15,6 @@ class GalleryPrevious extends GalleryControl {
         this.gallery?.pause();
         this.resource?.previousPage();
     }
-
-    async $onComplete() {
-        await super.$onComplete();
-        const itemCount = this.gallery?.getItemCount() || 0;
-        itemCount < 2 && this.remove();
-    }
 }
 
 defineCustomElement('gallery-previous', GalleryPrevious);

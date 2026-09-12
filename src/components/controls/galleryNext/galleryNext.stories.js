@@ -8,9 +8,9 @@
  * @typedef {import('@storybook/web-components-vite').StoryContext} StoryContext
  * @typedef {import('@storybook/web-components-vite').Args} Args
  */
-import { playSetup, renderStatic } from '../../gallery/gallery.stories.util';
+import { playSetup } from '../../gallery/gallery.stories.util';
 import GalleryStory from '../../gallery/gallery.stories';
-import { expect, waitFor } from 'storybook/test';
+import { expect, waitFor, userEvent } from 'storybook/test';
 
 /** @type {Meta} */
 const GalleryNextStory = {
@@ -37,20 +37,20 @@ export const Test = {
     },
     play: async ({ canvasElement, step }) => {
         const { canvas } = await playSetup(canvasElement);
-        const prevControl = await waitFor(() => canvas.getByRole('button', { name: 'Next' }));
+        const nextControl = await waitFor(() => canvas.getByRole('button', { name: 'Next' }));
         await step('Renders the next button', async () => {
-            expect(prevControl).toBeInTheDocument();
+            expect(nextControl).toBeInTheDocument();
         });
 
         await step('Focuses on the button and verifies tooltip content', async () => {
-            prevControl.focus();
+            nextControl.focus();
             await waitFor(() => {
                 expect(canvas.getByText('Next')).toBeVisible();
             });
         });
 
         await step('Clicks the next button and verifies state', async () => {
-            prevControl.click();
+            await userEvent.click(nextControl, { delay: 100 });
             await waitFor(() => {
                 expect(
                     canvas.getByRole('heading', { level: 2, name: 'Leonardo da Vinci' })

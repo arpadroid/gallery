@@ -3,7 +3,7 @@
  * @typedef {import('@arpadroid/list-manager').ListControlsConfigType} ListControlsConfigType
  */
 import { ListControls } from '@arpadroid/list-manager';
-import { defineCustomElement } from '@arpadroid/tools';
+import { defineCustomElement, mergeObjects } from '@arpadroid/tools';
 
 const html = String.raw;
 class GalleryControls extends ListControls {
@@ -20,11 +20,9 @@ class GalleryControls extends ListControls {
      */
     getDefaultConfig() {
         this.list = this.getList();
-        return {
-            ...super.getDefaultConfig(),
-            className: 'listControls',
-            controls: this.list?.getControls()
-        };
+        return mergeObjects(super.getDefaultConfig(), {
+            className: 'listControls'
+        });
     }
 
     renderFilters() {

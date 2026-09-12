@@ -22,7 +22,7 @@ class ImagePreview extends ArpaElement {
             id: 'imagePreview',
             className: 'imagePreview',
             handler: undefined,
-            controls: 'previous,input,next,spacer,darkMode,fullScreen,toggleCaptions'
+            controls: 'play,previous,input,next,spacer,darkMode,fullScreen,toggleCaptions'
         };
         return super.getDefaultConfig(config);
     }
@@ -60,10 +60,13 @@ class ImagePreview extends ArpaElement {
     }
 
     async $onComplete() {
-        super.$onComplete();
-        await this.onNodesReady();
+        await this.waitForArpaNodes();
         this.dialog = /** @type {Dialog | undefined} */ (this.nodes.dialog);
-        this.gallery = /** @type {Gallery | undefined} */ (this.dialog?.nodes?.gallery);
+        const gallery = /** @type {Gallery | undefined} */ (this.dialog?.nodes?.gallery);
+        if (gallery) {
+            this.gallery = this.nodes.gallery = gallery;
+        }
+        return true;
     }
 }
 

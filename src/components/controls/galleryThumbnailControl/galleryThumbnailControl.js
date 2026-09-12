@@ -4,7 +4,7 @@
  * @typedef {import('../../gallery/gallery').GallerySettings} GallerySettings
  * @typedef {import('../../galleryThumbnails/galleryThumbnails').default} GalleryThumbnails
  */
-import { defineCustomElement, renderNode } from '@arpadroid/tools';
+import { defineCustomElement, renderNode, mergeObjects } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl';
 
 const html = String.raw;
@@ -15,7 +15,7 @@ class GalleryThumbnailControl extends GalleryControl {
      */
     getDefaultConfig() {
         this.i18nKey = 'gallery.controls.thumbnails';
-        return {
+        const config = {
             className: 'galleryThumbnailControl',
             icon: 'view_carousel',
             label: this.i18n('lblHideThumbnails'),
@@ -24,19 +24,27 @@ class GalleryThumbnailControl extends GalleryControl {
             thumbnailsPosition: 'left',
             isActive: true
         };
+        return mergeObjects(super.getDefaultConfig(), config);
     }
 
     $initialize() {
         super.$initialize();
         this.isActive = this.getProp('is-active');
-        this._initializeThumbnails();
+        // this._initializeThumbnails();
     }
 
     _initializeThumbnails() {
-        this.thumbnails && this.thumbnails.remove();
-        this.thumbnails = /** @type {GalleryThumbnails} */ (renderNode(this.renderThumbnails()));
-        this.thumbnails && this.gallery?.append(this.thumbnails);
+        if (!this.thumbnails) {
+            this.thumbnails = /** @type {GalleryThumbnails} */ (renderNode(this.renderThumbnails()));
+            this.thumbnails && this.gallery?.append(this.thumbnails);
+        }
         this.positionThumbnails();
+    }
+
+    async $initializeNodes() {
+        await super.$initializeNodes();
+        this._initializeThumbnails();
+        return true;
     }
 
     /**
@@ -58,8 +66,10 @@ class GalleryThumbnailControl extends GalleryControl {
      * @param {ThumbnailsPositionType} [position]
      */
     async positionThumbnails(position) {
+        this.initializeGallery();
         !position && (position = await this.getThumbnailsPosition());
         await this.gallery?.controls?.onNodesReady?.();
+
         if (this.thumbnails) {
             if (position === 'bottom') {
                 this.gallery?.footerNode?.append(this.thumbnails);
