@@ -62,10 +62,7 @@ class ImagePreview extends ArpaElement {
     async $onComplete() {
         await this.waitForArpaNodes();
         this.dialog = /** @type {Dialog | undefined} */ (this.nodes.dialog);
-        const gallery = /** @type {Gallery | undefined} */ (this.dialog?.nodes?.gallery);
-        if (gallery) {
-            this.gallery = this.nodes.gallery = gallery;
-        }
+        this.gallery = /** @type {Gallery | undefined} */ (this.nodes?.gallery || this.dialog?.nodes.gallery);
         return true;
     }
 }

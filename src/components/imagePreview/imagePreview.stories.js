@@ -137,10 +137,10 @@ export const TestMultiple = {
     play: async ({ canvasElement, step, canvas }) => {
         await waitFor(() => {
             expect(canvasElement.querySelector('image-preview')).toBeInTheDocument();
+            expect(canvas.getByRole('button', { name: 'Open Gallery' })).toBeInTheDocument();
+            expect(canvasElement.querySelector('image-preview')).toBeInTheDocument();
         });
         const imagePreview = /** @type {ImagePreview} */ (canvasElement.querySelector('image-preview'));
-        await imagePreview?.promise;
-
         const button = /** @type {Button} */ (canvas.getByRole('button', { name: 'Open Gallery' }));
 
         await step('Clicks on the button and opens the preview modal', async () => {
@@ -156,7 +156,7 @@ export const TestMultiple = {
             const dialog = imagePreview.nodes.dialog;
             const nextButton = dialog.querySelector('.galleryNext button');
             expect(nextButton).toBeInTheDocument();
-            await userEvent.click(nextButton, { delay: 50 });
+            await userEvent.click(nextButton, { delay: 100 });
             await waitFor(() => {
                 expect(within(dialog).getByText('Guernica by Pablo Picasso (1937)')).toBeInTheDocument();
             });
@@ -166,7 +166,7 @@ export const TestMultiple = {
             const dialog = imagePreview.nodes.dialog;
             const prevButton = dialog.querySelector('.galleryPrevious button');
 
-            await userEvent.click(prevButton, { delay: 50 });
+            await userEvent.click(prevButton, { delay: 100 });
             await waitFor(() => {
                 expect(within(dialog).getByText('Phidias')).toBeVisible();
             });
