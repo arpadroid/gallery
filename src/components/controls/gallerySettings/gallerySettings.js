@@ -189,10 +189,8 @@ class GallerySettings extends GalleryControl {
 
     async _initializeForm() {
         this.form = /** @type {FormComponent | null} */ (this.nav?.querySelector('arpa-form'));
-        await this.form?.onRendered();
-        /** @todo Remove setTimeouts. */
+        await this.form?.promise;
         this.onSubmit && this.form?.onSubmit(this.onSubmit);
-        await new Promise(resolve => setTimeout(resolve, 0));
         this.playIntervalField = /** @type {NumberField | null} */ (
             this.querySelector('.gallerySettings__playInterval')
         );
