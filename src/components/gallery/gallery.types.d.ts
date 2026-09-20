@@ -1,7 +1,8 @@
 import { ListManagerConfigType } from '@arpadroid/list-manager';
 import { ThumbnailsPositionType } from '../controls/galleryThumbnailControl/galleryThumbnailControl.types';
+import { GalleryItem } from '../..';
 
-export type GalleryConfigType = ListManagerConfigType & {
+export type GalleryConfigType = Omit<ListManagerConfigType, 'itemComponent'> & {
     activeClass?: string;
     trackActivity?: boolean;
     activityTimeout?: number;
@@ -12,4 +13,5 @@ export type GalleryConfigType = ListManagerConfigType & {
     playInterval?: number;
     thumbnailsPosition?: ThumbnailsPositionType;
     swipeThreshold?: number;
+    itemComponent?: typeof GalleryItem;
 };

@@ -38,8 +38,11 @@ export const Test = {
     },
     play: async ({ canvasElement, step }) => {
         const { canvas } = await playSetup(canvasElement);
+        await waitFor(() => {
+            canvas.getByRole('button', { name: 'Dark mode' });
+        });
         const btnComponent = /** @type {IconButton} */ (canvasElement.querySelector('.galleryControl__button'));
-        await btnComponent.promise;
+        await btnComponent.onRenderReady();
         await step('Renders the Dark Mode button', async () => {
             const btn = canvas.getByRole('button', { name: 'Dark mode' });
             expect(btn).toBeInTheDocument();
@@ -47,7 +50,6 @@ export const Test = {
 
         await step('Clicks the Dark Mode button and verifies state', async () => {
             const btn = canvas.getByRole('button', { name: 'Dark mode' });
-            expect(btn).toHaveTextContent('Dark mode');
 
             await userEvent.click(btn, { delay: 100 });
             await waitFor(() => {

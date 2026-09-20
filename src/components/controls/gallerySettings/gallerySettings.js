@@ -31,8 +31,8 @@ class GallerySettings extends GalleryControl {
         });
     }
 
-    $initializeProperties() {
-        super.$initializeProperties();
+    async $initializeProperties() {
+        await super.$initializeProperties();
         /** @type {Gallery | null} */
         this.gallery = this.closest('.arpaList, .gallery');
         /** @type {ListResource} */

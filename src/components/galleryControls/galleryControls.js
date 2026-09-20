@@ -7,11 +7,13 @@ import { defineCustomElement, mergeObjects } from '@arpadroid/tools';
 
 const html = String.raw;
 class GalleryControls extends ListControls {
-    $initializeProperties() {
+    
+    async $initializeProperties() {
+        await super.$initializeProperties();
         /** @type {Gallery | null} */
         this.list = /** @type {Gallery | null} */ (this.closest('.arpaList, arpa-gallery'));
         this.listResource = this.list?.listResource;
-        return super.$initializeProperties();
+        return true;
     }
 
     /**

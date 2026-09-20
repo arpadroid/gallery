@@ -41,14 +41,22 @@ export const Test = {
     },
     play: async ({ canvasElement, step }) => {
         const { canvas, galleryNode } = await playSetup(canvasElement);
+
+        await waitFor(() => {
+            expect(canvasElement.querySelector('.galleryControl')).toBeInTheDocument();
+            canvas.getByRole('button', { name: 'Play' });
+        });
         const playControl = await waitFor(() => canvas.getByRole('button', { name: 'Play' }));
+
         await step('Renders the play control', async () => {
             expect(playControl).toBeInTheDocument();
         });
 
         await step('Clicks the play control and verifies state', async () => {
             const playControl = await waitFor(() => canvas.getByRole('button', { name: 'Play' }));
-            expect(canvas.getByRole('heading', { level: 2, name: 'Phidias' })).toBeInTheDocument();
+            await waitFor(() => {
+                expect(canvas.getByRole('heading', { level: 2, name: 'Phidias' })).toBeInTheDocument();
+            });
             await userEvent.click(playControl, { delay: 100 });
             await waitFor(() => expect(playControl).toHaveTextContent('Pause'));
             expect(playControl.querySelector('arpa-icon')).toHaveTextContent('pause');
