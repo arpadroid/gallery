@@ -48,7 +48,7 @@ export const TestSingle = {
         id: 'image-preview-test'
     },
 
-    play: async ({ canvasElement, step, canvas }) => {
+    play: async ({ canvasElement, step }) => {
         const arpaButton = await waitFor(() => /** @type {Button} */ (canvasElement.querySelector('arpa-button')));
         await arpaButton?.promise;
         const button = arpaButton.button;
@@ -121,7 +121,6 @@ export const TestMultiple = {
             <arpa-button icon="image">
                 Open Gallery
                 <image-preview ${attrString(args)}>
-                    <arpa-zone name="title">My preview gallery</arpa-zone>
                     <arpa-zone name="gallery">
                         <gallery-item image="/test-assets/artists/phidias.jpg" title="Phidias"></gallery-item>
                         <gallery-item

@@ -1,6 +1,6 @@
 /**
  * @typedef {import('./galleryDragControl.types').GalleryDragConfigType} GalleryDragConfigType
- * @typedef {import('../../gallery/gallery').default} Gallery
+ * @typedef {import('../../gallery/gallery.js').default} Gallery
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
  */
 import { defineCustomElement, listen } from '@arpadroid/tools';
@@ -21,8 +21,7 @@ class GalleryDragControl extends ArpaElement {
      * @returns {GalleryDragConfigType} The default configuration.
      */
     getDefaultConfig() {
-        /** @type {Gallery | null} */
-        this.gallery = this.closest('.gallery');
+        this.gallery = /** @type {Gallery | null} */ (this.closest('.gallery'));
         /** @type {ListResource} */
         this.resource = this.gallery?.listResource;
         /** @type {GalleryDragConfigType} */
@@ -32,16 +31,13 @@ class GalleryDragControl extends ArpaElement {
         return super.getDefaultConfig(config);
     }
 
-    $onConnected() {
-        super.$onConnected();
-    }
-
     async $onComplete() {
         await this.gallery?.promise;
         this._initializeEventListeners();
         this.remove();
         const canvas = this.getCanvas();
         canvas && (canvas.style.cursor = 'grab');
+        return true;
     }
 
     getCanvas() {

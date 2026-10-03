@@ -51,6 +51,7 @@ class GalleryToggleControls extends GalleryControl {
         super.$onComplete();
         await this?.gallery?.promise;
         await customElements.whenDefined('arpa-gallery');
+        return true;
     }
 
     // #endregion Events

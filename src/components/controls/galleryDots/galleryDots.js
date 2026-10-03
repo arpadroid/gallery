@@ -145,8 +145,9 @@ class GalleryDots extends GalleryControl {
     // #region Lifecycle
     ////////////////////
 
-    $onComplete() {
+    async $onComplete() {
         window.requestAnimationFrame(() => this._initializeTooltip());
+        return true;
     }
 
     // #endregion Lifecycle

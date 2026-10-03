@@ -195,7 +195,6 @@ class Gallery extends ListManager {
         this.bodyNode = this.querySelector('.gallery__body');
         /** @type {HTMLElement | null} */
         this.viewNode = this.querySelector('.gallery__view');
-        // @ts-ignore
         this.controls?.promise && (await this.controls?.promise);
         /** @type {GallerySettings | null} */
         this.settings = this.querySelector('gallery-settings');
@@ -235,6 +234,7 @@ class Gallery extends ListManager {
     async $onComplete() {
         await super.$onComplete();
         this.trackActivity();
+        return true;
     }
 
     trackActivity() {

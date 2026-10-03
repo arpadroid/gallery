@@ -30,9 +30,10 @@ class GalleryPlay extends GalleryControl {
         this.bind('_onPlay', '_onPause');
     }
 
-    $onComplete() {
+    async $onComplete() {
         this.gallery?.on('play', this._onPlay);
         this.gallery?.on('pause', this._onPause);
+        return true;
     }
 
     _onClick() {

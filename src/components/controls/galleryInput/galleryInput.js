@@ -35,7 +35,7 @@ class GalleryInput extends GalleryControl {
     $renderTemplate() {
         return html`<arpa-node name="form" tag="arpa-form" id="{getId()}" variant="mini" class="galleryInput__form">
             <number-field id="page" icon=" " variant="compact" value="1" min="1" max="{getTotalPages()}" enforce-value>
-                <arpa-zone name="input-wrapper">
+                <arpa-zone name="inputWrapper">
                     <arpa-tooltip handler="#{getId()}-page" position="top">
                         ${this.i18n('lblCurrentSlide')}
                     </arpa-tooltip>

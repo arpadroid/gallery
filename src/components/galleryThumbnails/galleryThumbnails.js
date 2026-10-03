@@ -131,6 +131,7 @@ class GalleryThumbnails extends List {
         }
         this.resource?.on('items', this._initializeThumbnails);
         this.resource?.on('items', this._handleSelectedItem);
+        return true;
     }
 
     async $initializeNodes() {

@@ -30,6 +30,7 @@ class GalleryToggleCaptions extends GalleryControl {
     async $onComplete() {
         const { enabled = false } = this._config || {};
         this.updateCaptions(enabled, true);
+        return true;
     }
 
     updateCaptions(on = this.hasCaptions(), isInitial = false) {
