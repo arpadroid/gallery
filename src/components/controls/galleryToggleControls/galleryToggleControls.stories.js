@@ -54,7 +54,7 @@ export const Test = {
             const controls = canvasElement.querySelector('gallery-controls');
             expect(controls).toBeVisible();
             expect(canvas.getByText('Hide controls')).toBeVisible();
-            await userEvent.click(button, { delay: 100 });
+            await userEvent.click(button, { delay: 10 });
             await waitFor(() => {
                 expect(controls).not.toBeVisible();
             });
@@ -63,7 +63,7 @@ export const Test = {
         await step('Clicks on the gallery and shows the controls', async () => {
             const controls = canvasElement.querySelector('gallery-controls');
             expect(controls).not.toBeVisible();
-            await userEvent.click(button, { delay: 100 });
+            await userEvent.click(button, { delay: 10 });
             await waitFor(() => {
                 expect(controls).toBeVisible();
             });

@@ -50,8 +50,7 @@ export const Test = {
         );
 
         await settingsForm?.onRendered();
-        /** @todo Fix Settimeout. */
-        await new Promise(resolve => setTimeout(resolve, 0));
+
         const positionField = /** @type {SelectCombo | undefined} */ (settingsForm?.getField('thumbnailsPosition'));
         await positionField?.promise;
 
@@ -77,7 +76,7 @@ export const Test = {
 
         await step('Opens the thumbnail position dropdown', async () => {
             const dropdown = await waitFor(() => canvas.getByLabelText('Thumbnails position'));
-            await userEvent.click(dropdown, { delay: 100 });
+            await userEvent.click(dropdown, { delay: 50 });
             await waitFor(() => {
                 const combo = within(positionField?.optionsNode);
                 expect(combo?.getByText('Top')).toBeInTheDocument();
@@ -97,10 +96,9 @@ export const Test = {
         });
 
         await step('Sets the thumbnails position to "left"', async () => {
-            await new Promise(resolve => setTimeout(resolve, 100));
             const combo = within(positionField?.optionsNode);
             const option = combo.getByText('Left');
-            await userEvent.click(option, { delay: 100 });
+            await userEvent.click(option, { delay: 50 });
             await waitFor(() => {
                 const node = galleryNode.querySelector('gallery-thumbnails');
                 expect(node).toBeInTheDocument();

@@ -59,7 +59,7 @@ export const TestSingle = {
         });
 
         await step('Clicks on the button and opens the preview modal', async () => {
-            button && (await userEvent.click(button, { delay: 100 }));
+            button && (await userEvent.click(button, { delay: 50 }));
             await waitFor(() => {
                 dialog = /** @type {import('./imagePreview').Dialog} */ (
                     document.querySelector('#image-preview-test-dialog')
@@ -92,8 +92,7 @@ export const TestSingle = {
                 expect(within(dialog).getByRole('button', { name: 'Show captions' })).toBeInTheDocument();
             });
             const captionsButton = within(dialog).getByRole('button', { name: 'Show captions' });
-            // console.log('captionsButton', captionsButton);
-            await userEvent.click(captionsButton, { delay: 100 });
+            await userEvent.click(captionsButton, { delay: 50 });
             await waitFor(() => {
                 expect(within(dialog).getByText(captionText)).toBeVisible();
             });
