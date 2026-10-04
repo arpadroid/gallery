@@ -60,7 +60,7 @@ class GalleryDots extends GalleryControl {
         /** @type {Pager | null} */
         this.pager = this.querySelector('arpa-pager');
 
-        this.pager?.onRendered(() => {
+        this.pager?.promise?.then(() => {
             requestAnimationFrame(() => {
                 this._initializeTooltip();
             });
@@ -145,8 +145,9 @@ class GalleryDots extends GalleryControl {
     // #region Lifecycle
     ////////////////////
 
-    $onComplete() {
+    async $onComplete() {
         window.requestAnimationFrame(() => this._initializeTooltip());
+        return true;
     }
 
     // #endregion Lifecycle
@@ -271,7 +272,7 @@ class GalleryDots extends GalleryControl {
      */
     _updateThumbnailTitle(payload = this.thumbnailPayload) {
         const title = payload && this.getThumbTitle(payload);
-        title && this.thumbnail?.setTitle(title);
+        title && this.thumbnail?.setProp('title', title);
     }
 
     // #endregion Event Handlers

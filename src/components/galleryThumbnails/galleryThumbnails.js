@@ -59,15 +59,6 @@ class GalleryThumbnails extends List {
     async $initialize() {
         this.bind('scrollForward', 'scrollBack', '_handleSelectedItem', '_initializeThumbnails');
         super.$initialize();
-        await customElements.whenDefined('arpa-gallery');
-        this.bind('_initializeThumbnails', '_handleSelectedItem');
-        /** @type {Gallery | null} */
-        this.gallery = this.closest('.gallery');
-        /** @type {ListResource | null} */
-        this.resource = this.gallery?.listResource;
-        this.handleResize();
-        this.resource?.on('items', this._initializeThumbnails);
-        this.resource?.on('items', this._handleSelectedItem);
     }
     /**
      * Handles the selected item.
@@ -107,7 +98,8 @@ class GalleryThumbnails extends List {
 
     thumbnailsInitialized = false;
 
-    _initializeThumbnails() {
+    async _initializeThumbnails() {
+        await this.promise;
         if (this.thumbnailsInitialized) return;
         const mask = this.querySelector('.galleryThumbnails__mask');
         const itemHTML = this.renderItems();
@@ -129,6 +121,19 @@ class GalleryThumbnails extends List {
         };
     }
 
+    async $onConnected() {
+        this.gallery = /** @type {Gallery | null} */ (this.closest('.gallery'));
+        /** @type {ListResource | null} */
+        this.resource = this.gallery?.listResource;
+        this.handleResize();
+        if (this.resource?.getItems()?.length) {
+            await this._initializeThumbnails();
+        }
+        this.resource?.on('items', this._initializeThumbnails);
+        this.resource?.on('items', this._handleSelectedItem);
+        return true;
+    }
+
     async $initializeNodes() {
         await super.$initializeNodes();
         /** @type {HTMLElement | null} */
@@ -143,7 +148,7 @@ class GalleryThumbnails extends List {
         return true;
     }
 
-    async _initializeTooltip() {
+    createTooltip() {
         const cursorTooltipPosition = this.getCursorTooltipPosition();
         const tooltip = new Tooltip({
             content: '',
@@ -158,12 +163,19 @@ class GalleryThumbnails extends List {
                 const item = target.closest('gallery-thumbnail');
                 const payload = item?.getPayload();
                 const content = payload?.title;
-                tooltip.contentNode && (tooltip.contentNode.style.display = content ? 'block' : 'none');
+                tooltip.nodes.content instanceof HTMLElement &&
+                    (tooltip.nodes.content.style.display = content ? 'block' : 'none');
                 if (typeof content === 'string') {
                     tooltip.setContent(content);
                 }
             }
         });
+        return tooltip;
+    }
+
+    async _initializeTooltip() {
+        const tooltip = this.tooltip || this.createTooltip();
+        this.tooltip = tooltip;
         await this.gallery?.promise;
         const thumbnailControl = /** @type {GalleryThumbnailControl | null | undefined} */ (
             this.gallery?.getControl('thumbnailControl')

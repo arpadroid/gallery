@@ -57,24 +57,24 @@ export const Render = {
                     title="Atenas"
                     image="/api/image/convert?source=%2Fcmsx%2Fassets%2Fhqrvutmy_museovaquero_assets%2Fgallery%2Fimages%2F693.jpg&width=[width]&height=[height]&quality=[quality]"
                 >
-                    <zone name="caption">
+                    <arpa-zone name="caption">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum
                         mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis
                         dolor. Praesent et justo. Praesent et diam eget libero egestas mattis sit amet vitae augue.
                         Donec sodales sagittis magna.
-                    </zone>
+                    </arpa-zone>
                 </slider-item>
                 <slider-item
                     id="gallery-item-2"
                     title="Venecia. Vista de la laguna con la isla del cementerio, 1954"
                     image="/api/image/convert?source=%2Fcmsx%2Fassets%2Fhqrvutmy_museovaquero_assets%2Fgallery%2Fimages%2F689.jpg&width=[width]&height=[height]&quality=[quality]"
                 >
-                    <zone name="caption">
+                    <arpa-zone name="caption">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum
                         mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis
                         dolor. Praesent et justo. Praesent et diam eget libero egestas mattis sit amet vitae augue.
                         Donec sodales sagittis magna.
-                    </zone>
+                    </arpa-zone>
                 </slider-item>
             </image-slider>
             -->

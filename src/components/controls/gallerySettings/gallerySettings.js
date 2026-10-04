@@ -11,8 +11,9 @@
  * @typedef {import('./gallerySettings.types').GallerySettingsType} GallerySettingsType
  * @typedef {import('../galleryThumbnailControl/galleryThumbnailControl').ThumbnailsPositionType} ThumbnailsPositionType
  * @typedef {import('@arpadroid/ui').Tooltip} Tooltip
+ * @typedef {import('@arpadroid/navigation').NavList} NavList
  */
-import { mergeObjects, attrString, defineCustomElement } from '@arpadroid/tools';
+import { mergeObjects, defineCustomElement } from '@arpadroid/tools';
 import GalleryControl from '../../galleryControl/galleryControl';
 
 const html = String.raw;
@@ -25,12 +26,13 @@ class GallerySettings extends GalleryControl {
         this.bind('onSubmit', 'updatePlayInterval', 'updateThumbnailsPosition');
         return mergeObjects(super.getDefaultConfig(), {
             icon: 'settings',
+            className: 'gallerySettings',
             lblSettings: '{i18n:lblSettings}'
         });
     }
 
-    $initializeProperties() {
-        super.$initializeProperties();
+    async $initializeProperties() {
+        await super.$initializeProperties();
         /** @type {Gallery | null} */
         this.gallery = this.closest('.arpaList, .gallery');
         /** @type {ListResource} */
@@ -108,64 +110,56 @@ class GallerySettings extends GalleryControl {
     ////////////////////////////
 
     $renderTemplate() {
-        return html`<icon-menu
-            variant="compact"
-            menu-position="false"
-            nav-class="gallerySettings__nav"
-            ${attrString({
-                ...this.getProperties('icon', 'label'),
-                tooltip: this.getProp('btn-label')
-            })}
-        >
-            <arpa-zone name="tooltip">
-                ${this.getProp('lblSettings')}
-            </arpa-zone>
-            <div class="gallerySettings__content">{form}</div>
-        </icon-menu>`;
-    }
-
-    getTemplateVars() {
-        return {
-            form: this.renderForm()
-        };
-    }
-
-    /**
-     * Renders the form for the gallery settings.
-     * @returns {string} The form HTML.
-     */
-    renderForm() {
         const { playInterval, thumbnailsPosition } = this.settings || {};
-        return html`<arpa-form
-            variant="compact"
-            id="${this.gallery?.getId() || 'gallery'}-filters-form"
-            has-submit="false"
-            class="gallerySettings__form"
-        >
-            <group-field open id="general" icon="settings">
-                <zone name="label">${this.i18n('lblGeneral')}</zone>
-                <number-field
-                    class="gallerySettings__playInterval"
-                    id="playInterval"
-                    value="${playInterval}"
-                    min="1"
-                    max="60"
-                >
-                    <zone name="label">${this.i18n('lblPlayInterval')}</zone>
-                </number-field>
-                <select-combo
-                    class="gallerySettings__thumbnailsPosition"
-                    id="thumbnailsPosition"
-                    value="${thumbnailsPosition}"
-                >
-                    <zone name="label">${this.i18n('lblThumbnailsPosition')}</zone>
-                    <select-option value="top">${this.i18n('lblTop')}</select-option>
-                    <select-option value="bottom">${this.i18n('lblBottom')}</select-option>
-                    <select-option value="left">${this.i18n('lblLeft')}</select-option>
-                    <select-option value="right">${this.i18n('lblRight')}</select-option>
-                </select-combo>
-            </group-field>
-        </arpa-form>`;
+        return html`
+            <arpa-node
+                tag="icon-menu"
+                name="menu"
+                variant="compact"
+                menu-position="bottom-right"
+                nav-class="gallerySettings__nav"
+                icon="{icon}"
+                label="{label}"
+                tooltip="{btnLabel}"
+            >
+                <arpa-zone name="tooltip">{lblSettings}</arpa-zone>
+                <arpa-zone name="nav">
+                    <div class="gallerySettings__content">
+                        <arpa-node
+                            tag="arpa-form"
+                            name="form"
+                            variant="compact"
+                            id="${this.gallery?.getProp('id') || 'gallery'}-filters-form"
+                            has-submit="false"
+                        >
+                            <group-field open id="general" icon="settings" label="${this.i18nText('lblGeneral')}">
+                                <number-field
+                                    class="gallerySettings__playInterval"
+                                    id="playInterval"
+                                    value="${playInterval}"
+                                    min="1"
+                                    max="60"
+                                >
+                                    <arpa-zone name="label">${this.i18n('lblPlayInterval')}</arpa-zone>
+                                </number-field>
+                                <select-combo
+                                    class="gallerySettings__thumbnailsPosition"
+                                    id="thumbnailsPosition"
+                                    value="${thumbnailsPosition}"
+                                    label="{i18n:lblThumbnailsPosition}"
+                                    on-change="{updateThumbnailsPosition}"
+                                >
+                                    <select-option value="top">${this.i18n('lblTop')}</select-option>
+                                    <select-option value="bottom">${this.i18n('lblBottom')}</select-option>
+                                    <select-option value="left">${this.i18n('lblLeft')}</select-option>
+                                    <select-option value="right">${this.i18n('lblRight')}</select-option>
+                                </select-combo>
+                            </group-field>
+                        </arpa-node>
+                    </div>
+                </arpa-zone>
+            </arpa-node>
+        `;
     }
 
     // #endregion
@@ -175,42 +169,34 @@ class GallerySettings extends GalleryControl {
     ////////////////////////////
 
     async $initializeNodes() {
-        /** @type {IconMenu | null} */
-        this.menuNode = this.querySelector('icon-menu');
-        this.menuNode?.promise.then(() => {
-            this.menuNode?.button?.setAttribute('variant', 'compact');
-            this.menuNode?.button?.setAttribute('aria-label', this.i18nText('lblSettings'));
-            /** @type {Tooltip | null} */
-            this.tooltip = this.menuNode?.tooltip;
-            this.setTooltipPosition('top-right');
-        });
-        await this._initializeForm();
-        this._initializeIconMenu();
-
-        this.playIntervalField = /** @type {NumberField | null} */ (
-            this.querySelector('.gallerySettings__playInterval')
-        );
-        this.playIntervalField?.on('change', this.updatePlayInterval);
-        /** @type {SelectCombo | null} */
-        this.thumbPositionField = /** @type {SelectCombo | null} */ (
-            this.querySelector('.gallerySettings__thumbnailsPosition')
-        );
-        this.thumbPositionField?.on('change', this.updateThumbnailsPosition);
+        await super.$initializeNodes();
+        this.tooltip = /** @type {Tooltip | null} */ (this.menuNode?.nodes?.tooltip);
+        this.setTooltipPosition('top-right');
+        await this._initializeIconMenu();
+        this._initializeForm();
         return true;
     }
 
     async _initializeIconMenu() {
-        await customElements.whenDefined('icon-menu');
-        this.menuNode?.promise && (await this.menuNode.promise);
+        this.menuNode = /** @type {IconMenu} */ (this.nodes.menu);
+        await this.onNodesReady();
+        this.menuNode.setAttribute('variant', 'compact');
+        this.menuNode.button?.setAttribute('aria-label', this.i18nText('lblSettings'));
+        this.nav = /** @type {NavList} */ (this.menuNode?.nodes.nav);
         const itemsNode = this.menuNode?.navigation?.itemsNode;
         itemsNode?.setAttribute('zone', 'gallery-settings');
     }
 
     async _initializeForm() {
-        /** @type {FormComponent | null} */
-        this.form = this.querySelector('.gallerySettings__form');
+        this.form = /** @type {FormComponent | null} */ (this.nav?.querySelector('arpa-form'));
         await this.form?.promise;
         this.onSubmit && this.form?.onSubmit(this.onSubmit);
+        this.playIntervalField = /** @type {NumberField | null} */ (
+            this.querySelector('.gallerySettings__playInterval')
+        );
+        this.playIntervalField?.on('change', this.updatePlayInterval);
+        this.thumbPositionField = this.form?.getField('thumbnailsPosition');
+        this.thumbPositionField?.on('change', this.updateThumbnailsPosition);
         return true;
     }
 

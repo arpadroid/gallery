@@ -1,7 +1,6 @@
 /**
  * @typedef {import('./imageSlider.types.js').ImageSliderConfigType} ImageSliderConfigType
  * @typedef {import('../galleryItem/galleryItem').default} GalleryItem
- * @typedef {import('@arpadroid/ui').ZoneToolPlaceZoneType} ZoneToolPlaceZoneType
  */
 import { defineCustomElement, mergeObjects } from '@arpadroid/tools';
 import Gallery from '../gallery/gallery.js';
@@ -22,7 +21,7 @@ class ImageSlider extends Gallery {
             tagName: 'image-slider',
             itemComponent: SliderItem,
             contentPosition: 'top',
-            controls: ['play', 'dots', 'spacer', 'drag'],
+            controls: ['play', 'dots', 'spacer'],
             maxPagerNodes: 13
         };
         return mergeObjects(super.getDefaultConfig(), config);

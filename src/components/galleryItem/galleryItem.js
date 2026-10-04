@@ -2,7 +2,7 @@
  * @typedef {import('./galleryItem.types').GalleryItemConfigType} GalleryItemConfigType
  */
 import { ListManagerItem } from '@arpadroid/list-manager';
-import { classNames, mergeObjects, defineCustomElement, attrString } from '@arpadroid/tools';
+import { mergeObjects, defineCustomElement } from '@arpadroid/tools';
 const html = String.raw;
 class GalleryItem extends ListManagerItem {
     /** @type {GalleryItemConfigType} */
@@ -16,12 +16,16 @@ class GalleryItem extends ListManagerItem {
         /** @type {GalleryItemConfigType} */
         const config = {
             imageSize: 'adaptive',
-            classNames: ['galleryItem'],
+            className: 'galleryItem',
             titleTag: 'h2',
             listSelector: '.gallery',
-            truncateCaption: 200
+            truncateCaption: 'false'
         };
         return mergeObjects(super.getDefaultConfig(), config);
+    }
+
+    async hasCaption() {
+        return Boolean(this.getProp('caption') || this.hasProp('hasCaption'));
     }
 
     /**
@@ -29,58 +33,16 @@ class GalleryItem extends ListManagerItem {
      * @returns {string}
      */
     $renderTemplate() {
-        return html`<{wrapperComponent} {wrapperAttributes}>
-            <div class="galleryItem__contentWrapper">{titleContainer}{children}{image}</div>
-            {caption} 
-        </{wrapperComponent}>`;
-    }
-
-    /**
-     * Returns the attributes for the list item wrapper.
-     * @returns {Record<string, any>}
-     */
-    getWrapperAttrs() {
-        return {
-            href: this.link,
-            class: classNames('galleryItem__main', { listItem__link: this.link })
-        };
-    }
-
-    getTemplateVars() {
-        return {
-            ...super.getTemplateVars(),
-            caption: this.renderCaption()
-        };
-    }
-
-    getCaption() {
-        return this.getProp('caption');
-    }
-
-    /**
-     * Handles a lost zone.
-     * @param {import('@arpadroid/ui').ZoneToolPlaceZoneType} event - The event object.
-     * @returns {boolean | undefined} Whether the zone was handled.
-     */
-    _onLostZone({ zone, zoneName }) {
-        if (zoneName === 'caption') {
-            this.promise.then(() => zone && this.captionNode?.append(...zone.childNodes));
-            return true;
-        }
-    }
-
-    renderCaption(hasContent = this.hasContent('caption')) {
-        if (!hasContent) return '';
-        const attr = {
-            class: 'galleryItem__caption',
-            zone: 'caption',
-            maxLength: this.getProp('truncate-caption') ?? 200
-        };
-        return html`<truncate-text ${attrString(attr)}>${this.getCaption() || ''}</truncate-text>`;
+        return html`<arpa-node {wrapperAttr()}>
+            <div class="galleryItem__contentWrapper">{titleWrapper}{content}{image}</div>
+            <arpa-node tag="truncate-text" name="caption" max-length="{truncateCaption}" defer="hasCaption">
+            </arpa-node>
+        </arpa-node>`;
     }
 
     async $initializeNodes() {
         await super.$initializeNodes();
+        await this.onNodesReady();
         this.captionNode = this.querySelector('.galleryItem__caption');
         return true;
     }
