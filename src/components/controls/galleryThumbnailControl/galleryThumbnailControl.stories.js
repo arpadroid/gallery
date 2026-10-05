@@ -1,17 +1,16 @@
 /**
  * @typedef {import('@arpadroid/lists').List} List
  * @typedef {import('../../gallery/gallery.js').default} Gallery
+ * @typedef {import('../../gallery/gallery.types.js').GalleryConfigType} GalleryConfigType
  * @typedef {import('../../galleryItem/galleryItem.js').default} GalleryItem
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
- * @typedef {import('@storybook/web-components-vite').Meta} Meta
- * @typedef {import('@storybook/web-components-vite').StoryObj} StoryObj
- * @typedef {import('@storybook/web-components-vite').StoryContext} StoryContext
- * @typedef {import('@storybook/web-components-vite').Args} Args
+ * @typedef {import('@storybook/web-components-vite').Meta<GalleryConfigType>} Meta
+ * @typedef {import('@storybook/web-components-vite').StoryObj<GalleryConfigType>} Story
  * @typedef {import('../../galleryThumbnails/galleryThumbnails.js').default} GalleryThumbnails
  */
 import { playSetup, renderStatic } from '../../gallery/gallery.stories.util';
 import GalleryStory from '../../gallery/gallery.stories';
-import { expect, waitFor, fireEvent } from 'storybook/test';
+import { expect, waitFor, userEvent } from 'storybook/test';
 
 /** @type {Meta} */
 const GalleryThumbnailControlStory = {
@@ -20,7 +19,7 @@ const GalleryThumbnailControlStory = {
     render: args => renderStatic(args)
 };
 
-/** @type {StoryObj} */
+/** @type {Story} */
 export const Render = {
     ...GalleryStory,
     args: {
@@ -30,7 +29,7 @@ export const Render = {
     }
 };
 
-/** @type {StoryObj} */
+/** @type {Story} */
 export const Test = {
     ...GalleryStory,
     args: {
@@ -58,9 +57,9 @@ export const Test = {
                 item = canvasElement.querySelectorAll('.galleryThumbnail')[1];
                 expect(item).toBeInTheDocument();
             });
-            await new Promise(resolve => setTimeout(resolve, 200));
             const button = item?.querySelector('button');
-            button && fireEvent.click(button);
+            if (!button) throw new Error('Thumbnail button not found');
+            await userEvent.click(button);
             await waitFor(() => {
                 expect(canvas.getByText('Leonardo da Vinci')).toBeVisible();
             });
@@ -76,7 +75,7 @@ export const Test = {
 
         await step('Hides the thumbnails', async () => {
             const button = canvas.getByRole('button', { name: 'Hide thumbnails' });
-            fireEvent.click(button);
+            await userEvent.click(button);
             await waitFor(() => {
                 expect(canvas.getByText('Show thumbnails')).toBeVisible();
                 expect(galleryNode).not.toHaveClass('gallery--thumbnails');

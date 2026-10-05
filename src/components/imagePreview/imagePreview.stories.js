@@ -154,7 +154,7 @@ export const TestMultiple = {
             const dialog = imagePreview.nodes.dialog;
             const nextButton = dialog.querySelector('.galleryNext button');
             expect(nextButton).toBeInTheDocument();
-            await userEvent.click(nextButton, { delay: 100 });
+            await userEvent.click(nextButton, { delay: 50 });
             await waitFor(() => {
                 expect(within(dialog).getByText('Guernica by Pablo Picasso (1937)')).toBeInTheDocument();
             });
@@ -164,7 +164,7 @@ export const TestMultiple = {
             const dialog = imagePreview.nodes.dialog;
             const prevButton = dialog.querySelector('.galleryPrevious button');
 
-            await userEvent.click(prevButton, { delay: 100 });
+            await userEvent.click(prevButton, { delay: 50 });
             await waitFor(() => {
                 expect(within(dialog).getByText('Phidias')).toBeVisible();
             });
