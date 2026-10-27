@@ -8,6 +8,7 @@ import { ListManager } from '@arpadroid/list-manager';
 import GalleryItem from '../galleryItem/galleryItem';
 import { observerMixin, dummySignal, goFullScreen, listen, mergeObjects } from '@arpadroid/tools';
 import { exitFullScreen, dummyListener, dummyOff, defineCustomElement } from '@arpadroid/tools';
+import { getArpaElementWithTag } from '@arpadroid/ui';
 
 const html = String.raw;
 class Gallery extends ListManager {
@@ -33,6 +34,15 @@ class Gallery extends ListManager {
 
     hasHeaderControls() {
         return false;
+    }
+
+    /**
+     * Returns the parent list component from a given element.
+     * @param {HTMLElement} element
+     * @returns {Gallery | null}
+     */
+    static getList(element) {
+        return /** @type {Gallery} */ (getArpaElementWithTag(element, 'arpa-gallery'));
     }
 
     /**

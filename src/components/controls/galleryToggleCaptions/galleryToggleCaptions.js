@@ -33,7 +33,8 @@ class GalleryToggleCaptions extends GalleryControl {
         return true;
     }
 
-    updateCaptions(on = this.hasCaptions(), isInitial = false) {
+    async updateCaptions(on = this.hasCaptions(), isInitial = false) {
+        await this.buttonComponent?.onRendered();
         if (!on) {
             this.gallery?.classList.remove(this.getProp('toggleClass'));
             this.buttonComponent?.setIcon(this.getProp('icon'));

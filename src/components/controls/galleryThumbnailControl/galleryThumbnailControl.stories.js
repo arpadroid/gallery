@@ -57,6 +57,7 @@ export const Test = {
                 item = canvasElement.querySelectorAll('.galleryThumbnail')[1];
                 expect(item).toBeInTheDocument();
             });
+            await item.promise;
             const button = item?.querySelector('button');
             if (!button) throw new Error('Thumbnail button not found');
             await userEvent.click(button);

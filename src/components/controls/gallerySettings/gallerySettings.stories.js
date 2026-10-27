@@ -49,18 +49,18 @@ export const Test = {
             () => /** @type {FormComponent | null} */ (document.getElementById('gallery-settings-test-filters-form'))
         );
 
-        await settingsForm?.onRendered();
+        await settingsForm?.promise;
 
         const positionField = /** @type {SelectCombo | undefined} */ (settingsForm?.getField('thumbnailsPosition'));
         await positionField?.promise;
 
-        const button = canvas.getByRole('button', { name: 'Settings' });
+        const button = await waitFor(() => canvas.getByRole('button', { name: 'Settings' }));
         await step('Renders the settings button', async () => {
             expect(button).toBeInTheDocument();
         });
 
         await step('Focuses the settings button and displays the tooltip', async () => {
-            await userEvent.click(button);
+            await userEvent.click(button, { delay: 50 });
             await waitFor(() => {
                 expect(within(button).getByText('Settings')).toBeVisible();
             });
@@ -74,11 +74,13 @@ export const Test = {
             });
         });
 
+        let combo;
+
         await step('Opens the thumbnail position dropdown', async () => {
             const dropdown = await waitFor(() => canvas.getByLabelText('Thumbnails position'));
-            await userEvent.click(dropdown, { delay: 50 });
+            await userEvent.click(dropdown);
             await waitFor(() => {
-                const combo = within(positionField?.optionsNode);
+                combo = within(document.querySelector('select-options'));
                 expect(combo?.getByText('Top')).toBeInTheDocument();
                 expect(combo?.getByText('Bottom')).toBeInTheDocument();
                 expect(combo?.getByText('Left')).toBeInTheDocument();
@@ -87,22 +89,22 @@ export const Test = {
         });
 
         await step('Sets the thumbnails position to "Right"', async () => {
-            const combo = within(positionField?.optionsNode);
             const option = combo.getByText('Right');
-            await userEvent.click(option, { delay: 10 });
+            await userEvent.click(option);
+            
             await waitFor(() => {
-                expect(galleryNode.querySelector('gallery-thumbnails')).toHaveAttribute('position', 'right');
+                const thumbs = canvasElement.querySelector('gallery-thumbnails');
+                expect(thumbs).toHaveAttribute('position', 'right');
             });
         });
 
         await step('Sets the thumbnails position to "left"', async () => {
-            const combo = within(positionField?.optionsNode);
             const option = combo.getByText('Left');
             await userEvent.click(option, { delay: 50 });
             await waitFor(() => {
                 const node = galleryNode.querySelector('gallery-thumbnails');
                 expect(node).toBeInTheDocument();
-                // expect(node).toHaveAttribute('position', 'left');
+                expect(node).toHaveAttribute('position', 'left');
             });
         });
     }

@@ -183,11 +183,11 @@ class GallerySettings extends GalleryControl {
         this.menuNode.setAttribute('variant', 'compact');
         this.menuNode.button?.setAttribute('aria-label', this.i18nText('lblSettings'));
         this.nav = /** @type {NavList} */ (this.menuNode?.nodes.nav);
-        const itemsNode = this.menuNode?.navigation?.itemsNode;
-        itemsNode?.setAttribute('zone', 'gallery-settings');
     }
 
     async _initializeForm() {
+        await this.nav?.onRendered();
+        await new Promise(resolve => setTimeout(resolve, 10));
         this.form = /** @type {FormComponent | null} */ (this.nav?.querySelector('arpa-form'));
         await this.form?.promise;
         this.onSubmit && this.form?.onSubmit(this.onSubmit);

@@ -5,7 +5,7 @@
  * @typedef {import('../gallery/gallery.js').default} Gallery
  * @typedef {import('./galleryControl.types').GalleryControlConfigType} GalleryControlConfigType
  */
-import { ArpaElement } from '@arpadroid/ui';
+import { ArpaElement, getArpaElementWithTag } from '@arpadroid/ui';
 import {
     camelToDashed,
     defineCustomElement,
@@ -14,6 +14,7 @@ import {
     dummySignal,
     observerMixin
 } from '@arpadroid/tools';
+
 const html = String.raw;
 class GalleryControl extends ArpaElement {
     /** @type {GalleryControlConfigType} */
@@ -83,10 +84,14 @@ class GalleryControl extends ArpaElement {
         }
         return tooltipPosition;
     }
+    
+    getGallery() {
+        return /** @type {Gallery | null} */ (getArpaElementWithTag(this, 'arpa-gallery'));
+    }
 
     initializeGallery() {
         /** @type {Gallery | null} */
-        this.gallery = this.closest('.gallery');
+        this.gallery = this.getGallery();
         /** @type {ListResource} */
         this.resource = this.gallery?.listResource;
     }

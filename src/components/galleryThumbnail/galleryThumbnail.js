@@ -8,13 +8,16 @@
 
 import { ListItem } from '@arpadroid/lists';
 import { defineCustomElement, mergeObjects } from '@arpadroid/tools';
+import { getArpaElementMatch } from '@arpadroid/ui';
 
 const html = String.raw;
 class GalleryThumbnail extends ListItem {
     $preInitialize() {
         super.$preInitialize();
-        /** @type {Gallery | null} */
-        this.gallery = this.closest('.gallery');
+
+        this.gallery = /** @type {Gallery | null} */ (
+            getArpaElementMatch(this, el => el.classList.contains('gallery'))
+        );
         /** @type {ListResource} */
         this.galleryResource = this.gallery?.listResource;
         this.resourceItem = this.getGalleryItem();
@@ -33,7 +36,7 @@ class GalleryThumbnail extends ListItem {
         /** @type {GalleryThumbnailConfigType} */
         const config = {
             className: 'galleryThumbnail',
-            lazyLoadImage: true,
+            lazyLoadImage: false,
             hasTitle: false,
             image: this.itemThumbnail,
             action: this._onClick
@@ -58,7 +61,6 @@ class GalleryThumbnail extends ListItem {
             <arpa-node {wrapperAttr()}>{image}</arpa-node>
             {rhs}
         `;
-        // <arpa-tooltip class="tooltip--contained" text="${this.title}" position="right"></arpa-tooltip>
     }
 
     getGalleryItem() {
@@ -75,6 +77,7 @@ class GalleryThumbnail extends ListItem {
     }
 
     _onClick() {
+        this.getGalleryItem();
         this.gallery?.pause();
         const index = this.resourceItem ? (this.galleryResource?.getItemIndex(this.resourceItem) || 0) + 1 : 0;
         this.galleryResource?.goToPage(index);

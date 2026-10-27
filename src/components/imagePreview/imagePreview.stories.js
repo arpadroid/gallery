@@ -53,7 +53,7 @@ export const TestSingle = {
         await arpaButton?.promise;
         const button = arpaButton.button;
         let dialog = /** @type {Dialog} */ (document.querySelector('#image-preview-test-dialog'));
-        await dialog?.promise;
+        await dialog?.onRendered();
         await step('Renders the image preview button', async () => {
             expect(button).toBeInTheDocument();
         });

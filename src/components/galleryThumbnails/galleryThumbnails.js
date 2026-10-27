@@ -23,63 +23,15 @@ class GalleryThumbnails extends List {
             renderMode: 'minimal',
             itemComponent: GalleryThumbnail,
             itemTag: 'gallery-thumbnail',
-            hasArrows: false,
-            selectedClass: 'galleryThumbnail--selected',
-            nodesConfig: {
-                arrowBack: {
-                    tag: 'icon-button',
-                    canRender: 'has-arrows',
-                    className: 'galleryThumbnails__arrowBack galleryThumbnails__arrow',
-                    attr: {
-                        icon: 'keyboard_arrow_left',
-                        tooltip: 'Previous',
-                        tooltipPosition: 'right'
-                    }
-                },
-                thumbnails: {
-                    tag: 'div',
-                    canRender: true,
-                    className: 'galleryThumbnails__mask',
-                    content: () => this.renderItems()
-                },
-                arrowForward: {
-                    tag: 'icon-button',
-                    canRender: 'has-arrows',
-                    className: 'galleryThumbnails__arrowForward galleryThumbnails__arrow',
-                    attr: {
-                        icon: 'keyboard_arrow_right',
-                        tooltip: 'Next',
-                        tooltipPosition: 'left'
-                    }
-                }
-            }
+            hasArrows: true,
+            selectedClass: 'galleryThumbnail--selected'
         });
     }
 
     async $initialize() {
-        this.bind('scrollForward', 'scrollBack', '_handleSelectedItem', '_initializeThumbnails');
+        this.bind('_handleSelectedItem');
         super.$initialize();
     }
-    /**
-     * Handles the selected item.
-     * @param {GalleryItem[]} items
-     */
-    async _handleSelectedItem(items) {
-        if (!items?.length) return;
-        const selectedClass = this.getProp('selected-class');
-        const selected = items && items?.[0];
-        if (!selected) return;
-        const selectedItems = this.querySelectorAll(`.${selectedClass}`);
-        selectedItems.forEach(item => item.classList.remove(selectedClass));
-        /** @type {GalleryThumbnail | null} */
-        const thumbnail = this.querySelector(`gallery-thumbnail[item-id="${selected.id}"]`);
-        thumbnail?.classList.add(selectedClass);
-        this.scrollToItem(thumbnail);
-    }
-
-    //////////////////////////////
-    // #region Data handling
-    /////////////////////////////
 
     /**
      * Returns the thumbnails payload.
@@ -87,7 +39,7 @@ class GalleryThumbnails extends List {
      */
     getThumbnailsPayload() {
         return /** @type {GalleryItemConfigType[] | undefined} */ (
-            this.resource?.getItems()?.map((item, index) => ({
+            Array.from(this.resource?.getItems() || []).map((item, index) => ({
                 id: `gallery-thumbnail-${(item?.id || index).toString()}`,
                 itemId: item.id,
                 image: item.thumbnail,
@@ -96,23 +48,33 @@ class GalleryThumbnails extends List {
         );
     }
 
-    thumbnailsInitialized = false;
-
-    async _initializeThumbnails() {
-        await this.promise;
-        if (this.thumbnailsInitialized) return;
-        const mask = this.querySelector('.galleryThumbnails__mask');
-        const itemHTML = this.renderItems();
-        mask && (mask.innerHTML = itemHTML);
-        this.thumbnailsInitialized = true;
+    getImageSize() {
+        const position = this.getProp('position');
+        const imageSize = ['left', 'right'].includes(position) ? 'thumbnail_vertical' : 'thumbnail';
+        return imageSize;
     }
 
-    ///////////////////////////////
-    // #region Rendering
-    ///////////////////////////////
-
     $renderTemplate() {
-        return html`{arrowBack}{thumbnails}{arrowForward}`;
+        this.gallery = /** @type {Gallery | null} */ (this.closest('.gallery'));
+        /** @type {ListResource | null} */
+        this.resource = this.gallery?.listResource;
+        const thumbnails = /** @type {unknown[]} */ (this.getThumbnailsPayload());
+        return html`
+            <arpa-node name="thumbnails" class-name="galleryThumbnails__mask" is-content>
+                ${mapHTML(
+                    thumbnails,
+                    ({ id, title, image, itemId }) =>
+                        html`<gallery-thumbnail
+                            id="${id}"
+                            item-id="${itemId}"
+                            render-mode="minimal"
+                            title="${title}"
+                            image="${image}"
+                            image-size="{getImageSize()}"
+                        ></gallery-thumbnail>`
+                )}
+            </arpa-node>
+        `;
     }
 
     getTemplateVars() {
@@ -121,32 +83,54 @@ class GalleryThumbnails extends List {
         };
     }
 
-    async $onConnected() {
-        this.gallery = /** @type {Gallery | null} */ (this.closest('.gallery'));
-        /** @type {ListResource | null} */
-        this.resource = this.gallery?.listResource;
-        this.handleResize();
-        if (this.resource?.getItems()?.length) {
-            await this._initializeThumbnails();
-        }
-        this.resource?.on('items', this._initializeThumbnails);
-        this.resource?.on('items', this._handleSelectedItem);
-        return true;
-    }
-
     async $initializeNodes() {
         await super.$initializeNodes();
         /** @type {HTMLElement | null} */
         this.thumbnailMask = this.querySelector('.galleryThumbnails__mask');
-        this.thumbnailMask?.append(...(this._childNodes || []));
-        this.arrowBack = this.querySelector('.galleryThumbnails__arrowBack');
-        /** @type {HTMLElement | null} */
-        this.arrowForward = this.querySelector('.galleryThumbnails__arrowForward');
-        this.arrowBack?.addEventListener('click', this.scrollBack);
-        this.arrowForward?.addEventListener('click', this.scrollForward);
         this._initializeTooltip();
+        this.resource?.on('items', this._handleSelectedItem);
+        this._handleSelectedItem();
         return true;
     }
+
+    /**
+     * Handles the selected item.
+     */
+    async _handleSelectedItem() {
+        const selectedClass = this.getProp('selected-class');
+        const selected = /** @type {import('@arpadroid/resources').ListResourceItemType} */ (
+            this.resource?._getItems()?.[0]
+        );
+        const selectedItems = this.thumbnailMask?.querySelectorAll(`.${selectedClass}`);
+        selectedItems?.forEach(item => item.classList.remove(selectedClass));
+        const thumbnail = /** @type {HTMLElement | null} */ (
+            this.querySelector(`gallery-thumbnail[item-id="${String(selected?.id)}"]`)
+        );
+        if (thumbnail) {
+            thumbnail?.classList.add(selectedClass);
+            this.scrollToItem(thumbnail);
+        }
+    }
+
+    // #endregion Rendering
+
+    ///////////////////////////////
+    // #region Scrolling
+    ///////////////////////////////
+
+    /**
+     * Scrolls to an thumbnail.
+     * @param {HTMLElement | null} [thumbnail]
+     */
+    scrollToItem(thumbnail) {
+        thumbnail?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // #endregion SCROLLING
+
+    /////////////////////////////////
+    // #region Tooltip
+    ////////////////////////////////
 
     createTooltip() {
         const cursorTooltipPosition = this.getCursorTooltipPosition();
@@ -201,106 +185,7 @@ class GalleryThumbnails extends List {
         if (['left', 'right'].includes(position)) return 'y';
         return 'x';
     }
-
-    /**
-     * Renders the items.
-     * @param {GalleryItemConfigType[]} items
-     * @returns {string}
-     */
-    renderItems(items = this.getThumbnailsPayload() || []) {
-        const position = this.getProp('position');
-        const imageSize = ['left', 'right'].includes(position) ? 'thumbnail_vertical' : 'thumbnail';
-        return mapHTML(
-            items,
-            (/** @type {GalleryItemConfigType} */ item) =>
-                html`<gallery-thumbnail
-                    item-id="${item.itemId}"
-                    render-mode="minimal"
-                    title="${item.title}"
-                    image="${item.image}"
-                    image-size="${imageSize}"
-                ></gallery-thumbnail>`
-        );
-    }
-
-    /////////////////////////////
-    // #endregion Rendering
-    ////////////////////////////
-
-    ///////////////////////////////
-    // #region Scrolling
-    ///////////////////////////////
-
-    scrollBack() {
-        if (!this.thumbnailMask) return;
-        const viewWidth = this.getViewWidth();
-        const rect = this.thumbnailMask.getBoundingClientRect();
-        const left = this.adjustBackScroll(rect.left + viewWidth);
-        this.thumbnailMask.style.left = `${left}px`;
-    }
-
-    /**
-     * Adjusts the scroll back.
-     * @param {number} left
-     * @returns {number}
-     */
-    adjustBackScroll(left) {
-        if (left > 0) left = 0;
-        return left;
-    }
-
-    scrollForward() {
-        this.thumbnailMask = this.querySelector('.galleryThumbnails__mask');
-        if (!this.thumbnailMask) return;
-        const viewWidth = this.getViewWidth();
-        const rect = this.thumbnailMask.getBoundingClientRect();
-        const left = this.adjustForwardScroll(rect.left - viewWidth);
-        this.thumbnailMask.style.left = `${left}px`;
-    }
-
-    /**
-     * Adjusts the scroll forward.
-     * @param {number} left
-     * @returns {number}
-     */
-    adjustForwardScroll(left) {
-        const maxScroll = -(this.thumbnailMask?.clientWidth || 0) + this.getViewWidth();
-        if (left < maxScroll) left = maxScroll;
-        return left;
-    }
-
-    getViewWidth() {
-        return this.clientWidth;
-    }
-
-    handleResize() {
-        window.addEventListener('resize', () => {
-            clearTimeout(this.resizeTimeout);
-            this.resizeTimeout = setTimeout(() => this.adjustScroll(), 400);
-        });
-    }
-
-    adjustScroll() {
-        if (!this.thumbnailMask) return;
-        let left = this.thumbnailMask.getBoundingClientRect().left;
-        left = this.adjustBackScroll(left);
-        left = this.adjustForwardScroll(left);
-        this.thumbnailMask.style.left = `${left}px`;
-    }
-
-    /**
-     * Scrolls to an thumbnail.
-     * @param {HTMLElement | null} [thumbnail]
-     */
-    scrollToItem(thumbnail) {
-        requestAnimationFrame(() => {
-            thumbnail?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        });
-    }
-
-    /////////////////////////////////
-    // #endregion SCROLLING
-    ////////////////////////////////
+    // #endregion Tooltip
 }
 
 defineCustomElement('gallery-thumbnails', GalleryThumbnails);
