@@ -4,7 +4,7 @@
  */
 import { ListControls } from '@arpadroid/list-manager';
 import { defineCustomElement, mergeObjects } from '@arpadroid/tools';
-import { getArpaElementWithTag } from '@arpadroid/ui';
+import { getArpaElementMatch } from '@arpadroid/ui';
 
 const html = String.raw;
 class GalleryControls extends ListControls {
@@ -21,7 +21,9 @@ class GalleryControls extends ListControls {
      * @returns {Gallery | null}
      */
     getList() {
-        return /** @type {Gallery | null} */ (getArpaElementWithTag(this, 'arpa-gallery'));
+        return /** @type {Gallery | null} */ (
+            getArpaElementMatch(this, el => ['ARPA-GALLERY', 'IMAGE-SLIDER'].includes(el.tagName))
+        );
     }
 
     /**

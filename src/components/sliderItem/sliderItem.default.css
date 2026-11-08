@@ -4,10 +4,12 @@ slider-item {
 .sliderItem {
     width: 100%;
     min-width: 100%;
-    min-height: 100%;
     height: 100%;
-    arpa-image.listItem__image {
+    min-height: 100%;
+
+    arpa-image.galleryItem__image {
         --image-bg-color: var(--color-background);
+
         img {
             object-fit: cover;
         }
@@ -18,29 +20,30 @@ slider-item {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    max-width: 720px;
+    max-width: 45rem;
 
     .galleryItem__caption {
         position: relative;
-        box-shadow: none;
+        right: 0;
+        left: 0;
+        max-width: 100%;
+
         /* padding: 1rem 0; */
         padding: 0.5rem 1rem;
-        left: 0;
-        right: 0;
         font-size: 1.1rem;
-        line-height: 2rem;
         font-weight: 400;
+        line-height: 2rem;
         background-color: transparent;
-        max-width: 100%;
+        box-shadow: none;
     }
 
     .listItem__title {
-        font-size: 1.2rem;
-        font-weight: 800;
         overflow: auto;
         text-overflow: inherit;
-        white-space: normal;
+        font-size: 1.2rem;
+        font-weight: 800;
         line-height: 1.8rem;
+        white-space: normal;
     }
 
     .galleryItem__caption {
@@ -55,12 +58,15 @@ slider-item {
 .imageSlider[content-overlay] .sliderItem,
 .sliderItem[content-overlay] {
     .sliderItem__content {
-        margin: 1rem 1rem 0 1rem;
         position: absolute;
         width: calc(100% - 2rem);
+        margin: 1rem 1rem 0;
+
         /* height: 100%; */
+
         /* background-color: var(--overlay-95); */
     }
+
     .galleryItem__caption.galleryItem__caption,
     .listItem__title {
         background: var(--overlay);
@@ -75,13 +81,13 @@ slider-item {
 
 .sliderItem[content-overlay][content-position='left'] .sliderItem__content {
     top: 50%;
-    transform: translateY(-50%);
     width: 50%;
+    transform: translateY(-50%);
 }
 
 .sliderItem[content-overlay][content-position='right'] .sliderItem__content {
     top: 50%;
-    transform: translateY(-50%);
     right: 0;
     width: 50%;
+    transform: translateY(-50%);
 }

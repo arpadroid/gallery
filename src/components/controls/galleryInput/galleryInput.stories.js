@@ -12,7 +12,7 @@
  */
 import { playSetup } from '../../gallery/gallery.stories.util';
 import GalleryStory from '../../gallery/gallery.stories';
-import { expect, waitFor, fireEvent } from 'storybook/test';
+import { expect, waitFor, userEvent, fireEvent } from 'storybook/test';
 
 /** @type {Meta} */
 const GalleryInputStory = {
@@ -44,7 +44,10 @@ export const Test = {
         const form = /** @type {FormComponent} */ (canvasElement.querySelector('arpa-form'));
         form.setDebounce(0);
         await form?.onRendered();
-        const input = /** @type {HTMLInputElement} */  (await waitFor(() => canvas.getByRole('spinbutton', { name: 'Current slide' })));
+        await new Promise(resolve => setTimeout(resolve, 0));
+        const input = /** @type {HTMLInputElement} */ (
+            await waitFor(() => canvas.getByRole('spinbutton', { name: 'Current slide' }))
+        );
         await step('Renders the input', async () => {
             await waitFor(() => {
                 expect(input).toBeInTheDocument();
@@ -72,9 +75,9 @@ export const Test = {
         });
 
         await step('Changes slide and expects the input to update', async () => {
-            await new Promise(resolve => setTimeout(resolve, 100));
+            await new Promise(resolve => setTimeout(resolve, 0));
             const nextButton = canvas.getByRole('button', { name: 'Next' });
-            await fireEvent.click(nextButton);
+            await userEvent.click(nextButton, { delay: 100 });
             await waitFor(() => {
                 expect(input.value).toBe('2');
             });

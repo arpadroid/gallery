@@ -85,14 +85,14 @@ class GalleryDots extends GalleryControl {
     async _initializeTooltip() {
         if (this.tooltip) {
             await this.gallery?.promise;
-            this.pager?.itemsNode && this.tooltip.setHandler(this.pager?.itemsNode);
+            this.pager?.nodes.items && this.tooltip.setHandler(this.pager?.nodes.items);
             return;
         }
 
         this.tooltip = new Tooltip({
             content: 'Thumbnails tooltip',
             className: 'galleryDots__tooltip',
-            handler: /** @type {HTMLElement} */ (this.pager?.itemsNode),
+            handler: /** @type {HTMLElement} */ (this.pager?.nodes.items),
             position: 'cursor',
             hasCursorPosition: true,
             onMouseTargetUpdate: this.onTargetUpdate

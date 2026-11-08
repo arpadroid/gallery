@@ -5,8 +5,6 @@
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
  * @typedef {import('@storybook/web-components-vite').Meta} Meta
  * @typedef {import('@storybook/web-components-vite').StoryObj} StoryObj
- * @typedef {import('@storybook/web-components-vite').StoryContext} StoryContext
- * @typedef {import('@storybook/web-components-vite').Args} Args
  * @typedef {import('@arpadroid/ui').IconButton} IconButton
  */
 import { playSetup } from '../../gallery/gallery.stories.util';

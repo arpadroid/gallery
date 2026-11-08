@@ -35,12 +35,12 @@ class SliderItem extends GalleryItem {
         this.getContentOverlay() && this.setAttribute('content-overlay', '');
         const contentPosition = this.getContentPosition();
         contentPosition && this.setAttribute('content-position', contentPosition);
-        return html`<{wrapperComponent} {wrapperAttributes}>
+        return html`<arpa-node {wrapperAttr()}>
             {image}
             <div class="sliderItem__content">
                 {titleContainer}{children}{caption} 
             </div>
-        </{wrapperComponent}>`;
+        </arpa-node>`;
     }
 
     getContentOverlay() {

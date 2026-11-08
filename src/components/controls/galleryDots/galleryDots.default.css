@@ -1,5 +1,5 @@
 :root {
-    --galleryDot-thumbnail-width: 140px;
+    --galleryDot-thumbnail-width: 8.75rem;
 }
 
 .galleryDots {
@@ -7,23 +7,20 @@
     flex: 1 1 auto;
     gap: 0.5rem;
     max-width: fit-content;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: auto hidden;
     white-space: nowrap;
 
-    .pager__numbers {
-        gap: 1rem;
+    .pager {
+        width: auto;
+        padding: 0;
     }
 
-    .pager__numbers {
-        max-width: 100%;
+    .pager__items {
         flex-wrap: nowrap;
-        overflow: hidden;
+        gap: 1rem;
+        max-width: 100%;
         padding: 0.25rem;
-    }
-    .pager {
-        padding: 0;
-        width: auto;
+        overflow: hidden;
     }
 }
 
@@ -35,29 +32,32 @@
     .tooltip__button.tooltip__button {
         gap: 0;
     }
+
     .galleryThumbnail.galleryThumbnail {
         width: var(--galleryDot-thumbnail-width);
         transition: opacity 0.1s ease;
+
         .listItem__main {
             flex-direction: column;
             overflow: hidden;
         }
 
         .listItem__title {
-            font-size: 12px;
-            font-weight: 600;
-            padding: 4px 8px 8px 8px;
-            max-width: 100%;
             display: block;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
             width: 100%;
+            max-width: 100%;
+            padding: 0.25rem 0.5rem 0.5rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
         }
 
         &:has(.image--error) {
-            opacity: 1;
             display: flex;
+            opacity: 1;
+
             @starting-style {
                 opacity: 1;
             }
@@ -65,12 +65,14 @@
 
         .image__thumbnail {
             display: none;
+
             .tooltip__content {
                 bottom: 0;
+                width: 6.25rem;
+                text-align: center;
                 border: none;
                 box-shadow: none;
-                width: 100px;
-                text-align: center;
+
                 &::before {
                     content: '';
                     border: none !important;
@@ -97,19 +99,20 @@
         border-width: 1px;
         opacity: 1;
         transition: opacity 0.2s ease;
+
         @starting-style {
             opacity: 0;
         }
     }
 
     arpa-image {
-        border-radius: 4px 4px 0 0;
         overflow: hidden;
+        border-radius: 0.25rem 0.25rem 0 0;
     }
 
     img {
-        object-fit: cover;
-        aspect-ratio: 16/9;
         width: var(--galleryDot-thumbnail-width);
+        aspect-ratio: 16/9;
+        object-fit: cover;
     }
 }
