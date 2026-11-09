@@ -90,6 +90,7 @@ class GalleryControl extends ArpaElement {
     }
 
     initializeGallery() {
+        if (this.gallery) return;
         /** @type {Gallery | null} */
         this.gallery = this.getGallery();
         /** @type {ListResource} */

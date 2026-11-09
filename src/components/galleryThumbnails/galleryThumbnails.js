@@ -24,6 +24,7 @@ class GalleryThumbnails extends List {
             itemComponent: GalleryThumbnail,
             itemTag: 'gallery-thumbnail',
             hasArrows: true,
+            hasItemsTransition: false,
             selectedClass: 'galleryThumbnail--selected'
         });
     }
@@ -60,7 +61,15 @@ class GalleryThumbnails extends List {
         this.resource = this.gallery?.listResource;
         const thumbnails = /** @type {unknown[]} */ (this.getThumbnailsPayload());
         return html`
-            <arpa-node name="thumbnails" class-name="galleryThumbnails__mask" is-content>
+            <arpa-node
+                name="thumbnails"
+                class-name="galleryThumbnails__mask"
+                is-content
+                on-mousedown="{onThumbnailsDown}"
+                on-mouseup="{onThumbnailsUp}"
+                on-mousemove="{onThumbnailsMove}"
+                on-mouseleave="{onThumbnailsUp}"
+            >
                 ${mapHTML(
                     thumbnails,
                     ({ id, title, image, itemId }) =>
@@ -113,6 +122,70 @@ class GalleryThumbnails extends List {
     }
 
     // #endregion Rendering
+
+    ////////////////////////////////
+    // #region Thumbnails Drag
+    ////////////////////////////////
+
+    thumbDown = false;
+
+    onThumbnailsDown() {
+        this._stopInertia();
+        this.dragSpeed = 0;
+        this.thumbsDown = true;
+    }
+
+    onThumbnailsUp() {
+        if (!this.thumbsDown) return;
+        this.thumbsDown = false;
+        if (Math.abs(this.dragSpeed) > 1) {
+            this._startInertia();
+        }
+    }
+
+    dragSpeed = 0;
+    inertiaFriction = 0.95;
+    inertiaFrame = 0;
+
+    _startInertia() {
+        this._stopInertia();
+        const thumbs = this.nodes.thumbnails;
+        let velocity = Math.sign(this.dragSpeed) * Math.abs(this.dragSpeed) ** 2.5;
+        const step = () => {
+            if (Math.abs(velocity) <= 0.4) {
+                this.inertiaFrame = 0;
+                return;
+            }
+            const previous = thumbs.scrollLeft;
+            thumbs.scrollLeft += velocity * -1.5;
+            velocity *= this.inertiaFriction;
+            if (thumbs.scrollLeft === previous) {
+                this.inertiaFrame = 0;
+                return;
+            }
+            this.inertiaFrame = requestAnimationFrame(step);
+        };
+        this.inertiaFrame = requestAnimationFrame(step);
+    }
+
+    _stopInertia() {
+        if (this.inertiaFrame) {
+            cancelAnimationFrame(this.inertiaFrame);
+            this.inertiaFrame = 0;
+        }
+    }
+    /**
+     * @param {MouseEvent} event
+     */
+    onThumbnailsMove(event) {
+        if (!this.thumbsDown) return;
+        const thumbs = this.nodes.thumbnails;
+        const delta = -1;
+        thumbs.scrollLeft += event.movementX * delta;
+        this.dragSpeed = event.movementX;
+    }
+
+    // #endregion Drag
 
     ///////////////////////////////
     // #region Scrolling

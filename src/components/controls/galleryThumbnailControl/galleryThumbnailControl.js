@@ -30,21 +30,16 @@ class GalleryThumbnailControl extends GalleryControl {
     $initialize() {
         super.$initialize();
         this.isActive = this.getProp('is-active');
-        // this._initializeThumbnails();
+        this.initializeGallery();
+        this._initializeThumbnails();
     }
 
-    _initializeThumbnails() {
+    async _initializeThumbnails() {
         if (!this.thumbnails) {
-            this.thumbnails = /** @type {GalleryThumbnails} */ (renderNode(this.renderThumbnails()));
+            this.thumbnails = /** @type {GalleryThumbnails} */ (renderNode(await this.renderThumbnails()));
             this.thumbnails && this.gallery?.append(this.thumbnails);
         }
         this.positionThumbnails();
-    }
-
-    async $initializeNodes() {
-        await super.$initializeNodes();
-        this._initializeThumbnails();
-        return true;
     }
 
     /**
@@ -84,10 +79,10 @@ class GalleryThumbnailControl extends GalleryControl {
         this.signal('positionChange', position);
     }
 
-    renderThumbnails() {
+    async renderThumbnails() {
         this.gallery?.classList.add('gallery--thumbnails');
         const id = `${this.resource?.id}-thumbnails`;
-        const position = this.getThumbnailsPosition();
+        const position = await this.getThumbnailsPosition();
         return html`<gallery-thumbnails position="${position}" id=${id}></gallery-thumbnails>`;
     }
 

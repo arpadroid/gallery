@@ -10,6 +10,7 @@
     height: var(--gallery-thumbnails-height);
     max-height: var(--gallery-thumbnails-height);
     overflow: hidden;
+    background: var(--color-background, #fff);
     opacity: 0;
     transition: var(--theme-transition);
 }
@@ -23,10 +24,44 @@
     max-height: 100%;
 }
 
+.galleryThumbnails[position='left'],
+.galleryThumbnails[position='right'] {
+    position: absolute;
+    left: 0;
+    width: var(--gallery-thumbnails-width);
+    height: calc(100% - 0.375rem);
+    max-height: none;
+    padding-top: 4rem;
+    padding-bottom: calc(var(--gallery-thumbnails-height) / 2);
+
+    img {
+        max-width: 100%;
+        height: auto;
+        min-height: auto;
+        max-height: none;
+        object-fit: contain;
+    }
+
+    .galleryThumbnails__mask {
+        flex-direction: column;
+        overflow: hidden auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    arpa-image {
+        max-width: 100%;
+    }
+}
+
 .galleryThumbnails[position='top'],
 .galleryThumbnails[position='bottom'] {
     .galleryThumbnails__mask {
-        --gallery-thumbnails-scrollbar-offset: 1rem;
+        --gallery-thumbnails-scrollbar-offset: .75rem;
 
         padding-block-end: var(--gallery-thumbnails-scrollbar-offset);
         overflow: auto hidden;
@@ -68,40 +103,6 @@
         gallery-thumbnail img {
             max-height: calc(var(--gallery-thumbnails-height) - var(--gallery-thumbnails-scrollbar-offset));
         }
-    }
-}
-
-.galleryThumbnails[position='left'],
-.galleryThumbnails[position='right'] {
-    position: absolute;
-    left: 0;
-    width: var(--gallery-thumbnails-width);
-    height: calc(100% - 0.375rem);
-    max-height: none;
-    padding-top: 4rem;
-    padding-bottom: calc(var(--gallery-thumbnails-height) / 2);
-
-    .galleryThumbnails__mask {
-        flex-direction: column;
-        overflow: hidden auto;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-
-        &::-webkit-scrollbar {
-            display: none;
-        }
-    }
-
-    arpa-image {
-        max-width: 100%;
-    }
-
-    img {
-        max-width: 100%;
-        height: auto;
-        min-height: auto;
-        max-height: none;
-        object-fit: contain;
     }
 }
 

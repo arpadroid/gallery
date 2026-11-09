@@ -23,6 +23,11 @@
     .arpaList--itemsOut {
         bottom: 0;
     }
+
+    .listControls {
+        min-height: var(--gallery-controls-height);
+        padding: 0;
+    }
 }
 
 .gallery__body {
@@ -71,7 +76,7 @@ gallery-spacer {
     &:has(.galleryThumbnails[position='left']) {
         .galleryItem {
             arpa-image {
-                padding-left: calc(var(--gallery-thumbnails-width) + 4px);
+                padding-left: calc(var(--gallery-thumbnails-width) + 0.25rem);
             }
 
             .galleryItem__caption {
@@ -83,7 +88,7 @@ gallery-spacer {
     &:has(.galleryThumbnails[position='right']) {
         .galleryItem {
             arpa-image {
-                padding-right: calc(var(--gallery-thumbnails-width) + 4px);
+                padding-right: calc(var(--gallery-thumbnails-width) + 0.25rem);
             }
 
             .galleryItem__caption {
@@ -98,6 +103,8 @@ gallery-spacer {
 */
 
 .gallery--hide-controls.gallery--hide-controls {
+    --gallery-thumbnails-scrollbar-offset: 0;
+
     &:hover {
         .galleryThumbnails,
         .gallery__footer,
@@ -107,19 +114,19 @@ gallery-spacer {
         }
     }
 
+    .gallery__footer {
+        top: auto;
+        bottom: 0;
+    }
+
     .gallery__footer,
     .listItem__titleWrapper {
         position: absolute;
         right: 0;
         left: 0;
-        height: 54px;
+        height: 3.375rem;
         opacity: 0;
-        transition: var(--theme-transition);
-    }
-
-    .gallery__footer {
-        top: auto;
-        bottom: 0;
+        transition: opacity 0.4s ease-out;
     }
 
     .listItem__titleWrapper {

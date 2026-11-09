@@ -4,16 +4,15 @@ gallery-thumbnail.galleryThumbnail {
     flex: 0 0 auto;
     width: auto;
     height: 100%;
-    opacity: 0;
-    transition: opacity 1s var(--easeInQuad);
+    opacity: 1;
+    transition: opacity 0.2s var(--easeInQuad);
+
+    @starting-style {
+        opacity: 0;
+    }
 
     &:has(.image--loaded) {
-        @starting-style {
-            opacity: 0;
-        }
-
         display: flex;
-        opacity: 1;
     }
 
     .galleryThumbnail__main {
@@ -76,11 +75,11 @@ gallery-thumbnail.galleryThumbnail {
         &::after,
         &::before {
             position: absolute;
-            top: 6px;
+            top: 0.375rem;
             left: 50%;
             z-index: 1;
             display: none;
-            width: calc(100% - 12px);
+            width: calc(100% - 0.75rem);
             width: 0;
             height: 0.25rem;
             content: '';
@@ -92,7 +91,7 @@ gallery-thumbnail.galleryThumbnail {
 
         &::before {
             top: auto;
-            bottom: 6px;
+            bottom: 0.375rem;
         }
     }
 

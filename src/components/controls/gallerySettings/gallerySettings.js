@@ -27,7 +27,11 @@ class GallerySettings extends GalleryControl {
         return mergeObjects(super.getDefaultConfig(), {
             icon: 'settings',
             className: 'gallerySettings',
-            lblSettings: '{i18n:lblSettings}'
+            lblSettings: '{i18n:lblSettings}',
+            lblTop: this.i18nText('lblTop'),
+            lblLeft: this.i18nText('lblLeft'),
+            lblRight: this.i18nText('lblRight'),
+            lblBottom: this.i18nText('lblBottom')
         });
     }
 
@@ -149,10 +153,10 @@ class GallerySettings extends GalleryControl {
                                     label="{i18n:lblThumbnailsPosition}"
                                     on-change="{updateThumbnailsPosition}"
                                 >
-                                    <select-option value="top">${this.i18n('lblTop')}</select-option>
-                                    <select-option value="bottom">${this.i18n('lblBottom')}</select-option>
-                                    <select-option value="left">${this.i18n('lblLeft')}</select-option>
-                                    <select-option value="right">${this.i18n('lblRight')}</select-option>
+                                    <select-option value="top" label="{lblTop}"></select-option>
+                                    <select-option value="bottom" label="{lblBottom}"></select-option>
+                                    <select-option value="left" label="{lblLeft}"></select-option>
+                                    <select-option value="right" label="{lblRight}"></select-option>
                                 </select-combo>
                             </group-field>
                         </arpa-node>
