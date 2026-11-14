@@ -24,9 +24,9 @@
         bottom: 0;
     }
 
-    .listControls {
+    gallery-controls {
         min-height: var(--gallery-controls-height);
-        padding: 0;
+        padding: 0 .5rem;
     }
 }
 

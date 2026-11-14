@@ -24,7 +24,7 @@ class GalleryDots extends GalleryControl {
      */
     getDefaultConfig() {
         this.i18nKey = 'gallery.galleryDots';
-        this.bind('onTargetUpdate', '_onItemChanged', '_onThumbnailLoaded', '_onThumbnailError');
+        this.bind('onTargetUpdate', '_onThumbnailLoaded', '_onThumbnailError');
         return {
             className: 'galleryDots',
             ariaLabel: undefined
@@ -36,7 +36,6 @@ class GalleryDots extends GalleryControl {
             id="${this.id}-listPager"
             has-arrow-controls="false"
             class="arpaList__pager"
-            item-component="gallery-dot"
             max-nodes="1000"
             total-pages="${this.gallery?.listResource?.getTotalPages()}"
             current-page="${this.gallery?.listResource?.getCurrentPage()}"
@@ -68,19 +67,24 @@ class GalleryDots extends GalleryControl {
         this.gallery?._initializePager();
         await this.pager?.promise;
         await this.gallery?.promise;
-        this.gallery?.listResource?.pageFilter?.on('value', this._onItemChanged);
+        // this.gallery?.listResource?.pageFilter?.on('value', this._onItemChanged);
 
         return true;
     }
 
     /**
-     * Handles when the page filter changes.
-     * @param {string} pageNumber - The new page number.
+     * @todo The PagerItem component was removed, need to refactor this component
+     * to work with the new pager structure. The code below uses pager nodes.
      */
-    _onItemChanged(pageNumber) {
-        const pagerItem = this.pager?.getItemByPage(pageNumber);
-        pagerItem?.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
-    }
+
+    // /**
+    //  * Handles when the page filter changes.
+    //  * @param {string} pageNumber - The new page number.
+    //  */
+    // _onItemChanged(pageNumber) {
+    //     const pagerItem = this.pager?.getItemByPage(pageNumber);
+    //     pagerItem?.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
+    // }
 
     async _initializeTooltip() {
         if (this.tooltip) {

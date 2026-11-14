@@ -3,8 +3,7 @@
  * @typedef {import('@arpadroid/resources').ListResource} ListResource
  */
 
-import artworks from '../../../node_modules/@arpadroid/lists/src/mockData/artworks.json';
-
+import artworks from '../../../node_modules/@arpadroid/lists/src/mockData/artists.json';
 /**
  * Initializes the Slider.
  * @param {string} id
@@ -18,9 +17,8 @@ export async function initializeSlider(id, payload = artworks) {
     await resource?.setItems(
         payload.map(item => {
             return {
-                ...item,
-                title: item.title,
-                image: item.imageUrl,
+                title: item.firstName + ' ' + item.lastName,
+                image: item.portraitURL,
                 caption: item.description,
                 id: item.id
             };

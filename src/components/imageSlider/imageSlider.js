@@ -15,13 +15,18 @@ class ImageSlider extends Gallery {
     getDefaultConfig() {
         /** @type {ImageSliderConfigType} */
         const config = {
-            classNames: ['imageSlider'],
+            classNames: ['imageSlider', 'gallery'],
             listSelector: 'image-slider',
             itemTag: 'slider-item',
             tagName: 'image-slider',
             itemComponent: SliderItem,
             contentPosition: 'top',
-            controls: ['play', 'dots', 'spacer'],
+            controls: [
+                'play',
+                /** @todo Fix dots component. */
+                //'dots',
+                'spacer'
+            ],
             maxPagerNodes: 13
         };
         return mergeObjects(super.getDefaultConfig(), config);
